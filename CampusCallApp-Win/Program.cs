@@ -400,10 +400,11 @@ namespace CampusCallWin
                     {
                         if (_role == "display")
                         {
-                            // 教室大屏端：不弹小屏，强制弹出大屏 + 提示声；播报结束由 done 延迟退回后台
+                            // 3.1.0：右下角通知弹窗（不强制弹出大屏、不遮挡主屏），提示声，挂到呼叫结束
                             CancelHide(); // 新广播到达：重置可能正在进行的延迟退回
                             try { SystemSounds.Exclamation.Play(); } catch { }
-                            ForceToFront();
+                            ShowPopup(id, "校园传呼 · 收到广播",
+                                string.IsNullOrEmpty(text) ? "收到一条呼叫" : text, true);
                         }
                         else
                         {
@@ -434,7 +435,7 @@ namespace CampusCallWin
             }
         }
 
-        private void ShowPopup(string id, string title, string text)
+        private void ShowPopup(string id, string title, string text, bool rightBottom = false)
         {
             if (string.IsNullOrEmpty(id))
             {
@@ -448,18 +449,31 @@ namespace CampusCallWin
             }
 
             var f = new PopupForm(title, text);
+            f.StartPosition = FormStartPosition.Manual; // 禁用系统级联定位，位置严格按 Location
             f.CloseRequested += (s, ev) => ClosePopup(id);
 
             var wa = Screen.PrimaryScreen.WorkingArea;
             int idx = _popups.Count;
-            // 呼叫端小屏：显示在屏幕正上方（顶部居中），多条依次向下排列
-            int x = wa.Left + (wa.Width - f.Width) / 2;
-            int y = wa.Top + 12 + idx * (f.Height + 8);
-            if (y + f.Height > wa.Bottom) y = wa.Top + 12;
+            int x, y;
+            if (rightBottom)
+            {
+                // 3.1.0：右下角通知弹窗（类似通知位置），多条依次向上排列
+                x = wa.Right - f.Width - 16;
+                y = wa.Bottom - f.Height - 16 - idx * (f.Height + 8);
+                if (y < wa.Top + 12) y = wa.Bottom - f.Height - 16;
+            }
+            else
+            {
+                // 呼叫端小屏：显示在屏幕正上方（顶部居中），多条依次向下排列
+                x = wa.Left + (wa.Width - f.Width) / 2;
+                y = wa.Top + 12 + idx * (f.Height + 8);
+                if (y + f.Height > wa.Bottom) y = wa.Top + 12;
+            }
             f.Location = new Point(x, y);
 
             _popups[id] = f;
             f.Show();
+            f.Location = new Point(x, y); // Show 后再次确认位置（防止系统级联定位覆盖）
 
             // 提示声
             try { SystemSounds.Exclamation.Play(); } catch { }
