@@ -37,6 +37,9 @@ body{ background:var(--bg); color:var(--text); font-family:-apple-system,"PingFa
 .body{ flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; padding:12px 12px 20px; }
 .sect{ font-size:12px; color:var(--sub); letter-spacing:1px; margin:14px 4px 8px; display:flex; align-items:center; gap:8px; }
 .sect .right{ margin-left:auto; font-size:12px; color:var(--blue); cursor:pointer; }
+#multi-toggle{ font-size:12px; color:var(--blue); cursor:pointer; padding:3px 10px; border:1px solid var(--blue); border-radius:12px; user-select:none; }
+#multi-toggle.on{ background:var(--blue); color:#fff; font-weight:600; }
+#btn-roster-link{ margin-left:10px; }
 .card{ background:var(--card); border:1px solid var(--line); border-radius:12px; padding:12px; }
 .rowline{ display:flex; align-items:center; gap:10px; }
 .btn{ background:var(--card2); color:var(--text); border:1px solid var(--line); border-radius:10px; padding:10px 16px; font-size:14px; cursor:pointer; font-family:inherit; }
@@ -104,7 +107,14 @@ input::placeholder,textarea::placeholder{ color:var(--dim); }
 /* ===== 自定义播报内容 ===== */
 .custom-list{ display:flex; flex-direction:column; gap:8px; }
 .custom-item{ background:var(--card); border:1px solid var(--line); border-radius:10px; padding:10px 12px; font-size:13px; color:#dbe6f5; line-height:1.6; }
-.custom-item .del{ float:right; color:var(--dim); cursor:pointer; margin-left:10px; font-size:12px; padding:2px; }
+.custom-item .ops{ float:right; color:var(--dim); cursor:pointer; margin-left:10px; font-size:12px; padding:2px; }
+.custom-item .ops .op{ padding:2px 6px; margin-left:6px; border:1px solid var(--line); border-radius:6px; }
+.custom-item .ops .op:hover{ color:var(--blue); border-color:var(--blue); }
+#custom-editor{ padding:12px; }
+.vchip{ cursor:grab; user-select:none; border-style:dashed; }
+.vchip:active{ cursor:grabbing; }
+#custom-txt-input{ width:100%; box-sizing:border-box; background:var(--bg); border:1px solid var(--line); border-radius:10px; color:var(--fg); font-size:14px; padding:10px; margin-top:10px; resize:vertical; min-height:64px; }
+#custom-txt-input:focus{ outline:none; border-color:var(--blue); }
 
 /* ===== 设置页 ===== */
 .param{ margin-bottom:14px; }
@@ -201,7 +211,7 @@ input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:18px; he
 
   <!-- 呼叫 tab -->
   <div class="body" id="tab-call">
-    <div class="sect"><span>选择学生</span><span id="stu-count"></span><span class="right" id="btn-roster-link">名单 ✎</span></div>
+    <div class="sect"><span>选择学生</span><span id="stu-count"></span><span class="right"><span id="multi-toggle">多选</span><span id="btn-roster-link">名单 ✎</span></span></div>
     <div class="searchbox"><input type="search" id="stu-search" placeholder="搜索姓名或班级..."></div>
     <div class="sect" style="margin-top:10px;"></div>
     <div class="chips" id="class-chips"></div>
@@ -235,11 +245,24 @@ input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:18px; he
     <div class="sect"><span>自定义目的地</span><span class="right" id="btn-add-dest">＋ 添加</span></div>
     <div class="dest-grid" id="custom-dests"></div>
     <div class="sect"><span>自定义播报内容</span><span class="right" id="btn-add-custom">＋ 添加</span></div>
+    <div class="card" id="custom-editor">
+      <div class="var-hint">点击或拖动变量，插入到编辑框：</div>
+      <div class="chips" id="custom-var-chips" style="flex-wrap:wrap;">
+        <span class="chip vchip" draggable="true" data-var="{class}">班级</span>
+        <span class="chip vchip" draggable="true" data-var="{name}">姓名</span>
+        <span class="chip vchip" draggable="true" data-var="{destination}">目的地</span>
+      </div>
+      <textarea id="custom-txt-input" rows="3" placeholder="在这里编辑播报内容，插入变量即可拼出完整文案…"></textarea>
+      <div class="action-row" style="margin-top:10px;">
+        <button class="btn blue" id="btn-custom-save" style="flex:1;">保存为自定义播报内容</button>
+        <button class="btn ghost" id="btn-custom-clear" style="flex:0;">清空</button>
+      </div>
+    </div>
     <div class="custom-list" id="custom-txts"></div>
     <div class="sect">说明</div>
     <div class="card" style="font-size:12px;color:var(--sub);line-height:1.8;">
       目的地将出现在「呼叫页」的呼叫目的地中，可自定义增删，用于日常呼叫场景。<br>
-      自定义播报内容将出现在「呼叫页」的播报内容选择中，发送时优先使用；支持变量 {class}班级 · {name}姓名 · {destination}目的地。
+      自定义播报内容将出现在「呼叫页」的播报内容选择中，发送时优先使用；点击条目 ✎ 可载入编辑框修改，点 ✕ 删除。
     </div>
   </div>
 
@@ -318,7 +341,7 @@ input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:18px; he
   <div class="about-card">
     <div class="a-logo">📢</div>
     <div class="a-name">校园传呼</div>
-    <div class="a-ver">版本 2.8.0</div>
+    <div class="a-ver">版本 2.9.0</div>
     <div class="a-edition">普通版</div>
     <div class="a-team">开发团队：symonolith</div>
     <div class="a-desc">
@@ -348,7 +371,7 @@ var PRESET_TPLS = [
   "请{class}的{name}同学，听到广播后到办公室。",
   "请{name}同学，请家长到校门口来接。"
 ];
-var APP_VERSION = "2.8.0";
+var APP_VERSION = "2.9.0";
 var DEFAULT_DESTS = ["教务处","班主任办公室","年级组办公室","医务室","图书馆","心理咨询室","传达室","家长等候区","操场","报告厅"];
 var LS = { room:"cc_room", broker:"cc_broker", roster:"cc_roster", records:"cc_records", params:"cc_params", tpl:"cc_tpl", dests:"cc_dests", customs:"cc_customs" };
 function lsGet(k, d){ try{ var v = localStorage.getItem(k); return v === null ? d : v; }catch(e){ return d; } }
@@ -365,7 +388,7 @@ function tsStr(){ var d=new Date(); return (d.getMonth()+1)+"月"+d.getDate()+"�
 var state = {
   role:null, room:null, broker:DEFAULT_BROKER,
   client:null, connected:false, presence:false,
-  roster:[], search:"", curClass:"", curStudent:"", dest:"", remark:"",
+  roster:[], search:"", curClass:"", curStudent:"", dest:"", remark:"", multi:false, selected:[],
   params:{ repeat:2, interval:0, rate:1.0, pitch:1.0, volume:100 },
   tpl:DEFAULT_TPL, dests:JSON.parse(JSON.stringify(DEFAULT_DESTS)),
   customs:[], customPick:"",
@@ -490,13 +513,25 @@ function handleCall(msg){
   }
 }
 function sendCall(){
-  if(!state.curStudent){ alert("请先选择学生"); return; }
+  var students;
+  if(state.multi){
+    if(!state.selected.length){ alert("请先选择学生"); return; }
+    students = state.selected;
+  }else{
+    if(!state.curStudent){ alert("请先选择学生"); return; }
+    students = [{ c: state.curClass || "", n: state.curStudent }];
+  }
   if(!state.dest){ alert("请选择呼叫目的地"); return; }
   if(!state.client || !state.connected){ alert("当前未连接，请稍候重试"); return; }
   var text = renderTemplate();
   if(state.remark.trim()){ text += "（" + state.remark.trim() + "）"; }
+  // 多人：全部同班则带班级，否则班级留空；姓名用顿号连接
+  var allClass = "";
+  var same = students.every(function(s){ return s.c === students[0].c; });
+  if(same){ allClass = students[0].c || ""; }
+  var names = students.map(function(s){ return s.n; }).join("、");
   var msg = {
-    type:"call", id:genId(), cls:state.curClass || "", name:state.curStudent,
+    type:"call", id:genId(), cls:allClass, name:names,
     destination:state.dest, remark:state.remark.trim(), text:text,
     params:JSON.parse(JSON.stringify(state.params)), ts:Date.now()
   };
@@ -511,22 +546,27 @@ function sendCall(){
     }
   });
 }
-function fillTpl(t){
-  return t.replace(/\{class\}/g, state.curClass || "")
-          .replace(/\{name\}/g, state.curStudent || "")
+function fillTpl(t, c, n){
+  return t.replace(/\{class\}/g, c || "")
+          .replace(/\{name\}/g, n || "")
           .replace(/\{destination\}/g, state.dest || "");
 }
 function renderTemplate(){
   var tpl = state.customPick ? state.customPick : state.tpl;
-  return fillTpl(tpl);
+  if(state.multi && state.selected.length){
+    // 多选：为每个学生各生成一句，拼接成完整播报文案
+    return state.selected.map(function(s){ return fillTpl(tpl, s.c || "", s.n); }).join("");
+  }
+  return fillTpl(tpl, state.curClass || "", state.curStudent || "");
 }
 function updatePreview(){
   var t = renderTemplate();
-  if(!state.curStudent){ t = "请先选择学生"; }
+  var hasStu = state.multi ? state.selected.length > 0 : !!state.curStudent;
+  if(!hasStu){ t = "请先选择学生"; }
   if(!state.dest){ t = "请选择呼叫目的地"; }
-  if(state.curStudent && state.dest && state.remark.trim()){ t += "（" + state.remark.trim() + "）"; }
+  if(hasStu && state.dest && state.remark.trim()){ t += "（" + state.remark.trim() + "）"; }
   var pv = $("preview");
-  pv.innerHTML = state.curStudent && state.dest ? esc(t) : '<span class="pv-empty">' + esc(t) + '</span>';
+  pv.innerHTML = hasStu && state.dest ? esc(t) : '<span class="pv-empty">' + esc(t) + '</span>';
   renderCustomPick();
 }
 
@@ -697,11 +737,23 @@ function renderStudents(){
     return;
   }
   list.forEach(function(s){
+    var sel = state.multi
+      ? (state.selected.some(function(x){ return x.c === s.c && x.n === s.n; }) ? " sel" : "")
+      : (state.curStudent === s.n && state.curClass === s.c ? " sel" : "");
     var el = document.createElement("div");
-    el.className = "stu" + (state.curStudent === s.n && state.curClass === s.c ? " sel" : "");
+    el.className = "stu" + sel;
     el.innerHTML = '<div class="n">'+esc(s.n)+'</div><div class="c">'+esc(s.c)+'</div>';
     el.onclick = function(){
-      state.curStudent = s.n; state.curClass = s.c;
+      if(state.multi){
+        var idx = -1;
+        for(var i=0;i<state.selected.length;i++){
+          if(state.selected[i].c === s.c && state.selected[i].n === s.n){ idx = i; break; }
+        }
+        if(idx >= 0){ state.selected.splice(idx, 1); }
+        else{ state.selected.push({ c:s.c, n:s.n }); }
+      }else{
+        state.curStudent = s.n; state.curClass = s.c;
+      }
       renderStudents(); renderDetail(); updatePreview();
     };
     grid.appendChild(el);
@@ -709,6 +761,18 @@ function renderStudents(){
 }
 function renderDetail(){
   var info = $("det-info"), empty = $("det-empty"), av = $("det-av");
+  if(state.multi){
+    if(state.selected.length){
+      info.style.display = "block"; empty.style.display = "none";
+      av.textContent = state.selected.length;
+      $("det-name").textContent = "已选 " + state.selected.length + " 人";
+      $("det-class").textContent = state.selected.map(function(x){ return x.n; }).join("、");
+    }else{
+      info.style.display = "none"; empty.style.display = "block";
+      av.textContent = "?";
+    }
+    return;
+  }
   if(state.curStudent){
     info.style.display = "block"; empty.style.display = "none";
     av.textContent = state.curStudent.charAt(0);
@@ -799,8 +863,23 @@ function renderCustoms(){
   state.customs.forEach(function(t, i){
     var el = document.createElement("div");
     el.className = "custom-item";
+    var ops = document.createElement("span");
+    ops.className = "ops";
+    var ed = document.createElement("span");
+    ed.className = "op"; ed.textContent = "✎";
+    ed.title = "编辑";
+    ed.onclick = function(){
+      // 载入编辑框并移除该条，保存后重新加入（即替换）
+      state.customs.splice(i, 1);
+      if(state.customPick === t){ state.customPick = ""; }
+      lsJsonSet(LS.customs, state.customs);
+      $("custom-txt-input").value = t;
+      $("custom-txt-input").focus();
+      renderCustoms(); renderCustomPick(); updatePreview();
+    };
     var del = document.createElement("span");
-    del.className = "del"; del.textContent = "✕";
+    del.className = "op"; del.textContent = "✕";
+    del.title = "删除";
     del.onclick = function(){
       if(confirm("删除这条自定义播报内容？")){
         state.customs.splice(i, 1);
@@ -809,8 +888,10 @@ function renderCustoms(){
         renderCustoms(); renderCustomPick(); updatePreview();
       }
     };
-    el.appendChild(del);
-    var txt = fillTpl(t) || "（空内容）";
+    ops.appendChild(ed);
+    ops.appendChild(del);
+    el.appendChild(ops);
+    var txt = fillTpl(t, state.curClass, state.curStudent) || "（空内容）";
     el.appendChild(document.createTextNode(txt));
     el.title = t;
     box.appendChild(el);
@@ -828,13 +909,51 @@ function renderCustomPick(){
   state.customs.forEach(function(t){
     var el = document.createElement("div");
     el.className = "chip" + (state.customPick === t ? " sel" : "");
-    var label = fillTpl(t) || "（空内容）";
+    var label = fillTpl(t, state.curClass, state.curStudent) || "（空内容）";
     if(label.length > 14){ label = label.slice(0,14) + "…"; }
     el.textContent = label;
     el.title = t;
     el.onclick = function(){ state.customPick = t; renderCustomPick(); updatePreview(); };
     box.appendChild(el);
   });
+}
+/* 变量插入（点击 / 拖拽到编辑框光标处） */
+function insertVar(v){
+  var ta = $("custom-txt-input");
+  var s = ta.selectionStart == null ? ta.value.length : ta.selectionStart;
+  var e = ta.selectionEnd == null ? s : ta.selectionEnd;
+  ta.value = ta.value.slice(0, s) + v + ta.value.slice(e);
+  ta.focus();
+  ta.selectionStart = ta.selectionEnd = s + v.length;
+}
+function bindCustomEditor(){
+  var chips = document.querySelectorAll("#custom-var-chips .vchip");
+  chips.forEach(function(el){
+    el.onclick = function(){ insertVar(el.getAttribute("data-var")); };
+    el.addEventListener("dragstart", function(ev){
+      ev.dataTransfer.setData("text/plain", el.getAttribute("data-var"));
+    });
+  });
+  var ta = $("custom-txt-input");
+  ta.addEventListener("dragover", function(ev){ ev.preventDefault(); });
+  ta.addEventListener("drop", function(ev){
+    ev.preventDefault();
+    var v = ev.dataTransfer.getData("text/plain");
+    if(v){ insertVar(v); }
+  });
+  $("btn-custom-save").onclick = function(){
+    var v = ta.value.trim();
+    if(!v){ alert("请输入播报内容"); return; }
+    if(state.customs.indexOf(v) >= 0){
+      ta.value = "";
+      return;
+    }
+    state.customs.push(v);
+    lsJsonSet(LS.customs, state.customs);
+    ta.value = "";
+    renderCustoms(); renderCustomPick();
+  };
+  $("btn-custom-clear").onclick = function(){ ta.value = ""; ta.focus(); };
 }
 
 /* ================= 呼叫小屏（屏幕正上方，可拖动） ================= */
@@ -993,8 +1112,9 @@ function exitApp(){
   if(state.client){ try{ state.client.end(true); }catch(e){} }
   state.client = null;
   state.curStudent = ""; state.dest = ""; state.remark = ""; state.search = "";
-  state.curClass = ""; state.presence = false;
+  state.curClass = ""; state.presence = false; state.multi = false; state.selected = [];
   state.queue = []; state.playing = false;
+  $("multi-toggle").classList.remove("on");
   $("gate-room").value = lsGet(LS.room, "");
   showPage("gate");
 }
@@ -1049,6 +1169,12 @@ function init(){
   });
 
   /* 呼叫页 */
+  $("multi-toggle").onclick = function(){
+    state.multi = !state.multi;
+    this.classList.toggle("on", state.multi);
+    if(!state.multi){ state.selected = []; }
+    renderStudents(); renderDetail(); updatePreview();
+  };
   $("stu-search").addEventListener("input", function(){ state.search = this.value; renderStudents(); });
   $("btn-roster-link").onclick = function(){
     var text = state.roster.join("\n");
@@ -1093,6 +1219,7 @@ function init(){
       renderCustoms(); renderCustomPick();
     }
   };
+  bindCustomEditor();
 
   /* 记录 */
   $("btn-clear-records").onclick = function(){

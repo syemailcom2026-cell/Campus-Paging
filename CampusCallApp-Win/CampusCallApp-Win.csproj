@@ -9,8 +9,8 @@
     <RootNamespace>CampusCallWin</RootNamespace>
     <AssemblyName>CampusCallApp</AssemblyName>
     <ApplicationIcon>app.ico</ApplicationIcon>
-    <Version>2.8.0</Version>
-    <FileVersion>2.8.0.0</FileVersion>
+    <Version>2.9.0</Version>
+    <FileVersion>2.9.0.0</FileVersion>
     <PublishSingleFile>true</PublishSingleFile>
     <SelfContained>true</SelfContained>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <EmbeddedResource Include="app\index.html" LogicalName="CampusCallWin.index.html" />
+    <EmbeddedResource Include="app\mqtt.min.js" LogicalName="CampusCallWin.mqtt.min.js" />
   </ItemGroup>
 
 </Project>

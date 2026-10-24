@@ -145,6 +145,7 @@ namespace CampusCallWin
         private NotifyIcon _tray;
         private bool _exiting;
         private string _role = "";
+        private System.Threading.CancellationTokenSource _hideCts;
 
         public MainForm(string autoRoom, string autoRole)
         {
@@ -234,9 +235,42 @@ namespace CampusCallWin
             Hide();
         }
 
+        /// <summary>2.9.0：播报结束后先停顿 5 秒，再让大屏退回后台（让观看者看清播报内容）</summary>
+        private void ScheduleHide()
+        {
+            CancelHide();
+            var cts = new System.Threading.CancellationTokenSource();
+            _hideCts = cts;
+            Task.Run(async () =>
+            {
+                try
+                {
+                    await Task.Delay(5000, cts.Token);
+                }
+                catch (TaskCanceledException)
+                {
+                    return;
+                }
+                if (cts.IsCancellationRequested) return;
+                HideToTray();
+            });
+        }
+
+        /// <summary>取消待执行的延迟退回后台（新广播到达时重置计时）</summary>
+        private void CancelHide()
+        {
+            var c = _hideCts;
+            _hideCts = null;
+            if (c != null)
+            {
+                try { c.Cancel(); c.Dispose(); } catch { }
+            }
+        }
+
         private void QuitApp()
         {
             _exiting = true;
+            CancelHide();
             if (_tray != null)
             {
                 _tray.Visible = false;
@@ -261,7 +295,7 @@ namespace CampusCallWin
             base.OnFormClosing(e);
         }
 
-        private void ExtractHtml()
+                private void ExtractHtml()
         {
             string target = Path.Combine(_appDir, "index.html");
             using (Stream s = Assembly.GetExecutingAssembly()
@@ -274,6 +308,18 @@ namespace CampusCallWin
                 }
 
                 s.CopyTo(fs);
+            }
+
+            // 页面引用的 MQTT 库同样从嵌入资源提取（每次启动覆盖，避免被清理后丢失）
+            string mqttTarget = Path.Combine(_appDir, "mqtt.min.js");
+            using (Stream ms = Assembly.GetExecutingAssembly()
+                       .GetManifestResourceStream("CampusCallWin.mqtt.min.js"))
+            using (FileStream fs = File.Create(mqttTarget))
+            {
+                if (ms != null)
+                {
+                    ms.CopyTo(fs);
+                }
             }
         }
 
@@ -352,7 +398,8 @@ namespace CampusCallWin
                     {
                         if (_role == "display")
                         {
-                            // 教室大屏端：不弹小屏，强制弹出大屏 + 提示声；播报结束由 done 退回后台
+                            // 教室大屏端：不弹小屏，强制弹出大屏 + 提示声；播报结束由 done 延迟退回后台
+                            CancelHide(); // 新广播到达：重置可能正在进行的延迟退回
                             try { SystemSounds.Exclamation.Play(); } catch { }
                             ForceToFront();
                         }
@@ -374,7 +421,7 @@ namespace CampusCallWin
                         // 大屏端：播报结束，主窗口退回后台（最小化到托盘）
                         if (_role == "display")
                         {
-                            HideToTray();
+                            ScheduleHide();
                         }
                     }
                 }
