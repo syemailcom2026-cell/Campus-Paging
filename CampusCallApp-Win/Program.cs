@@ -215,7 +215,7 @@ namespace CampusCallWin
             }
             if (_exiting) return;
             Show();
-            // 2.8.0：强制弹出大屏显示播报时，默认窗口最大化
+            // 1.2.8：强制弹出大屏显示播报时，默认窗口最大化
             WindowState = FormWindowState.Maximized;
             // 先置顶一次再取消，绕过 Windows 对后台程序抢焦点的限制
             TopMost = true;
@@ -235,7 +235,7 @@ namespace CampusCallWin
             Hide();
         }
 
-        /// <summary>2.9.0：播报结束后先停顿 5 秒，再让大屏退回后台（让观看者看清播报内容）</summary>
+        /// <summary>1.2.9：播报结束后先停顿 5 秒，再让大屏退回后台（让观看者看清播报内容）</summary>
         private void ScheduleHide()
         {
             CancelHide();
@@ -400,7 +400,7 @@ namespace CampusCallWin
                     {
                         if (_role == "display")
                         {
-                            // 3.1.0：右下角通知弹窗（不强制弹出大屏、不遮挡主屏），提示声，挂到呼叫结束
+                            // 1.3.1：右下角通知弹窗（不强制弹出大屏、不遮挡主屏），提示声，挂到呼叫结束
                             CancelHide(); // 新广播到达：重置可能正在进行的延迟退回
                             try { SystemSounds.Exclamation.Play(); } catch { }
                             ShowPopup(id, "校园传呼 · 收到广播",
@@ -457,7 +457,7 @@ namespace CampusCallWin
             int x, y;
             if (rightBottom)
             {
-                // 3.1.0：右下角通知弹窗（类似通知位置），多条依次向上排列
+                // 1.3.1：右下角通知弹窗（类似通知位置），多条依次向上排列
                 x = wa.Right - f.Width - 16;
                 y = wa.Bottom - f.Height - 16 - idx * (f.Height + 8);
                 if (y < wa.Top + 12) y = wa.Bottom - f.Height - 16;
