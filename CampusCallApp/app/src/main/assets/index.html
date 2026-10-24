@@ -102,6 +102,15 @@ input::placeholder,textarea::placeholder{ color:var(--dim); }
 .dest-input{ margin-top:8px; }
 .preview{ background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:12px; font-size:15px; line-height:1.7; color:#dbe6f5; }
 .preview .pv-empty{ color:var(--dim); }
+.preview-input{ width:100%; background:var(--card2); color:var(--text); border:1px solid var(--line); border-radius:10px; padding:10px; font-size:15px; line-height:1.7; min-height:64px; resize:vertical; font-family:inherit; }
+/* 功能分区（自定义页等，明显区隔） */
+.fgroup{ background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:12px; margin-bottom:14px; }
+.fgroup .fhead{ display:flex; align-items:center; gap:8px; padding-bottom:8px; border-bottom:1px solid var(--line); margin-bottom:10px; font-size:14px; font-weight:700; color:var(--text); }
+.fgroup .fhead .fic{ width:8px; height:8px; border-radius:50%; background:var(--cyan); flex:0 0 auto; box-shadow:0 0 6px var(--cyan); }
+.fgroup .fhead .fright{ margin-left:auto; font-size:12px; color:var(--blue); cursor:pointer; user-select:none; }
+.fgroup .fbody{ display:flex; flex-direction:column; gap:8px; }
+.chip.x{ padding:6px 9px; background:transparent; color:var(--red); border-color:var(--red); font-size:12px; }
+.toast-item.drag{ cursor:grabbing; box-shadow:0 10px 30px rgba(0,0,0,.6); border-color:var(--cyan); }
 .action-row{ display:flex; gap:10px; margin-top:14px; }
 .action-row .btn{ flex:1; padding:13px 0; font-size:15px; }
 .more-dests{ margin-top:8px; display:flex; flex-wrap:wrap; gap:8px; }
@@ -274,12 +283,14 @@ input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:18px; he
     <div class="more-dests hidden" id="dest-more-list"></div>
     <input type="text" class="dest-input" id="dest-custom" placeholder="或输入其他目的地..." autocomplete="off">
     </div>
-    <div class="sect">播报内容</div>
+    <div class="sect"><span>播报内容 · 常用模板</span><span class="right" id="btn-add-tpl-call">＋ 添加常用模板</span></div>
     <div class="chips" id="tpl-custom-chips" style="flex-wrap:wrap;"></div>
+    <div class="sect" style="margin-top:2px;">自定义播报内容</div>
+    <div class="chips" id="tpl-custom-pick" style="flex-wrap:wrap;"></div>
     <div class="sect">附加备注（可选）</div>
     <input type="text" id="remark" placeholder="例如：带上作业本 / 家长已到校门口" autocomplete="off">
-    <div class="sect">播报内容预览</div>
-    <div class="preview" id="preview">选择学生与目的地后自动生成...</div>
+    <div class="sect">播报内容预览<span style="margin-left:6px;font-size:11px;color:var(--dim);">（可直接编辑，编辑后按此发送；切换模板将重置为模板预览）</span></div>
+    <textarea class="preview-input" id="preview" rows="3" placeholder="选择学生与目的地后自动生成..."></textarea>
     <div class="action-row">
       <button class="btn blue" id="btn-send">📢 发送呼叫</button>
       <button class="btn green" id="btn-try">🔊 本机试听</button>
@@ -288,42 +299,62 @@ input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:18px; he
 
   <!-- 自定义 tab -->
   <div class="body hidden" id="tab-custom">
-    <div class="sect"><span>播报模板</span><span class="right" id="btn-tpl-reset">恢复默认</span></div>
-    <div class="card">
-      <div class="var-hint">变量模块（点击或拖动插入模板）：</div>
-      <div class="chips" id="tpl-var-chips" style="flex-wrap:wrap;margin-bottom:8px;">
-        <span class="chip vchip" draggable="true" data-var="{class}">班级</span>
-        <span class="chip vchip" draggable="true" data-var="{name}">姓名</span>
-        <span class="chip vchip" draggable="true" data-var="{destination}">目的地</span>
-      </div>
-      <textarea id="tpl-input" rows="2" placeholder="播报模板文本"></textarea>
-      <div class="tpl-example" id="tpl-example">示例 → 请三年级一班的张伟同学，听到广播后到教务处。</div>
-    </div>
-    <div class="sect" style="margin-top:10px;">常用模板</div>
-    <div class="chips" id="tpl-presets" style="flex-wrap:wrap;"></div>
-    <div class="sect" style="margin-top:12px;"><span>自定义目的地</span><span class="right" id="btn-add-dest">＋ 添加</span></div>
-    <div class="dest-grid" id="custom-dests"></div>
-    <div class="sect"><span>自定义播报内容</span><span class="right" id="btn-add-custom">＋ 添加</span></div>
-    <div class="card" id="custom-editor">
-      <div class="var-hint">点击或拖动变量，插入到编辑框：</div>
-      <div class="chips" id="custom-var-chips" style="flex-wrap:wrap;">
-        <span class="chip vchip" draggable="true" data-var="{class}">班级</span>
-        <span class="chip vchip" draggable="true" data-var="{name}">姓名</span>
-        <span class="chip vchip" draggable="true" data-var="{destination}">目的地</span>
-      </div>
-      <textarea id="custom-txt-input" rows="2" placeholder="在这里编辑播报内容，插入变量即可拼出完整文案…"></textarea>
-      <div class="var-hint" style="margin-top:8px;">播报预览（可直接编辑，保存时自动转回变量模板）</div>
-      <textarea id="custom-preview-input" rows="2" placeholder="预览内容…"></textarea>
-      <div class="action-row" style="margin-top:10px;">
-        <button class="btn blue" id="btn-custom-save" style="flex:1;">保存为自定义播报内容</button>
-        <button class="btn ghost" id="btn-custom-clear" style="flex:0;">清空</button>
+    <div class="fgroup">
+      <div class="fhead"><span class="fic"></span>播报模板<span class="fright" id="btn-tpl-reset">恢复默认</span></div>
+      <div class="fbody">
+        <div class="var-hint">变量模块（点击或拖动插入模板）：</div>
+        <div class="chips" id="tpl-var-chips" style="flex-wrap:wrap;margin-bottom:8px;">
+          <span class="chip vchip" draggable="true" data-var="{class}">班级</span>
+          <span class="chip vchip" draggable="true" data-var="{name}">姓名</span>
+          <span class="chip vchip" draggable="true" data-var="{destination}">目的地</span>
+        </div>
+        <textarea id="tpl-input" rows="2" placeholder="播报模板文本"></textarea>
+        <div class="tpl-example" id="tpl-example">示例 → 请三年级一班的张伟同学，听到广播后到教务处。</div>
       </div>
     </div>
-    <div class="custom-list" id="custom-txts"></div>
-    <div class="sect">说明</div>
-    <div class="card" style="font-size:12px;color:var(--sub);line-height:1.8;">
-      目的地将出现在「呼叫页」的呼叫目的地中，可自定义增删，用于日常呼叫场景。<br>
-      自定义播报内容将出现在「呼叫页」的播报内容选择中，发送时优先使用；点击条目 ✎ 可载入编辑框修改，点 ✕ 删除。
+    <div class="fgroup">
+      <div class="fhead"><span class="fic"></span>常用模板<span class="fright" id="btn-add-tpl">＋ 添加常用模板</span></div>
+      <div class="fbody">
+        <div class="var-hint">点击选用；你添加的常用模板带 ✕ 可删除。</div>
+        <div class="chips" id="tpl-presets" style="flex-wrap:wrap;"></div>
+      </div>
+    </div>
+    <div class="fgroup">
+      <div class="fhead"><span class="fic"></span>自定义目的地<span class="fright" id="btn-add-dest">＋ 添加</span></div>
+      <div class="fbody">
+        <div class="dest-grid" id="custom-dests"></div>
+      </div>
+    </div>
+    <div class="fgroup">
+      <div class="fhead"><span class="fic"></span>自定义播报内容<span class="fright" id="btn-add-custom">＋ 添加</span></div>
+      <div class="fbody">
+        <div class="card" id="custom-editor">
+          <div class="var-hint">点击或拖动变量，插入到编辑框：</div>
+          <div class="chips" id="custom-var-chips" style="flex-wrap:wrap;">
+            <span class="chip vchip" draggable="true" data-var="{class}">班级</span>
+            <span class="chip vchip" draggable="true" data-var="{name}">姓名</span>
+            <span class="chip vchip" draggable="true" data-var="{destination}">目的地</span>
+          </div>
+          <textarea id="custom-txt-input" rows="2" placeholder="在这里编辑播报内容，插入变量即可拼出完整文案…"></textarea>
+          <div class="var-hint" style="margin-top:8px;">播报预览（可直接编辑，保存时自动转回变量模板）</div>
+          <textarea id="custom-preview-input" rows="2" placeholder="预览内容…"></textarea>
+          <div class="action-row" style="margin-top:10px;">
+            <button class="btn blue" id="btn-custom-save" style="flex:1;">保存为自定义播报内容</button>
+            <button class="btn ghost" id="btn-custom-clear" style="flex:0;">清空</button>
+          </div>
+        </div>
+        <div class="custom-list" id="custom-txts"></div>
+      </div>
+    </div>
+    <div class="fgroup">
+      <div class="fhead"><span class="fic"></span>说明</div>
+      <div class="fbody">
+        <div style="font-size:12px;color:var(--sub);line-height:1.8;">
+          目的地将出现在「呼叫页」的呼叫目的地中，可自定义增删，用于日常呼叫场景。<br>
+          自定义播报内容将出现在「呼叫页」的播报内容选择中，发送时优先使用；点击条目 ✎ 可载入编辑框修改，点 ✕ 删除。<br>
+          常用模板显示在「呼叫页 · 播报内容」，可随时「＋ 添加常用模板」把当前播报模板加入收藏。
+        </div>
+      </div>
     </div>
   </div>
 
@@ -458,7 +489,7 @@ var PRESET_TPLS = [
 ];
 var APP_VERSION = "1.4.0";
 var DEFAULT_DESTS = ["教务处","班主任办公室","年级组办公室","医务室","图书馆","心理咨询室","传达室","家长等候区","操场","报告厅"];
-var LS = { room:"cc_room", broker:"cc_broker", roster:"cc_roster", records:"cc_records", params:"cc_params", tpl:"cc_tpl", dests:"cc_dests", customs:"cc_customs", theme:"cc_theme", palette:"cc_palette", bgimg:"cc_bgimg" };
+var LS = { room:"cc_room", broker:"cc_broker", roster:"cc_roster", records:"cc_records", params:"cc_params", tpl:"cc_tpl", dests:"cc_dests", customs:"cc_customs", userTpls:"cc_usertpls", theme:"cc_theme", palette:"cc_palette", bgimg:"cc_bgimg" };
 function lsGet(k, d){ try{ var v = localStorage.getItem(k); return v === null ? d : v; }catch(e){ return d; } }
 function lsSet(k, v){ try{ localStorage.setItem(k, v); }catch(e){} }
 function lsJson(k, d){ try{ var s = lsGet(k, null); if(s === null) return d; return JSON.parse(s); }catch(e){ return d; } }
@@ -476,7 +507,7 @@ var state = {
   roster:[], search:"", curClass:"", curStudent:"", dest:"", remark:"", multi:false, selected:[],
   params:{ repeat:2, interval:0, rate:1.0, pitch:1.0, volume:100, fontSize:34, fontColor:"#e8eefc" },
   tpl:DEFAULT_TPL, dests:JSON.parse(JSON.stringify(DEFAULT_DESTS)),
-  customs:[], customPick:"",
+  customs:[], userTpls:[], customPick:"",
   queue:[], playing:false, dgVolume:100, dgVoice:"", lastSentId:""
 };
 
@@ -625,8 +656,9 @@ function sendCall(){
   }
   if(needsDest() && !state.dest){ alert("请选择呼叫目的地"); return; }
   if(!state.client || !state.connected){ alert("当前未连接，请稍候重试"); return; }
-  var text = renderTemplate();
-  if(state.remark.trim()){ text += "（" + state.remark.trim() + "）"; }
+  var pv = $("preview");
+  var text = pv && pv.value && pv.value.trim() ? pv.value.trim() : renderTemplate();
+  if(state.remark.trim() && text.indexOf("（" + state.remark.trim() + "）") < 0){ text += "（" + state.remark.trim() + "）"; }
   // 多人：全部同班则带班级，否则班级留空；姓名用顿号连接
   var allClass = "";
   var same = students.every(function(s){ return s.c === students[0].c; });
@@ -680,7 +712,7 @@ function updatePreview(){
   if(needsDest() && !state.dest){ t = "请选择呼叫目的地"; }
   if(hasStu && (!needsDest() || state.dest) && state.remark.trim()){ t += "（" + state.remark.trim() + "）"; }
   var pv = $("preview");
-  pv.innerHTML = hasStu && (!needsDest() || state.dest) ? esc(t) : '<span class="pv-empty">' + esc(t) + '</span>';
+  pv.value = t;
   updateDestVisibility();
   renderCustomPick();
 }
@@ -1057,20 +1089,52 @@ function renderPaletteRow(){
     box.appendChild(el);
   });
 }
+function tplLabel(t){ return String(t||"").replace(/\{class\}/g,"{班级}").replace(/\{name\}/g,"{姓名}").replace(/\{destination\}/g,"{目的地}"); }
+function pickTpl(t){
+  state.tpl = t; state.customPick = "";
+  lsSet(LS.tpl, t);
+  renderParams(); renderCustomPick(); updatePreview();
+}
+function addUserTpl(){
+  var v = state.tpl;
+  var ti = $("tpl-input");
+  if(ti && ti.value.trim()){ v = ti.value.trim(); }
+  if(!v){ alert("当前没有可添加的模板"); return; }
+  if(state.userTpls.indexOf(v) >= 0){ alert("该模板已在常用模板中"); return; }
+  state.userTpls.push(v);
+  lsJsonSet(LS.userTpls, state.userTpls);
+  renderTplPresets(); renderCustomPick();
+}
+function delUserTpl(v){
+  if(!confirm("删除这条常用模板？")){ return; }
+  state.userTpls = state.userTpls.filter(function(t){ return t !== v; });
+  lsJsonSet(LS.userTpls, state.userTpls);
+  renderTplPresets(); renderCustomPick();
+}
 function renderTplPresets(){
   var box = $("tpl-presets");
+  if(!box){ return; }
   box.innerHTML = "";
   PRESET_TPLS.forEach(function(t){
     var el = document.createElement("div");
     el.className = "chip" + (state.tpl === t ? " sel" : "");
-    var label = t.replace(/\{class\}/g,"{班级}").replace(/\{name\}/g,"{姓名}").replace(/\{destination\}/g,"{目的地}");
-    el.textContent = label;
-    el.onclick = function(){
-      state.tpl = t;
-      lsSet(LS.tpl, t);
-      renderParams();
-    };
+    el.textContent = tplLabel(t);
+    el.title = t;
+    el.onclick = function(){ pickTpl(t); };
     box.appendChild(el);
+  });
+  state.userTpls.forEach(function(t){
+    var el = document.createElement("div");
+    el.className = "chip" + (state.tpl === t ? " sel" : "");
+    el.textContent = tplLabel(t);
+    el.title = t;
+    el.onclick = function(){ pickTpl(t); };
+    box.appendChild(el);
+    var x = document.createElement("span");
+    x.className = "chip x"; x.textContent = "✕";
+    x.title = "删除常用模板";
+    x.onclick = function(){ delUserTpl(t); };
+    box.appendChild(x);
   });
 }
 
@@ -1120,23 +1184,50 @@ function renderCustoms(){
 }
 function renderCustomPick(){
   var box = $("tpl-custom-chips");
-  if(!box){ return; }
-  box.innerHTML = "";
-  var el0 = document.createElement("div");
-  el0.className = "chip" + (state.customPick ? "" : " sel");
-  el0.textContent = "按模板生成";
-  el0.onclick = function(){ state.customPick = ""; renderCustomPick(); updatePreview(); };
-  box.appendChild(el0);
-  state.customs.forEach(function(t){
-    var el = document.createElement("div");
-    el.className = "chip" + (state.customPick === t ? " sel" : "");
-    var label = fillTpl(t, state.curClass, state.curStudent) || "（空内容）";
-    if(label.length > 14){ label = label.slice(0,14) + "…"; }
-    el.textContent = label;
-    el.title = t;
-    el.onclick = function(){ state.customPick = t; renderCustomPick(); updatePreview(); };
-    box.appendChild(el);
-  });
+  if(box){
+    box.innerHTML = "";
+    PRESET_TPLS.forEach(function(t){
+      var el = document.createElement("div");
+      el.className = "chip" + (!state.customPick && state.tpl === t ? " sel" : "");
+      el.textContent = tplLabel(t);
+      el.title = t;
+      el.onclick = function(){ pickTpl(t); };
+      box.appendChild(el);
+    });
+    state.userTpls.forEach(function(t){
+      var el = document.createElement("div");
+      el.className = "chip" + (!state.customPick && state.tpl === t ? " sel" : "");
+      el.textContent = tplLabel(t);
+      el.title = t;
+      el.onclick = function(){ pickTpl(t); };
+      box.appendChild(el);
+      var x = document.createElement("span");
+      x.className = "chip x"; x.textContent = "✕";
+      x.title = "删除常用模板";
+      x.onclick = function(){ delUserTpl(t); };
+      box.appendChild(x);
+    });
+  }
+  var box2 = $("tpl-custom-pick");
+  if(box2){
+    box2.innerHTML = "";
+    if(!state.customs.length){
+      var em = document.createElement("div");
+      em.className = "rec-empty";
+      em.textContent = "暂无自定义播报内容（到「自定义」页添加）";
+      box2.appendChild(em);
+    }
+    state.customs.forEach(function(t){
+      var el = document.createElement("div");
+      el.className = "chip" + (state.customPick === t ? " sel" : "");
+      var label = fillTpl(t, state.curClass, state.curStudent) || "（空内容）";
+      if(label.length > 14){ label = label.slice(0,14) + "…"; }
+      el.textContent = label;
+      el.title = t;
+      el.onclick = function(){ state.customPick = t; renderCustomPick(); updatePreview(); };
+      box2.appendChild(el);
+    });
+  }
 }
 /* 变量插入（点击 / 拖拽到编辑框光标处） */
 function insertVar(v){
@@ -1228,40 +1319,51 @@ function toastBox(){
 }
 /* 小屏可拖动（鼠标 + 触摸） */
 function makeDraggable(el){
-  var sx = 0, sy = 0, ox = 0, oy = 0, drag = false;
-  el.addEventListener("mousedown", function(e){
-    if(e.target && e.target.className === "txc"){ return; }
-    drag = true; sx = e.clientX; sy = e.clientY;
-    var r = el.getBoundingClientRect(); ox = r.left; oy = r.top;
-    e.preventDefault();
-  });
-  document.addEventListener("mousemove", function(e){
-    if(!drag){ return; }
+  var sx = 0, sy = 0, ox = 0, oy = 0, dx = 0, dy = 0, dragging = false, moving = false;
+  function clampV(v, min, max){ return Math.max(min, Math.min(max, v)); }
+  function applyPos(){
+    var w = el.offsetWidth, h = el.offsetHeight;
+    var maxL = Math.max(0, (window.innerWidth || document.documentElement.clientWidth) - w - 6);
+    var maxT = Math.max(0, (window.innerHeight || document.documentElement.clientHeight) - h - 6);
     el.style.position = "fixed";
-    el.style.left = (ox + e.clientX - sx) + "px";
-    el.style.top = (oy + e.clientY - sy) + "px";
+    el.style.left = clampV(ox + dx, 6, maxL) + "px";
+    el.style.top = clampV(oy + dy, 6, maxT) + "px";
     el.style.margin = "0";
     el.style.animation = "none";
-  });
-  document.addEventListener("mouseup", function(){ drag = false; });
+  }
+  function start(x, y, ev){
+    if(ev.target && ev.target.className === "txc"){ return; }
+    sx = x; sy = y;
+    var r = el.getBoundingClientRect(); ox = r.left; oy = r.top;
+    dx = 0; dy = 0; moving = false; dragging = true;
+    el.classList.add("drag");
+    if(ev.cancelable){ ev.preventDefault(); }
+  }
+  function move(x, y, ev){
+    if(!dragging){ return; }
+    dx = x - sx; dy = y - sy;
+    if(!moving && Math.abs(dx) < 6 && Math.abs(dy) < 6){ return; }
+    moving = true;
+    applyPos();
+    if(ev && ev.cancelable){ ev.preventDefault(); }
+  }
+  function end(){
+    if(!dragging){ return; }
+    dragging = false; moving = false;
+    el.classList.remove("drag");
+  }
+  el.addEventListener("mousedown", function(e){ start(e.clientX, e.clientY, e); });
+  document.addEventListener("mousemove", function(e){ move(e.clientX, e.clientY, e); });
+  document.addEventListener("mouseup", function(){ end(); });
   el.addEventListener("touchstart", function(e){
-    if(e.target && e.target.className === "txc"){ return; }
     var t = e.touches[0];
-    drag = true; sx = t.clientX; sy = t.clientY;
-    var r = el.getBoundingClientRect(); ox = r.left; oy = r.top;
-    e.preventDefault();
+    start(t.clientX, t.clientY, e);
   }, { passive:false });
-  el.addEventListener("touchmove", function(e){
-    if(!drag){ return; }
+  document.addEventListener("touchmove", function(e){
     var t = e.touches[0];
-    el.style.position = "fixed";
-    el.style.left = (ox + t.clientX - sx) + "px";
-    el.style.top = (oy + t.clientY - sy) + "px";
-    el.style.margin = "0";
-    el.style.animation = "none";
-    e.preventDefault();
+    move(t.clientX, t.clientY, e);
   }, { passive:false });
-  el.addEventListener("touchend", function(){ drag = false; });
+  document.addEventListener("touchend", function(){ end(); }, { passive:false });
 }
 function showToast(id, title, text){
   if(!id){ id = genId(); }
@@ -1370,6 +1472,8 @@ function init(){
   if(d && d.length){ state.dests = d; }
   var cs = lsJson(LS.customs, null);
   if(cs && cs.length){ state.customs = cs; }
+  var ut = lsJson(LS.userTpls, null);
+  if(ut && ut.length){ state.userTpls = ut; }
   state.dgVolume = 100;
   $("gate-room").value = lsGet(LS.room, "");
 
@@ -1467,6 +1571,10 @@ function init(){
       renderCustoms(); renderCustomPick();
     }
   };
+  var bAddTplCall = $("btn-add-tpl-call");
+  if(bAddTplCall){ bAddTplCall.onclick = addUserTpl; }
+  var bAddTpl = $("btn-add-tpl");
+  if(bAddTpl){ bAddTpl.onclick = addUserTpl; }
   bindCustomEditor();
 
   /* 外观（1.3.0） */
