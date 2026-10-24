@@ -11,6 +11,11 @@
   --text:#e8eefc; --sub:#8a93a6; --dim:#5b6478;
   --blue:#38bdf8; --cyan:#22d3ee; --green:#22c55e; --red:#ef4444; --amber:#f59e0b;
 }
+/* 3.0.0 外观：浅色主题与 UI 配色方案 */
+body.theme-light{ --bg:#eef2f7; --panel:#ffffff; --card:#ffffff; --card2:#e6edf5; --line:#d8e0ec; --text:#1d2431; --sub:#5b6478; --dim:#8a93a6; }
+body.palette-cyan{ --blue:#06b6d4; --cyan:#2dd4bf; }
+body.palette-purple{ --blue:#8b5cf6; --cyan:#c084fc; }
+body.palette-gold{ --blue:#f59e0b; --cyan:#fbbf24; }
 html,body{ height:100%; }
 body{ background:var(--bg); color:var(--text); font-family:-apple-system,"PingFang SC","Microsoft YaHei",system-ui,sans-serif; font-size:15px; overflow:hidden; }
 .hidden{ display:none !important; }
@@ -43,7 +48,7 @@ body{ background:var(--bg); color:var(--text); font-family:-apple-system,"PingFa
 .card{ background:var(--card); border:1px solid var(--line); border-radius:12px; padding:12px; }
 .rowline{ display:flex; align-items:center; gap:10px; }
 .btn{ background:var(--card2); color:var(--text); border:1px solid var(--line); border-radius:10px; padding:10px 16px; font-size:14px; cursor:pointer; font-family:inherit; }
-.btn.blue{ background:linear-gradient(135deg,#0ea5e9,#22d3ee); border:none; color:#fff; font-weight:600; }
+.btn.blue{ background:linear-gradient(135deg,var(--blue),var(--cyan)); border:none; color:#fff; font-weight:600; }
 .btn.green{ background:rgba(34,197,94,.15); border:1px solid rgba(34,197,94,.4); color:var(--green); }
 .btn.red{ background:rgba(239,68,68,.12); border:1px solid rgba(239,68,68,.4); color:var(--red); }
 .btn.ghost{ background:none; border:none; color:var(--sub); font-size:13px; }
@@ -57,7 +62,7 @@ input::placeholder,textarea::placeholder{ color:var(--dim); }
 /* ===== 启动页 ===== */
 #gate{ align-items:center; justify-content:center; background:var(--bg); }
 .gate-card{ width:min(430px,92vw); background:var(--panel); border:1px solid var(--line); border-radius:18px; padding:34px 28px; text-align:center; box-shadow:0 18px 50px rgba(0,0,0,.35); }
-.gate-logo{ width:64px; height:64px; margin:0 auto 14px; border-radius:16px; background:linear-gradient(135deg,#0ea5e9,#22d3ee); display:flex; align-items:center; justify-content:center; font-size:30px; }
+.gate-logo{ width:64px; height:64px; margin:0 auto 14px; border-radius:16px; background:linear-gradient(135deg,var(--blue),var(--cyan)); display:flex; align-items:center; justify-content:center; }
 .gate-title{ font-size:24px; font-weight:800; letter-spacing:1px; }
 .gate-sub{ font-size:13px; color:var(--sub); margin-top:6px; }
 .gate-label{ font-size:12px; color:var(--sub); text-align:left; margin:22px 0 6px; }
@@ -154,7 +159,7 @@ input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:18px; he
 /* ===== 关于页 ===== */
 #about{ background:var(--bg); align-items:center; justify-content:center; }
 .about-card{ width:min(400px,92vw); background:var(--panel); border:1px solid var(--line); border-radius:18px; padding:32px 26px; text-align:center; }
-.about-card .a-logo{ width:72px; height:72px; margin:0 auto 12px; border-radius:18px; background:linear-gradient(135deg,#0ea5e9,#22d3ee); display:flex; align-items:center; justify-content:center; font-size:34px; }
+.about-card .a-logo{ width:72px; height:72px; margin:0 auto 12px; border-radius:18px; background:linear-gradient(135deg,var(--blue),var(--cyan)); display:flex; align-items:center; justify-content:center; }
 .about-card .a-name{ font-size:22px; font-weight:800; }
 .about-card .a-ver{ font-size:13px; color:var(--sub); margin-top:4px; }
 .about-card .a-edition{ font-size:12px; color:var(--amber); margin-top:2px; font-weight:700; letter-spacing:1px; }
@@ -170,6 +175,20 @@ input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:18px; he
 .toast-item .tc{ font-size:11px; color:var(--sub); margin-top:4px; }
 .toast-item .txc{ position:absolute; top:6px; right:9px; color:var(--dim); cursor:pointer; font-size:13px; }
 @keyframes toast-in{ from{ transform:translateY(-12px); opacity:0; } to{ transform:none; opacity:1; } }
+/* 3.0.0 外观设置控件 */
+.set-row{ display:flex; align-items:center; justify-content:space-between; font-size:14px; color:var(--text); }
+.switch{ position:relative; width:46px; height:24px; flex:0 0 auto; }
+.switch input{ opacity:0; width:0; height:0; }
+.switch .sl{ position:absolute; inset:0; background:var(--card2); border:1px solid var(--line); border-radius:12px; transition:.2s; cursor:pointer; }
+.switch .sl::before{ content:""; position:absolute; width:18px; height:18px; left:2px; top:2px; background:#fff; border-radius:50%; transition:.2s; }
+.switch input:checked + .sl{ background:var(--blue); border-color:var(--blue); }
+.switch input:checked + .sl::before{ transform:translateX(22px); }
+.palette-row{ display:flex; gap:10px; flex-wrap:wrap; margin-top:6px; }
+.pal{ flex:1; min-width:70px; text-align:center; padding:8px 0; border-radius:10px; color:#fff; font-size:12px; cursor:pointer; border:2px solid transparent; user-select:none; }
+.pal.on{ border-color:var(--text); box-shadow:0 0 0 2px var(--bg), 0 0 10px rgba(0,0,0,.25); }
+.font-color-row{ display:flex; gap:12px; flex-wrap:wrap; margin-top:8px; }
+.fc{ width:26px; height:26px; border-radius:8px; cursor:pointer; border:2px solid transparent; }
+.fc.on{ border-color:var(--text); box-shadow:0 0 0 2px var(--bg); }
 </style>
 </head>
 <body>
@@ -177,7 +196,7 @@ input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:18px; he
 <!-- ============ 启动页 ============ -->
 <div id="gate" class="page">
   <div class="gate-card">
-    <div class="gate-logo">📢</div>
+    <div class="gate-logo"><svg viewBox="0 0 100 100" style="width:34px;height:34px;display:block;"><path d="M24 40h9l17-13v46l-17-13h-9z" fill="#fff"/><path d="M21 38h5v24h-5z" fill="#fff" opacity=".92"/><g fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round"><path d="M60 37a16 16 0 0 1 0 26"/><path d="M70 30a27 27 0 0 1 0 40"/></g></svg></div>
     <div class="gate-title">校园传呼</div>
     <div class="gate-sub">手机呼叫 · 教室大屏实时语音播报</div>
     <div class="gate-label">教室房间号（6 位数字，两端必须一致）</div>
@@ -282,6 +301,11 @@ input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:18px; he
       <div class="param"><div class="pl"><span>音调</span><b id="pv-pitch">1.0</b></div><input type="range" id="rg-pitch" min="0.5" max="2" step="0.1" value="1"></div>
       <div class="param"><div class="pl"><span>音量</span><b id="pv-volume">100%</b></div><input type="range" id="rg-volume" min="0" max="100" value="100"></div>
     </div>
+    <div class="sect">大屏播报样式（随消息下发给大屏）</div>
+    <div class="card">
+      <div class="param"><div class="pl"><span>播报字号</span><b id="pv-fontsize">34px</b></div><input type="range" id="rg-fontsize" min="24" max="72" step="1" value="34"></div>
+      <div class="param"><div class="pl"><span>播报文字颜色</span></div><div class="font-color-row" id="font-color-row"></div></div>
+    </div>
     <div class="sect">播报模板</div>
     <div class="card">
       <div class="var-hint">变量：<b style="color:var(--cyan);">{class}</b>班级 · <b style="color:var(--cyan);">{name}</b>姓名 · <b style="color:var(--cyan);">{destination}</b>目的地</div>
@@ -295,6 +319,14 @@ input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:18px; he
       <div class="var-hint">MQTT Broker（WebSocket 地址）</div>
       <input type="text" id="broker-input">
       <button class="btn blue" id="btn-reconnect" style="width:100%;margin-top:10px;">重新连接</button>
+    </div>
+    <div class="sect">外观</div>
+    <div class="card">
+      <div class="set-row" style="margin-bottom:14px;"><span>深色模式</span><label class="switch"><input type="checkbox" id="sw-dark"><span class="sl"></span></label></div>
+      <div class="param"><div class="pl"><span>UI 配色方案</span></div><div class="palette-row" id="palette-row"></div></div>
+      <div class="param"><div class="pl"><span>自定义背景图片</span><span class="right" id="btn-rm-bg" style="cursor:pointer;">移除</span></div>
+        <button class="btn" id="btn-pick-bg" style="width:100%;">选择背景图片</button>
+        <input type="file" id="bg-file" accept="image/*" style="display:none;"></div>
     </div>
     <div class="sect">关于</div>
     <div class="card"><button class="btn" id="nav-about" style="width:100%;">版本信息与开发团队</button></div>
@@ -339,9 +371,9 @@ input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:18px; he
 <!-- ============ 关于 ============ -->
 <div id="about" class="page hidden">
   <div class="about-card">
-    <div class="a-logo">📢</div>
+    <div class="a-logo"><svg viewBox="0 0 100 100" style="width:38px;height:38px;display:block;"><path d="M24 40h9l17-13v46l-17-13h-9z" fill="#fff"/><path d="M21 38h5v24h-5z" fill="#fff" opacity=".92"/><g fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round"><path d="M60 37a16 16 0 0 1 0 26"/><path d="M70 30a27 27 0 0 1 0 40"/></g></svg></div>
     <div class="a-name">校园传呼</div>
-    <div class="a-ver">版本 2.9.0</div>
+    <div class="a-ver">版本 3.0.0</div>
     <div class="a-edition">普通版</div>
     <div class="a-team">开发团队：symonolith</div>
     <div class="a-desc">
@@ -371,9 +403,9 @@ var PRESET_TPLS = [
   "请{class}的{name}同学，听到广播后到办公室。",
   "请{name}同学，请家长到校门口来接。"
 ];
-var APP_VERSION = "2.9.0";
+var APP_VERSION = "3.0.0";
 var DEFAULT_DESTS = ["教务处","班主任办公室","年级组办公室","医务室","图书馆","心理咨询室","传达室","家长等候区","操场","报告厅"];
-var LS = { room:"cc_room", broker:"cc_broker", roster:"cc_roster", records:"cc_records", params:"cc_params", tpl:"cc_tpl", dests:"cc_dests", customs:"cc_customs" };
+var LS = { room:"cc_room", broker:"cc_broker", roster:"cc_roster", records:"cc_records", params:"cc_params", tpl:"cc_tpl", dests:"cc_dests", customs:"cc_customs", theme:"cc_theme", palette:"cc_palette", bgimg:"cc_bgimg" };
 function lsGet(k, d){ try{ var v = localStorage.getItem(k); return v === null ? d : v; }catch(e){ return d; } }
 function lsSet(k, v){ try{ localStorage.setItem(k, v); }catch(e){} }
 function lsJson(k, d){ try{ var s = lsGet(k, null); if(s === null) return d; return JSON.parse(s); }catch(e){ return d; } }
@@ -389,7 +421,7 @@ var state = {
   role:null, room:null, broker:DEFAULT_BROKER,
   client:null, connected:false, presence:false,
   roster:[], search:"", curClass:"", curStudent:"", dest:"", remark:"", multi:false, selected:[],
-  params:{ repeat:2, interval:0, rate:1.0, pitch:1.0, volume:100 },
+  params:{ repeat:2, interval:0, rate:1.0, pitch:1.0, volume:100, fontSize:34, fontColor:"#e8eefc" },
   tpl:DEFAULT_TPL, dests:JSON.parse(JSON.stringify(DEFAULT_DESTS)),
   customs:[], customPick:"",
   queue:[], playing:false, dgVolume:100, dgVoice:"", lastSentId:""
@@ -681,6 +713,12 @@ function showStage(q){
   $("st-badge").classList.remove("hidden");
   $("st-msg").classList.remove("hidden");
   $("st-room").classList.remove("hidden");
+  // 3.0.0：应用呼叫端下发的播报字号与文字颜色
+  var p = q.params || {};
+  if(p.fontSize){ $("st-msg").style.fontSize = p.fontSize + "px"; }
+  else{ $("st-msg").style.fontSize = ""; }
+  if(p.fontColor){ $("st-msg").style.color = p.fontColor; }
+  else{ $("st-msg").style.color = ""; }
   $("st-msg").textContent = q.text;
 }
 function hideStage(){
@@ -835,7 +873,66 @@ function renderParams(){
   $("dg-vol").value = state.dgVolume;
   $("dg-vol-v").textContent = state.dgVolume + "%";
   if(state.dgVoice){ loadVoices(); }
+  $("pv-fontsize").textContent = state.params.fontSize + "px";
+  $("rg-fontsize").value = state.params.fontSize;
+  renderFontColors();
   renderTplPresets();
+}
+var FONT_COLORS = ["#e8eefc","#22d3ee","#fde047","#ef4444","#22c55e","#38bdf8","#fb923c","#f472b6"];
+function renderFontColors(){
+  var box = $("font-color-row");
+  if(!box){ return; }
+  box.innerHTML = "";
+  FONT_COLORS.forEach(function(c){
+    var el = document.createElement("div");
+    el.className = "fc" + (state.params.fontColor === c ? " on" : "");
+    el.style.background = c;
+    el.onclick = function(){
+      state.params.fontColor = c;
+      lsJsonSet(LS.params, state.params);
+      renderFontColors();
+    };
+    box.appendChild(el);
+  });
+}
+/* 3.0.0 外观 */
+var PALETTES = [
+  { id:"blue", label:"深空蓝", css:"linear-gradient(135deg,#0ea5e9,#22d3ee)" },
+  { id:"cyan", label:"青碧", css:"linear-gradient(135deg,#06b6d4,#2dd4bf)" },
+  { id:"purple", label:"云霞紫", css:"linear-gradient(135deg,#8b5cf6,#c084fc)" },
+  { id:"gold", label:"暖阳金", css:"linear-gradient(135deg,#f59e0b,#fbbf24)" }
+];
+function applyTheme(){
+  var light = lsGet(LS.theme, "dark") === "light";
+  document.body.classList.toggle("theme-light", light);
+  ["blue","cyan","purple","gold"].forEach(function(x){ document.body.classList.remove("palette-" + x); });
+  document.body.classList.add("palette-" + lsGet(LS.palette, "blue"));
+  var img = lsGet(LS.bgimg, "");
+  if(img){
+    var ov = light ? "rgba(238,242,247,.82)" : "rgba(15,21,32,.78)";
+    document.body.style.background = "linear-gradient(" + ov + "," + ov + "), url(\"" + img + "\") center/cover no-repeat fixed";
+  }else{
+    document.body.style.background = "";
+  }
+  var sw = $("sw-dark");
+  if(sw){ sw.checked = light; }
+}
+function renderPaletteRow(){
+  var box = $("palette-row");
+  if(!box){ return; }
+  box.innerHTML = "";
+  PALETTES.forEach(function(p){
+    var el = document.createElement("div");
+    el.className = "pal" + (lsGet(LS.palette, "blue") === p.id ? " on" : "");
+    el.style.background = p.css;
+    el.textContent = p.label;
+    el.onclick = function(){
+      lsSet(LS.palette, p.id);
+      applyTheme();
+      renderPaletteRow();
+    };
+    box.appendChild(el);
+  });
 }
 function renderTplPresets(){
   var box = $("tpl-presets");
@@ -1121,6 +1218,7 @@ function exitApp(){
 
 /* ================= 初始化 ================= */
 function init(){
+  try{
   state.broker = lsGet(LS.broker, DEFAULT_BROKER);
   state.tpl = lsGet(LS.tpl, DEFAULT_TPL);
   var p = lsJson(LS.params, null);
@@ -1221,6 +1319,20 @@ function init(){
   };
   bindCustomEditor();
 
+  /* 外观（3.0.0） */
+  applyTheme();
+  renderPaletteRow();
+  $("sw-dark").onchange = function(){ lsSet(LS.theme, this.checked ? "light" : "dark"); applyTheme(); };
+  $("bg-file").onchange = function(){
+    var f = this.files && this.files[0];
+    if(!f){ return; }
+    var r = new FileReader();
+    r.onload = function(){ lsSet(LS.bgimg, r.result); applyTheme(); };
+    r.readAsDataURL(f);
+  };
+  $("btn-pick-bg").onclick = function(){ $("bg-file").click(); };
+  $("btn-rm-bg").onclick = function(){ lsSet(LS.bgimg, ""); applyTheme(); };
+
   /* 记录 */
   $("btn-clear-records").onclick = function(){
     if(confirm("确定清空所有呼叫记录？")){ clearRecords(); }
@@ -1246,6 +1358,7 @@ function init(){
   bindRange("rg-rate","rate",null);
   bindRange("rg-pitch","pitch",null);
   bindRange("rg-volume","volume",null);
+  bindRange("rg-fontsize","fontSize",null);
   $("tpl-input").addEventListener("input", function(){
     state.tpl = this.value;
     lsSet(LS.tpl, state.tpl);
@@ -1280,7 +1393,11 @@ function init(){
     setTimeout(loadVoices, 500);
   }
   renderRecords();
-  window.__initDone = true;
+    window.__initDone = true;
+  }catch(e){
+    window.__err = (window.__err || "") + "|initEX:" + (e && e.message ? e.message : String(e));
+    window.__initDone = true;
+  }
 }
 /* ================= 桌面宿主自动进入（供 Windows 版启动参数/自动化测试使用） ================= */
 window.__autoEnter = function(room, role){
@@ -1295,7 +1412,7 @@ window.__autoEnter = function(room, role){
   else{
     var t = setInterval(function(){
       if(window.__initDone){ clearInterval(t); run(); }
-      else if(Date.now() - startAt > 5000){ clearInterval(t); window.__err = "init timeout rs=" + document.readyState; }
+      else if(Date.now() - startAt > 5000){ clearInterval(t); window.__err = (window.__err || "") + "|init timeout rs=" + document.readyState; }
     }, 100);
   }
 };

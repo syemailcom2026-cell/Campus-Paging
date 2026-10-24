@@ -346,9 +346,10 @@ namespace CampusCallWin
             }
         }
 
+
         private async Task WaitAndAutoEnter()
         {
-            for (int i = 0; i < 40; i++)
+            for (int i = 0; i < 240; i++)
             {
                 try
                 {
@@ -358,6 +359,7 @@ namespace CampusCallWin
                     {
                         await _webView.CoreWebView2.ExecuteScriptAsync(
                             "window.__autoEnter('" + _autoRoom + "','" + _autoRole + "');");
+
                         return;
                     }
                 }
