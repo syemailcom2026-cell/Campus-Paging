@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>校园传呼</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+:root{
+  --bg:#0f1520; --panel:#151d2c; --card:#1c2637; --card2:#222e42; --line:#26344c;
+  --text:#e8eefc; --sub:#8a93a6; --dim:#5b6478;
+  --blue:#38bdf8; --cyan:#22d3ee; --green:#22c55e; --red:#ef4444; --amber:#f59e0b;
+}
+html,body{ height:100%; }
+body{ background:var(--bg); color:var(--text); font-family:-apple-system,"PingFang SC","Microsoft YaHei",system-ui,sans-serif; font-size:15px; overflow:hidden; }
+.hidden{ display:none !important; }
+.page{ position:absolute; inset:0; display:flex; flex-direction:column; background:var(--bg); }
+
+/* ===== 顶栏 ===== */
+.topbar{ display:flex; align-items:center; gap:10px; padding:10px 14px; background:var(--panel); border-bottom:1px solid var(--line); flex:0 0 auto; }
+.tb-l{ flex:1; min-width:0; }
+.tb-l .t1{ font-size:15px; font-weight:700; }
+.tb-l .t2{ font-size:11px; color:var(--sub); margin-top:1px; }
+.tb-r{ display:flex; align-items:center; gap:10px; font-size:12px; color:var(--sub); white-space:nowrap; }
+.presence{ display:flex; align-items:center; gap:4px; }
+.presence .dot{ width:8px; height:8px; border-radius:50%; background:var(--dim); }
+.presence .dot.on{ background:var(--green); box-shadow:0 0 8px var(--green); }
+.tb-r .clock{ font-variant-numeric:tabular-nums; }
+.exit-btn{ background:none; border:none; color:var(--red); font-size:13px; cursor:pointer; font-family:inherit; }
+
+/* ===== Tab 栏 ===== */
+.tabs{ display:flex; background:var(--panel); border-bottom:1px solid var(--line); flex:0 0 auto; }
+.tab{ flex:1; padding:11px 0 10px; text-align:center; font-size:15px; color:var(--sub); cursor:pointer; border-bottom:2px solid transparent; }
+.tab.on{ color:var(--cyan); border-bottom-color:var(--cyan); font-weight:600; }
+
+/* ===== 通用 ===== */
+.body{ flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; padding:12px 12px 20px; }
+.sect{ font-size:12px; color:var(--sub); letter-spacing:1px; margin:14px 4px 8px; display:flex; align-items:center; gap:8px; }
+.sect .right{ margin-left:auto; font-size:12px; color:var(--blue); cursor:pointer; }
+.card{ background:var(--card); border:1px solid var(--line); border-radius:12px; padding:12px; }
+.rowline{ display:flex; align-items:center; gap:10px; }
+.btn{ background:var(--card2); color:var(--text); border:1px solid var(--line); border-radius:10px; padding:10px 16px; font-size:14px; cursor:pointer; font-family:inherit; }
+.btn.blue{ background:linear-gradient(135deg,#0ea5e9,#22d3ee); border:none; color:#fff; font-weight:600; }
+.btn.green{ background:rgba(34,197,94,.15); border:1px solid rgba(34,197,94,.4); color:var(--green); }
+.btn.red{ background:rgba(239,68,68,.12); border:1px solid rgba(239,68,68,.4); color:var(--red); }
+.btn.ghost{ background:none; border:none; color:var(--sub); font-size:13px; }
+input[type=text],input[type=search],textarea{
+  width:100%; background:var(--panel); border:1px solid var(--line); border-radius:10px;
+  color:var(--text); font-size:14px; padding:11px 12px; outline:none; font-family:inherit;
+}
+input:focus,textarea:focus{ border-color:var(--blue); }
+input::placeholder,textarea::placeholder{ color:var(--dim); }
+
+/* ===== 启动页 ===== */
+#gate{ align-items:center; justify-content:center; background:var(--bg); }
+.gate-card{ width:min(430px,92vw); background:var(--panel); border:1px solid var(--line); border-radius:18px; padding:34px 28px; text-align:center; box-shadow:0 18px 50px rgba(0,0,0,.35); }
+.gate-logo{ width:64px; height:64px; margin:0 auto 14px; border-radius:16px; background:linear-gradient(135deg,#0ea5e9,#22d3ee); display:flex; align-items:center; justify-content:center; font-size:30px; }
+.gate-title{ font-size:24px; font-weight:800; letter-spacing:1px; }
+.gate-sub{ font-size:13px; color:var(--sub); margin-top:6px; }
+.gate-label{ font-size:12px; color:var(--sub); text-align:left; margin:22px 0 6px; }
+.gate-room{ text-align:center; font-size:20px; letter-spacing:6px; }
+.gate-err{ color:var(--red); font-size:12px; min-height:16px; margin-top:6px; text-align:left; }
+.gate-btns{ display:flex; gap:12px; margin-top:18px; }
+.gate-btns .btn{ flex:1; padding:13px 0; text-align:center; }
+.gate-btns .btn .bn{ font-size:15px; font-weight:700; display:block; }
+.gate-btns .btn .bd{ font-size:11px; color:var(--sub); margin-top:3px; display:block; }
+.gate-loading{ font-size:13px; color:var(--blue); margin-top:18px; }
+
+/* ===== 呼叫页 ===== */
+.searchbox{ position:relative; }
+.searchbox input{ padding-left:34px; }
+.searchbox::before{ content:"🔍"; position:absolute; left:11px; top:50%; transform:translateY(-50%); font-size:12px; color:var(--dim); }
+.chips{ display:flex; gap:8px; overflow-x:auto; padding:2px; -webkit-overflow-scrolling:touch; }
+.chip{ flex:0 0 auto; padding:7px 14px; border-radius:16px; background:var(--card); border:1px solid var(--line); font-size:13px; color:var(--sub); cursor:pointer; }
+.chip.sel{ background:var(--blue); border-color:var(--blue); color:#fff; font-weight:600; }
+.stu-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+.stu{ background:var(--card); border:1px solid var(--line); border-radius:10px; padding:9px 6px; text-align:center; cursor:pointer; }
+.stu .n{ font-size:14px; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.stu .c{ font-size:11px; color:var(--sub); margin-top:2px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.stu.sel{ background:rgba(56,189,248,.16); border-color:var(--blue); }
+.stu.sel .n{ color:var(--blue); }
+.detail-card{ display:flex; align-items:center; gap:12px; }
+.detail-card .avatar{ width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg,#0ea5e9,#22d3ee); display:flex; align-items:center; justify-content:center; font-size:18px; font-weight:800; color:#fff; flex:0 0 auto; }
+.detail-card .dn{ font-size:17px; font-weight:700; }
+.detail-card .dc{ font-size:12px; color:var(--sub); margin-top:2px; }
+.detail-card .dempty{ font-size:13px; color:var(--dim); }
+.dest-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:8px; }
+.dest{ background:var(--card); border:1px solid var(--line); border-radius:10px; padding:10px 6px; text-align:center; font-size:13px; cursor:pointer; }
+.dest.sel{ background:rgba(56,189,248,.16); border-color:var(--blue); color:var(--blue); font-weight:600; }
+.dest-input{ margin-top:8px; }
+.preview{ background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:12px; font-size:15px; line-height:1.7; color:#dbe6f5; }
+.preview .pv-empty{ color:var(--dim); }
+.action-row{ display:flex; gap:10px; margin-top:14px; }
+.action-row .btn{ flex:1; padding:13px 0; font-size:15px; }
+.more-dests{ margin-top:8px; display:flex; flex-wrap:wrap; gap:8px; }
+.more-dests .dest{ flex:0 0 calc(50% - 4px); }
+
+/* ===== 记录页 ===== */
+.rec-list{ display:flex; flex-direction:column; gap:8px; }
+.rec-item{ background:var(--card); border:1px solid var(--line); border-radius:10px; padding:10px 12px; font-size:13px; color:#dbe6f5; }
+.rec-item .rt{ font-size:11px; color:var(--sub); margin-bottom:3px; }
+.rec-empty{ color:var(--dim); text-align:center; padding:40px 0; }
+
+/* ===== 设置页 ===== */
+.param{ margin-bottom:14px; }
+.param .pl{ display:flex; justify-content:space-between; font-size:13px; color:var(--sub); margin-bottom:6px; }
+.param .pl b{ color:var(--text); font-size:14px; }
+input[type=range]{ width:100%; appearance:none; -webkit-appearance:none; height:6px; border-radius:3px; background:var(--card2); outline:none; }
+input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:18px; height:18px; border-radius:50%; background:var(--cyan); cursor:pointer; box-shadow:0 0 8px rgba(34,211,238,.4); }
+.var-hint{ font-size:12px; color:var(--sub); line-height:1.8; background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:8px 10px; margin-bottom:8px; }
+.tpl-example{ font-size:12px; color:var(--dim); margin-top:6px; }
+
+/* ===== 大屏端 ===== */
+#display{ background:var(--bg); }
+.d-title{ font-size:15px; font-weight:700; }
+.d-sub{ font-size:11px; color:var(--sub); margin-top:1px; }
+.d-main{ flex:1; display:flex; flex-direction:column; gap:12px; padding:16px; min-height:0; overflow-y:auto; }
+.d-stage{ background:var(--panel); border:1px solid var(--line); border-radius:16px; flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; text-align:center; padding:20px; min-height:240px; }
+.d-stage .st-badge{ font-size:13px; color:var(--cyan); letter-spacing:3px; }
+.d-stage .st-msg{ font-size:34px; font-weight:800; line-height:1.4; max-width:900px; }
+.d-stage .st-room{ font-size:12px; color:var(--dim); margin-top:4px; }
+.d-stage .st-empty{ color:var(--dim); font-size:15px; }
+.d-bottom{ display:flex; gap:12px; flex:0 0 auto; }
+.d-col{ flex:1; background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:12px; min-width:0; }
+.d-col .ct{ font-size:13px; color:var(--sub); display:flex; align-items:center; gap:6px; margin-bottom:8px; }
+.d-col .ct .right{ margin-left:auto; font-size:12px; color:var(--blue); cursor:pointer; }
+.q-item{ background:var(--card); border:1px solid var(--line); border-radius:8px; padding:8px 10px; margin-bottom:6px; font-size:13px; }
+.q-item .qt{ color:#dbe6f5; line-height:1.5; }
+.q-item .qm{ font-size:11px; color:var(--sub); margin-top:3px; }
+.q-item.playing{ border-color:var(--cyan); box-shadow:0 0 10px rgba(34,211,238,.15); }
+.q-empty{ color:var(--dim); font-size:12px; text-align:center; padding:14px 0; }
+.voice-select{ width:100%; background:var(--panel); border:1px solid var(--line); border-radius:10px; color:var(--text); font-size:13px; padding:10px; }
+.d-set-row{ display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+.d-set-row .lb{ font-size:12px; color:var(--sub); width:56px; flex:0 0 auto; }
+.d-set-row .val{ font-size:12px; color:var(--text); width:44px; text-align:right; flex:0 0 auto; }
+.d-btns{ display:flex; gap:10px; margin-top:6px; }
+.d-btns .btn{ flex:1; padding:10px 0; font-size:14px; }
+
+/* ===== 关于页 ===== */
+#about{ background:var(--bg); align-items:center; justify-content:center; }
+.about-card{ width:min(400px,92vw); background:var(--panel); border:1px solid var(--line); border-radius:18px; padding:32px 26px; text-align:center; }
+.about-card .a-logo{ width:72px; height:72px; margin:0 auto 12px; border-radius:18px; background:linear-gradient(135deg,#0ea5e9,#22d3ee); display:flex; align-items:center; justify-content:center; font-size:34px; }
+.about-card .a-name{ font-size:22px; font-weight:800; }
+.about-card .a-ver{ font-size:13px; color:var(--sub); margin-top:4px; }
+.about-card .a-team{ font-size:13px; color:var(--blue); margin-top:2px; font-weight:600; }
+.about-card .a-desc{ font-size:13px; color:var(--sub); line-height:1.9; margin-top:16px; text-align:left; }
+.about-card .btn{ margin-top:18px; width:100%; }
+</style>
+</head>
+<body>
+
+<!-- ============ 启动页 ============ -->
+<div id="gate" class="page">
+  <div class="gate-card">
+    <div class="gate-logo">📢</div>
+    <div class="gate-title">校园传呼</div>
+    <div class="gate-sub">手机呼叫 · 教室大屏实时语音播报</div>
+    <div class="gate-label">教室房间号（6 位数字，两端必须一致）</div>
+    <input type="text" class="gate-room" id="gate-room" placeholder="123456" maxlength="6" inputmode="numeric" autocomplete="off">
+    <div class="gate-err" id="gate-err"></div>
+    <div class="gate-btns">
+      <button class="btn blue" id="btn-caller"><span class="bn">手机呼叫端</span><span class="bd">选择学生、发送呼叫</span></button>
+      <button class="btn" id="btn-display"><span class="bn">教室大屏端</span><span class="bd">接收呼叫、语音播报</span></button>
+    </div>
+    <div class="gate-loading hidden" id="gate-loading">正在进入房间<span id="gate-loading-room"></span>...</div>
+    <button class="btn ghost" id="gate-about" style="width:100%;margin-top:12px;">关于 校园传呼</button>
+  </div>
+</div>
+
+<!-- ============ 呼叫端 ============ -->
+<div id="caller" class="page hidden">
+  <div class="topbar">
+    <div class="tb-l"><div class="t1">呼叫端 · <span id="c-room"></span></div><div class="t2">手机控制台</div></div>
+    <div class="tb-r">
+      <div class="presence"><span class="dot" id="c-pres-dot"></span><span id="c-pres-txt">大屏离线</span></div>
+      <span class="clock" id="c-clock"></span>
+      <button class="exit-btn" id="c-exit">退出</button>
+    </div>
+  </div>
+  <div class="tabs">
+    <div class="tab on" data-tab="call">呼叫</div>
+    <div class="tab" data-tab="custom">自定义</div>
+    <div class="tab" data-tab="records">记录</div>
+    <div class="tab" data-tab="settings">设置</div>
+  </div>
+
+  <!-- 呼叫 tab -->
+  <div class="body" id="tab-call">
+    <div class="sect"><span>选择学生</span><span id="stu-count"></span><span class="right" id="btn-roster-link">名单 ✎</span></div>
+    <div class="searchbox"><input type="search" id="stu-search" placeholder="搜索姓名或班级..."></div>
+    <div class="sect" style="margin-top:10px;"></div>
+    <div class="chips" id="class-chips"></div>
+    <div class="sect" style="margin-top:10px;"></div>
+    <div class="stu-grid" id="stu-grid"></div>
+    <div class="sect">呼叫详情</div>
+    <div class="card detail-card" id="detail-box">
+      <div class="avatar" id="det-av">?</div>
+      <div class="dempty" id="det-empty">尚未选择学生</div>
+      <div style="display:none;" id="det-info"><div class="dn" id="det-name"></div><div class="dc" id="det-class"></div></div>
+    </div>
+    <div class="sect">呼叫目的地</div>
+    <div class="dest-grid" id="dest-quick"></div>
+    <button class="btn ghost" id="dest-more" style="width:100%;margin-top:8px;">更多目的地 ▾</button>
+    <div class="more-dests hidden" id="dest-more-list"></div>
+    <input type="text" class="dest-input" id="dest-custom" placeholder="或输入其他目的地..." autocomplete="off">
+    <div class="sect">附加备注（可选）</div>
+    <input type="text" id="remark" placeholder="例如：带上作业本 / 家长已到校门口" autocomplete="off">
+    <div class="sect">播报内容预览</div>
+    <div class="preview" id="preview">选择学生与目的地后自动生成...</div>
+    <div class="action-row">
+      <button class="btn blue" id="btn-send">📢 发送呼叫</button>
+      <button class="btn green" id="btn-try">🔊 本机试听</button>
+    </div>
+  </div>
+
+  <!-- 自定义 tab -->
+  <div class="body hidden" id="tab-custom">
+    <div class="sect"><span>自定义目的地</span><span class="right" id="btn-add-dest">＋ 添加</span></div>
+    <div class="dest-grid" id="custom-dests"></div>
+    <div class="sect">说明</div>
+    <div class="card" style="font-size:12px;color:var(--sub);line-height:1.8;">
+      目的地将出现在「呼叫页」的呼叫目的地中，可自定义增删，用于日常呼叫场景。
+    </div>
+  </div>
+
+  <!-- 记录 tab -->
+  <div class="body hidden" id="tab-records">
+    <div class="sect"><span>呼叫记录</span><span class="right" id="btn-clear-records">清空</span></div>
+    <div class="rec-list" id="rec-list"></div>
+  </div>
+
+  <!-- 设置 tab -->
+  <div class="body hidden" id="tab-settings">
+    <div class="sect">呼叫参数（随消息下发给大屏）</div>
+    <div class="card">
+      <div class="param"><div class="pl"><span>重复遍数</span><b id="pv-repeat">2遍</b></div><input type="range" id="rg-repeat" min="1" max="5" value="2"></div>
+      <div class="param"><div class="pl"><span>重复间隔</span><b id="pv-interval">0.0秒</b></div><input type="range" id="rg-interval" min="0" max="30" value="0"></div>
+      <div class="param"><div class="pl"><span>语速</span><b id="pv-rate">1.0</b></div><input type="range" id="rg-rate" min="0.5" max="2" step="0.1" value="1"></div>
+      <div class="param"><div class="pl"><span>音调</span><b id="pv-pitch">1.0</b></div><input type="range" id="rg-pitch" min="0.5" max="2" step="0.1" value="1"></div>
+      <div class="param"><div class="pl"><span>音量</span><b id="pv-volume">100%</b></div><input type="range" id="rg-volume" min="0" max="100" value="100"></div>
+    </div>
+    <div class="sect">播报模板</div>
+    <div class="card">
+      <div class="var-hint">变量：<b style="color:var(--cyan);">{class}</b>班级 · <b style="color:var(--cyan);">{name}</b>姓名 · <b style="color:var(--cyan);">{destination}</b>目的地</div>
+      <textarea id="tpl-input" rows="3" placeholder="播报模板文本"></textarea>
+      <div class="tpl-example" id="tpl-example">示例 → 请三年级一班的张伟同学，听到广播后到教务处。</div>
+    </div>
+    <div class="sect">连接设置</div>
+    <div class="card">
+      <div class="var-hint">MQTT Broker（WebSocket 地址）</div>
+      <input type="text" id="broker-input">
+      <button class="btn blue" id="btn-reconnect" style="width:100%;margin-top:10px;">重新连接</button>
+    </div>
+    <div class="sect">关于</div>
+    <div class="card"><button class="btn" id="nav-about" style="width:100%;">版本信息与开发团队</button></div>
+  </div>
+</div>
+
+<!-- ============ 大屏端 ============ -->
+<div id="display" class="page hidden">
+  <div class="topbar">
+    <div class="tb-l"><div class="d-title">教室大屏 · <span id="d-room"></span></div><div class="d-sub">语音播报终端</div></div>
+    <div class="tb-r">
+      <div class="presence"><span class="dot on"></span><span id="d-pres-txt">手机端在线</span></div>
+      <span class="clock" id="d-clock"></span>
+      <button class="exit-btn" id="d-exit">退出</button>
+    </div>
+  </div>
+  <div class="d-main">
+    <div class="d-stage">
+      <div class="st-badge" id="st-badge">正在播报</div>
+      <div class="st-msg" id="st-msg">请高二5班的杨楚珩同学，听到广播后到班主任办公室。</div>
+      <div class="st-room" id="st-room">房间号 <span id="d-room2"></span></div>
+      <div class="st-empty hidden" id="st-empty">等待呼叫…</div>
+    </div>
+    <div class="d-bottom">
+      <div class="d-col">
+        <div class="ct"><span>播报队列</span><span class="right" id="btn-clear-q">清空</span></div>
+        <div id="q-list"></div>
+      </div>
+      <div class="d-col">
+        <div class="ct"><span>终端设置</span></div>
+        <div class="d-set-row"><span class="lb">主音量</span><input type="range" id="dg-vol" min="0" max="100" value="100"><span class="val" id="dg-vol-v">100%</span></div>
+        <div class="d-set-row"><span class="lb">播报音色</span><select class="voice-select" id="dg-voice"></select></div>
+        <div class="d-btns">
+          <button class="btn green" id="btn-test">测试播报</button>
+          <button class="btn red" id="btn-stop">停止</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 关于 ============ -->
+<div id="about" class="page hidden">
+  <div class="about-card">
+    <div class="a-logo">📢</div>
+    <div class="a-name">校园传呼</div>
+    <div class="a-ver">版本 2.0.0</div>
+    <div class="a-team">开发团队：symonolith</div>
+    <div class="a-desc">
+      <b style="color:var(--text);">校园传呼</b>是一款校园呼叫播报工具：<br>
+      · 手机端选择班级与学生，指定目的地一键呼叫；<br>
+      · 大屏端收到呼叫后大字显示并自动语音播报；<br>
+      · 支持重复遍数、语速、音调等播报参数；<br>
+      · 两端填写相同 6 位房间号即可互联。<br><br>
+      消息通过 MQTT 公共服务器转发（主题 campus/call/房间号），无需注册、免自建服务器。由 <b style="color:var(--text);">symonolith</b> 开发维护。
+    </div>
+    <button class="btn" id="btn-about-back">返回</button>
+  </div>
+</div>
+
+<script src="mqtt.min.js"></script>
+<script>
+"use strict";
+
+/* ================= 配置 ================= */
+var DEFAULT_BROKER = "wss://broker-cn.emqx.io:8084/mqtt";
+var DEFAULT_TPL = "请{class}的{name}同学，听到广播后到{destination}。";
+var DEFAULT_DESTS = ["教务处","班主任办公室","年级组办公室","医务室","图书馆","心理咨询室","传达室","家长等候区","操场","报告厅"];
+var LS = { room:"cc_room", broker:"cc_broker", roster:"cc_roster", records:"cc_records", params:"cc_params", tpl:"cc_tpl", dests:"cc_dests" };
+function lsGet(k, d){ try{ var v = localStorage.getItem(k); return v === null ? d : v; }catch(e){ return d; } }
+function lsSet(k, v){ try{ localStorage.setItem(k, v); }catch(e){} }
+function lsJson(k, d){ try{ var s = lsGet(k, null); if(s === null) return d; return JSON.parse(s); }catch(e){ return d; } }
+function lsJsonSet(k, v){ lsSet(k, JSON.stringify(v)); }
+function $(id){ return document.getElementById(id); }
+function esc(s){ return String(s == null ? "" : s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function validRoom(r){ return /^\d{6}$/.test(r); }
+function nowStr(){ var d=new Date(); return String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0")+":"+String(d.getSeconds()).padStart(2,"0"); }
+function tsStr(){ var d=new Date(); return (d.getMonth()+1)+"月"+d.getDate()+"日 "+nowStr(); }
+
+/* ================= 状态 ================= */
+var state = {
+  role:null, room:null, broker:DEFAULT_BROKER,
+  client:null, connected:false, presence:false,
+  roster:[], search:"", curClass:"", curStudent:"", dest:"", remark:"",
+  params:{ repeat:2, interval:0, rate:1.0, pitch:1.0, volume:100 },
+  tpl:DEFAULT_TPL, dests:JSON.parse(JSON.stringify(DEFAULT_DESTS)),
+  queue:[], playing:false, dgVolume:100, dgVoice:""
+};
+
+/* ================= 页面导航 ================= */
+function showPage(id){
+  ["gate","caller","display","about"].forEach(function(p){ $(p).classList.toggle("hidden", p !== id); });
+}
+function switchTab(t){
+  ["call","custom","records","settings"].forEach(function(x){
+    $("tab-"+x).classList.toggle("hidden", x !== t);
+  });
+  document.querySelectorAll(".tab").forEach(function(el){
+    el.classList.toggle("on", el.getAttribute("data-tab") === t);
+  });
+}
+
+/* ================= 名单 ================= */
+function loadRoster(){
+  var raw = lsGet(LS.roster, "");
+  var arr = raw ? raw.split("\n").map(function(s){return s.trim();}).filter(function(s){return s.length>0;}) : [];
+  state.roster = arr;
+  return arr;
+}
+function saveRoster(text){ lsSet(LS.roster, text); }
+
+/* ================= 记录 ================= */
+function addRecord(line){
+  var arr = lsJson(LS.records, []);
+  arr.unshift({ t: tsStr(), s: line });
+  if(arr.length > 200){ arr = arr.slice(0,200); }
+  lsJsonSet(LS.records, arr);
+  renderRecords();
+}
+function clearRecords(){ lsJsonSet(LS.records, []); renderRecords(); }
+function renderRecords(){
+  var arr = lsJson(LS.records, []);
+  var box = $("rec-list");
+  if(!arr.length){ box.innerHTML = '<div class="rec-empty">暂无记录</div>'; return; }
+  var html = "";
+  arr.forEach(function(r){ html += '<div class="rec-item"><div class="rt">'+esc(r.t)+'</div>'+esc(r.s)+'</div>'; });
+  box.innerHTML = html;
+}
+
+/* ================= MQTT ================= */
+function callTopic(){ return "campus/call/" + state.room; }
+function presTopic(){ return "campus/presence/" + state.room; }
+function connectMqtt(){
+  if(!state.room){ return; }
+  if(state.client){ try{ state.client.end(true); }catch(e){} }
+  var clientId = "campuspager_" + (state.role || "x") + "_" + Date.now() + "_" + Math.floor(Math.random()*10000);
+  var opts = {
+    clientId: clientId, clean: true, reconnectPeriod: 3000, connectTimeout: 15000, keepalive: 30
+  };
+  if(state.role === "display"){
+    opts.will = { topic: presTopic(), payload: "0", qos: 1, retain: true };
+  }
+  var c = mqtt.connect(state.broker, opts);
+  state.client = c;
+  c.on("connect", function(){
+    state.connected = true;
+    c.subscribe(callTopic(), { qos:1 }, function(err){ if(err){ console.error("sub call", err); } });
+    if(state.role === "caller"){
+      c.subscribe(presTopic(), { qos:1 }, function(err){ if(err){ console.error("sub pres", err); } });
+    }else if(state.role === "display"){
+      c.publish(presTopic(), "1", { qos:1, retain:true });
+    }
+    updateConnUI();
+  });
+  c.on("reconnect", function(){ state.connected = false; updateConnUI(); });
+  c.on("close", function(){ state.connected = false; updateConnUI(); });
+  c.on("error", function(){ state.connected = false; updateConnUI(); });
+  c.on("message", function(topic, payload){
+    var text = payload.toString();
+    if(topic.indexOf("campus/presence/") === 0){
+      state.presence = text === "1";
+      updatePresenceUI();
+      return;
+    }
+    try{ handleCall(JSON.parse(text)); }catch(e){ console.warn("bad msg", text); }
+  });
+}
+function updateConnUI(){
+  // 呼叫端/大屏端无连接时都体现于状态提示：连接断开时大屏离线
+  if(state.role === "caller" && !state.connected){ state.presence = false; updatePresenceUI(); }
+}
+function updatePresenceUI(){
+  if(state.role === "caller"){
+    $("c-pres-dot").className = "dot" + (state.presence ? " on" : "");
+    $("c-pres-txt").textContent = state.presence ? "大屏在线" : "大屏离线";
+  }
+}
+
+/* ================= 消息处理 ================= */
+function handleCall(msg){
+  var cls = msg.cls || "", name = msg.name || "", dest = msg.destination || "", remark = msg.remark || "", text = msg.text || "";
+  var who = (cls ? cls + " " : "") + (name ? name : "");
+  var line = "收到：" + who + (dest ? " → " + dest : "") + (text ? "（" + text + "）" : "");
+  addRecord(line);
+  if(state.role === "display"){
+    var params = msg.params || state.params;
+    var item = { cls:cls, name:name, dest:dest, text:text, ts:nowStr(), params:params };
+    state.queue.push(item);
+    renderQueue();
+    pumpQueue();
+  }
+}
+function sendCall(){
+  if(!state.curStudent){ alert("请先选择学生"); return; }
+  if(!state.dest){ alert("请选择呼叫目的地"); return; }
+  if(!state.client || !state.connected){ alert("当前未连接，请稍候重试"); return; }
+  var text = renderTemplate();
+  if(state.remark.trim()){ text += "（" + state.remark.trim() + "）"; }
+  var msg = {
+    type:"call", cls:state.curClass || "", name:state.curStudent,
+    destination:state.dest, remark:state.remark.trim(), text:text,
+    params:JSON.parse(JSON.stringify(state.params)), ts:Date.now()
+  };
+  state.client.publish(callTopic(), JSON.stringify(msg), { qos:1 }, function(err){
+    if(err){ alert("发送失败：" + err.message); return; }
+    addRecord("已发送：" + text);
+  });
+}
+function renderTemplate(){
+  var tpl = state.tpl;
+  return tpl.replace(/\{class\}/g, state.curClass || "")
+            .replace(/\{name\}/g, state.curStudent || "")
+            .replace(/\{destination\}/g, state.dest || "");
+}
+function updatePreview(){
+  var t = renderTemplate();
+  if(!state.curStudent){ t = "请先选择学生"; }
+  if(!state.dest){ t = "请选择呼叫目的地"; }
+  if(state.curStudent && state.dest && state.remark.trim()){ t += "（" + state.remark.trim() + "）"; }
+  var pv = $("preview");
+  pv.innerHTML = state.curStudent && state.dest ? esc(t) : '<span class="pv-empty">' + esc(t) + '</span>';
+}
+
+/* ================= 语音播报 ================= */
+var voices = [];
+function loadVoices(){
+  if(!("speechSynthesis" in window)){ return; }
+  voices = speechSynthesis.getVoices();
+  var sel = $("dg-voice");
+  if(!sel){ return; }
+  var zh = voices.filter(function(v){ return v.lang && v.lang.indexOf("zh") === 0; });
+  var pool = zh.length ? zh : voices;
+  var prev = state.dgVoice || sel.value;
+  sel.innerHTML = "";
+  pool.forEach(function(v){
+    var o = document.createElement("option");
+    o.value = v.name; o.textContent = v.name;
+    sel.appendChild(o);
+  });
+  if(sel.options.length === 0){
+    var o = document.createElement("option");
+    o.value = ""; o.textContent = "系统默认语音";
+    sel.appendChild(o);
+  }
+  var found = false;
+  for(var i=0;i<sel.options.length;i++){ if(sel.options[i].value === prev){ sel.selectedIndex = i; found = true; break; } }
+  if(!found){ sel.selectedIndex = 0; }
+  state.dgVoice = sel.value;
+}
+function findVoice(){
+  var name = state.dgVoice;
+  if(!name){ return null; }
+  for(var i=0;i<voices.length;i++){ if(voices[i].name === name){ return voices[i]; } }
+  return null;
+}
+function speakOne(text, params, vol){
+  return new Promise(function(resolve){
+    if(!("speechSynthesis" in window)){ resolve(); return; }
+    speechSynthesis.cancel();
+    var u = new SpeechSynthesisUtterance(text);
+    u.lang = "zh-CN";
+    u.rate = (params && params.rate) ? params.rate : 1.0;
+    u.pitch = (params && params.pitch) ? params.pitch : 1.0;
+    u.volume = (params && params.volume != null ? params.volume/100 : 1) * (state.dgVolume/100);
+    var v = findVoice();
+    if(v){ u.voice = v; }
+    u.onend = function(){ resolve(); };
+    u.onerror = function(){ resolve(); };
+    speechSynthesis.speak(u);
+    // 兜底：个别引擎不回调 onend
+    setTimeout(function(){ resolve(); }, 15000);
+  });
+}
+function speakText(text, params){
+  var repeat = (params && params.repeat) ? params.repeat : 1;
+  var interval = (params && params.interval) ? params.interval : 0;
+  var chain = Promise.resolve();
+  for(var i=0;i<repeat;i++){
+    (function(idx){
+      chain = chain.then(function(){
+        return speakOne(text, params);
+      }).then(function(){
+        if(idx < repeat-1 && interval > 0){
+          return new Promise(function(r){ setTimeout(r, interval*1000); });
+        }
+      });
+    })(i);
+  }
+  return chain;
+}
+function testSpeak(){
+  var text = "请" + (state.curClass || "三年一班") + "的" + (state.curStudent || "张伟") + "同学，听到广播后到" + (state.dest || "教务处") + "。";
+  speakText(text, state.params);
+}
+
+/* ================= 大屏队列 ================= */
+function renderQueue(){
+  var box = $("q-list");
+  if(!state.queue.length){ box.innerHTML = '<div class="q-empty">暂无待播报内容</div>'; return; }
+  var html = "";
+  state.queue.forEach(function(q, idx){
+    var playing = (idx === 0 && state.playing) ? " playing" : "";
+    html += '<div class="q-item'+playing+'"><div class="qt">'+esc(q.text)+'</div><div class="qm">'+
+      (q.cls ? esc(q.cls)+" " : "") + (q.name ? esc(q.name) : "") + (q.dest ? " · "+esc(q.dest) : "") + " · " + q.ts + '</div></div>';
+  });
+  box.innerHTML = html;
+}
+function pumpQueue(){
+  if(state.playing || !state.queue.length){ return; }
+  state.playing = true;
+  renderQueue();
+  var q = state.queue[0];
+  var repeat = (q.params && q.params.repeat) ? q.params.repeat : 1;
+  var interval = (q.params && q.params.interval) ? q.params.interval : 0;
+  showStage(q);
+  speakText(q.text, q.params).then(function(){
+    state.queue.shift();
+    state.playing = false;
+    renderQueue();
+    if(state.queue.length){ pumpQueue(); }
+    else{ hideStage(); }
+  });
+}
+function showStage(q){
+  $("st-empty").classList.add("hidden");
+  $("st-badge").classList.remove("hidden");
+  $("st-msg").classList.remove("hidden");
+  $("st-room").classList.remove("hidden");
+  $("st-msg").textContent = q.text;
+}
+function hideStage(){
+  $("st-msg").classList.add("hidden");
+  $("st-badge").classList.add("hidden");
+  $("st-room").classList.add("hidden");
+  $("st-empty").classList.remove("hidden");
+}
+function stopAll(){
+  if("speechSynthesis" in window){ speechSynthesis.cancel(); }
+}
+
+/* ================= 学生渲染 ================= */
+function renderClasses(){
+  loadRoster();
+  var set = {};
+  state.roster.forEach(function(line){
+    var i = line.indexOf(",");
+    if(i > 0){ set[line.substring(0,i).trim()] = true; }
+  });
+  var box = $("class-chips");
+  box.innerHTML = "";
+  var elAll = document.createElement("div");
+  elAll.className = "chip" + (state.curClass === "" ? " sel" : "");
+  elAll.textContent = "全部";
+  elAll.onclick = function(){ state.curClass = ""; renderClasses(); renderStudents(); };
+  box.appendChild(elAll);
+  Object.keys(set).forEach(function(c){
+    var el = document.createElement("div");
+    el.className = "chip" + (state.curClass === c ? " sel" : "");
+    el.textContent = c;
+    el.onclick = function(){ state.curClass = c; renderClasses(); renderStudents(); };
+    box.appendChild(el);
+  });
+  renderStudents();
+}
+function renderStudents(){
+  var grid = $("stu-grid");
+  var kw = state.search.toLowerCase();
+  var cls = state.curClass;
+  var list = [];
+  state.roster.forEach(function(line){
+    var i = line.indexOf(",");
+    if(i <= 0){ return; }
+    var c = line.substring(0,i).trim(), n = line.substring(i+1).trim();
+    if(cls && c !== cls){ return; }
+    if(kw && n.toLowerCase().indexOf(kw) < 0 && c.toLowerCase().indexOf(kw) < 0){ return; }
+    list.push({ c:c, n:n });
+  });
+  $("stu-count").textContent = "（" + list.length + "人）";
+  grid.innerHTML = "";
+  if(!list.length){
+    grid.innerHTML = '<div style="grid-column:1/-1;color:var(--dim);text-align:center;padding:24px 0;">暂无匹配学生，点击右上角“名单”添加</div>';
+    return;
+  }
+  list.forEach(function(s){
+    var el = document.createElement("div");
+    el.className = "stu" + (state.curStudent === s.n && state.curClass === s.c ? " sel" : "");
+    el.innerHTML = '<div class="n">'+esc(s.n)+'</div><div class="c">'+esc(s.c)+'</div>';
+    el.onclick = function(){
+      state.curStudent = s.n; state.curClass = s.c;
+      renderStudents(); renderDetail(); updatePreview();
+    };
+    grid.appendChild(el);
+  });
+}
+function renderDetail(){
+  var info = $("det-info"), empty = $("det-empty"), av = $("det-av");
+  if(state.curStudent){
+    info.style.display = "block"; empty.style.display = "none";
+    av.textContent = state.curStudent.charAt(0);
+    $("det-name").textContent = state.curStudent;
+    $("det-class").textContent = state.curClass || "";
+  }else{
+    info.style.display = "none"; empty.style.display = "block";
+    av.textContent = "?";
+  }
+}
+
+/* ================= 目的地 ================= */
+function renderDests(){
+  var q = $("dest-quick");
+  q.innerHTML = "";
+  var show = state.dests.slice(0,4);
+  var more = $("dest-more-list");
+  more.innerHTML = "";
+  state.dests.forEach(function(d){
+    var el = document.createElement("div");
+    el.className = "dest" + (state.dest === d ? " sel" : "");
+    el.textContent = d;
+    el.onclick = function(){ state.dest = d; renderDests(); updatePreview(); };
+    if(show.indexOf(d) >= 0){ q.appendChild(el); }
+    else{ more.appendChild(el); }
+  });
+  var c = $("custom-dests");
+  c.innerHTML = "";
+  if(!state.dests.length){ c.innerHTML = '<div class="rec-empty" style="grid-column:1/-1;">暂无自定义目的地</div>'; }
+  state.dests.forEach(function(d){
+    var el = document.createElement("div");
+    el.className = "dest";
+    el.textContent = d;
+    el.onclick = function(){
+      if(confirm("删除目的地「"+d+"」？")){
+        state.dests = state.dests.filter(function(x){ return x !== d; });
+        if(state.dest === d){ state.dest = ""; }
+        lsJsonSet(LS.dests, state.dests);
+        renderDests(); updatePreview();
+      }
+    };
+    c.appendChild(el);
+  });
+}
+function renderParams(){
+  $("pv-repeat").textContent = state.params.repeat + "遍";
+  $("pv-interval").textContent = state.params.interval + "秒";
+  $("pv-rate").textContent = state.params.rate.toFixed(1);
+  $("pv-pitch").textContent = state.params.pitch.toFixed(1);
+  $("pv-volume").textContent = state.params.volume + "%";
+  $("rg-repeat").value = state.params.repeat;
+  $("rg-interval").value = state.params.interval;
+  $("rg-rate").value = state.params.rate;
+  $("rg-pitch").value = state.params.pitch;
+  $("rg-volume").value = state.params.volume;
+  $("tpl-input").value = state.tpl;
+  var ex = state.tpl.replace(/\{class\}/g,"三年级一班").replace(/\{name\}/g,"张伟").replace(/\{destination\}/g,"教务处");
+  $("tpl-example").textContent = "示例 → " + ex;
+  $("broker-input").value = state.broker;
+  $("dg-vol").value = state.dgVolume;
+  $("dg-vol-v").textContent = state.dgVolume + "%";
+  if(state.dgVoice){ loadVoices(); }
+}
+
+/* ================= 进入/退出 ================= */
+function enter(role){
+  var room = $("gate-room").value.trim();
+  if(!validRoom(room)){
+    $("gate-err").textContent = "房间号必须为 6 位数字";
+    return;
+  }
+  $("gate-err").textContent = "";
+  state.role = role;
+  state.room = room;
+  lsSet(LS.room, room);
+  $("gate-loading-room").textContent = room;
+  $("gate-loading").classList.remove("hidden");
+  if(role === "caller"){
+    $("c-room").textContent = room;
+    $("d-room").textContent = room; $("d-room2").textContent = room;
+    setTimeout(function(){
+      showPage("caller");
+      $("gate-loading").classList.add("hidden");
+      switchTab("call");
+      renderClasses(); renderDests(); renderRecords();
+      renderDetail(); updatePreview(); renderParams();
+      connectMqtt();
+    }, 900);
+  }else{
+    $("d-room").textContent = room; $("d-room2").textContent = room;
+    $("c-room").textContent = room;
+    setTimeout(function(){
+      showPage("display");
+      $("gate-loading").classList.add("hidden");
+      state.queue = [];
+      renderQueue(); hideStage(); renderParams();
+      connectMqtt();
+    }, 900);
+  }
+}
+function exitApp(){
+  stopAll();
+  if(state.client){ try{ state.client.end(true); }catch(e){} }
+  state.client = null;
+  state.curStudent = ""; state.dest = ""; state.remark = ""; state.search = "";
+  state.curClass = ""; state.presence = false;
+  state.queue = []; state.playing = false;
+  $("gate-room").value = lsGet(LS.room, "");
+  showPage("gate");
+}
+
+/* ================= 初始化 ================= */
+function init(){
+  state.broker = lsGet(LS.broker, DEFAULT_BROKER);
+  state.tpl = lsGet(LS.tpl, DEFAULT_TPL);
+  var p = lsJson(LS.params, null);
+  if(p){ state.params = Object.assign(state.params, p); }
+  var d = lsJson(LS.dests, null);
+  if(d && d.length){ state.dests = d; }
+  state.dgVolume = 100;
+  $("gate-room").value = lsGet(LS.room, "");
+
+  /* 顶栏时钟 */
+  setInterval(function(){
+    var t = nowStr();
+    $("c-clock").textContent = t;
+    $("d-clock").textContent = t;
+  }, 1000);
+
+  /* 启动页 */
+  $("btn-caller").onclick = function(){ enter("caller"); };
+  $("btn-display").onclick = function(){ enter("display"); };
+  $("gate-about").onclick = function(){ showPage("about"); };
+  $("btn-about-back").onclick = function(){ showPage("gate"); };
+  $("gate-room").addEventListener("input", function(){
+    $("gate-room").value = $("gate-room").value.replace(/\D/g,"");
+  });
+
+  /* 退出 */
+  $("c-exit").onclick = function(){ exitApp(); };
+  $("d-exit").onclick = function(){ exitApp(); };
+
+  /* Tab */
+  document.querySelectorAll(".tab").forEach(function(el){
+    el.onclick = function(){
+      switchTab(el.getAttribute("data-tab"));
+      if(el.getAttribute("data-tab") === "custom"){ renderDests(); }
+      if(el.getAttribute("data-tab") === "records"){ renderRecords(); }
+      if(el.getAttribute("data-tab") === "settings"){ renderParams(); }
+      if(el.getAttribute("data-tab") === "call"){ renderClasses(); }
+    };
+  });
+
+  /* 呼叫页 */
+  $("stu-search").addEventListener("input", function(){ state.search = this.value; renderStudents(); });
+  $("btn-roster-link").onclick = function(){
+    var text = state.roster.join("\n");
+    var r = prompt("编辑学生名单（每行一个：班级,姓名）", text);
+    if(r === null){ return; }
+    saveRoster(r);
+    state.curStudent = ""; state.curClass = "";
+    renderClasses();
+  };
+  $("remark").addEventListener("input", function(){ state.remark = this.value; updatePreview(); });
+  $("dest-custom").addEventListener("input", function(){
+    var v = this.value.trim();
+    if(v){ state.dest = v; renderDests(); }
+    updatePreview();
+  });
+  $("dest-custom").addEventListener("change", function(){
+    var v = this.value.trim();
+    if(v){ state.dest = v; renderDests(); updatePreview(); }
+  });
+  $("dest-more").onclick = function(){
+    var ml = $("dest-more-list");
+    ml.classList.toggle("hidden");
+    $("dest-more").textContent = ml.classList.contains("hidden") ? "更多目的地 ▾" : "收起目的地 ▴";
+  };
+  $("btn-send").onclick = function(){ sendCall(); };
+  $("btn-try").onclick = function(){ testSpeak(); };
+
+  /* 自定义 */
+  $("btn-add-dest").onclick = function(){
+    var v = prompt("添加新目的地", "");
+    if(v !== null && v.trim()){
+      state.dests.push(v.trim());
+      lsJsonSet(LS.dests, state.dests);
+      renderDests();
+    }
+  };
+
+  /* 记录 */
+  $("btn-clear-records").onclick = function(){
+    if(confirm("确定清空所有呼叫记录？")){ clearRecords(); }
+  };
+
+  /* 设置 */
+  $("btn-reconnect").onclick = function(){
+    var v = $("broker-input").value.trim();
+    if(!v){ alert("请输入服务器地址"); return; }
+    state.broker = v; lsSet(LS.broker, v);
+    connectMqtt();
+  };
+  var bindRange = function(id, key, fmt){
+    $(id).addEventListener("input", function(){
+      var v = parseFloat(this.value);
+      state.params[key] = v;
+      lsJsonSet(LS.params, state.params);
+      renderParams();
+    });
+  };
+  bindRange("rg-repeat","repeat",null);
+  bindRange("rg-interval","interval",null);
+  bindRange("rg-rate","rate",null);
+  bindRange("rg-pitch","pitch",null);
+  bindRange("rg-volume","volume",null);
+  $("tpl-input").addEventListener("input", function(){
+    state.tpl = this.value;
+    lsSet(LS.tpl, state.tpl);
+    renderParams();
+  });
+  $("nav-about").onclick = function(){ showPage("about"); };
+
+  /* 大屏端 */
+  $("dg-vol").addEventListener("input", function(){
+    state.dgVolume = parseInt(this.value, 10);
+    $("dg-vol-v").textContent = state.dgVolume + "%";
+  });
+  $("dg-voice").addEventListener("change", function(){
+    state.dgVoice = this.value;
+  });
+  $("btn-test").onclick = function(){
+    var txt = "这是一条测试播报，校园传呼系统语音正常。";
+    speakText(txt, { repeat:1, interval:0, rate:1, pitch:1, volume:100 });
+  };
+  $("btn-stop").onclick = function(){ stopAll(); };
+  $("btn-clear-q").onclick = function(){
+    state.queue = [];
+    renderQueue();
+    hideStage();
+    stopAll();
+    state.playing = false;
+  };
+
+  if("speechSynthesis" in window){
+    speechSynthesis.getVoices();
+    speechSynthesis.onvoiceschanged = function(){ loadVoices(); };
+    setTimeout(loadVoices, 500);
+  }
+  renderRecords();
+}
+document.addEventListener("DOMContentLoaded", init);
+</script>
+</body>
+</html>

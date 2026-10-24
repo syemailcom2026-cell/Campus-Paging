@@ -1,0 +1,33 @@
+# Gradle / Android
+CampusCallApp/.gradle/
+CampusCallApp/build/
+CampusCallApp/app/build/
+CampusCallApp/local.properties
+CampusCallApp/.idea/
+CampusCallApp/*.iml
+
+# 二进制安装包（通过 GitHub Releases 发布）
+*.apk
+*.exe
+!CampusCall-Java/CampusCall.jar
+
+# WebView2 运行时本地数据（运行 exe 后生成）
+*.WebView2/
+*WebView2/
+
+# 源码打包 zip（仓库内已有源码目录）
+CampusCall-Java-source.zip
+
+# .NET
+CampusCallApp-Win/bin/
+CampusCallApp-Win/obj/
+
+# Java
+CampusCall-Java/out/
+*.class
+
+# 临时文件
+*.tmp
+*.log
+.DS_Store
+Thumbs.db
