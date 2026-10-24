@@ -165,6 +165,23 @@ namespace CampusCallWin
             Activate();
         }
 
+        /// <summary>收到广播时强制把主窗口带到屏幕前台（后台运行也能弹出大屏）</summary>
+        private void ForceToFront()
+        {
+            if (InvokeRequired)
+            {
+                BeginInvoke(new Action(ForceToFront));
+                return;
+            }
+            if (_exiting) return;
+            Show();
+            WindowState = FormWindowState.Normal;
+            // 先置顶一次再取消，绕过 Windows 对后台程序抢焦点的限制
+            TopMost = true;
+            Activate();
+            TopMost = false;
+        }
+
         private void QuitApp()
         {
             _exiting = true;
@@ -278,6 +295,11 @@ namespace CampusCallWin
                     {
                         string title = type == "call" ? "校园传呼 · 收到广播" : "校园传呼 · 呼叫已发出";
                         ShowPopup(id, title, string.IsNullOrEmpty(text) ? "收到一条呼叫" : text);
+                        // 收到广播时：后台运行也强制弹出主窗口到大屏幕前台
+                        if (type == "call")
+                        {
+                            ForceToFront();
+                        }
                     }
                     else if (type == "done")
                     {
