@@ -1299,6 +1299,12 @@ function hostMsg(obj){
       return true;
     }catch(e){ return false; }
   }
+  if(window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.campus){
+    try{
+      window.webkit.messageHandlers.campus.postMessage(obj);
+      return true;
+    }catch(e){ return false; }
+  }
   return false;
 }
 function hostPopup(type, id, text){ return hostMsg({ type:type, id:id, text:text }); }

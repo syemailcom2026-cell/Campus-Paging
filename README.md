@@ -12,6 +12,7 @@
 |---|---|---|
 | Android 手机 | `CampusPager-v1.4.0.apk` | 直接安装（需允许安装未知来源应用） |
 | Windows 电脑 | `CampusPager-v1.4.0-win64.exe` | 绿色免安装，双击即用（约 155MB） |
+| iPhone / iPad（iOS） | 源码工程 `CampusPager-iOS/` | 同款同功能；需在 Mac + Xcode 编译安装（详见 `CampusPager-iOS/README-iOS.md`） |
 
 GitHub Release：https://github.com/syemailcom2026-cell/Campus-Paging/releases （历史版本均保留）
 
@@ -82,6 +83,7 @@ GitHub Release：https://github.com/syemailcom2026-cell/Campus-Paging/releases �
 |---|---|
 | 手机版（APK） | Android WebView 应用，`com.campus.call`，minSdk 24 / targetSdk 34 |
 | 电脑版（Windows） | .NET 8 + WebView2 单文件自包含 exe，绿色免安装 |
+| iOS 版 | `CampusPager-iOS`，Swift + WKWebView 原生工程（与三端同源，含横幅+提示音桥接） |
 | 网页版 | 单文件 `CampusApp/index.html`（本地引用 `mqtt.min.js`），浏览器直开 |
 | Java 版 | `CampusCall-Java`，Java 17 + Swing + Eclipse Paho，可跨平台编译 |
 
@@ -90,6 +92,7 @@ GitHub Release：https://github.com/syemailcom2026-cell/Campus-Paging/releases �
 ├── CampusCallApp/           # Android 工程（Gradle / AGP 8.7.3 / compileSdk 34）
 ├── CampusCallApp-Win/       # Windows 版工程（C# WinForms + WebView2）
 ├── CampusCall-Java/         # Java 桌面版（Swing + Paho MQTT）
+├── CampusPager-iOS/         # iOS 版工程（Swift + WKWebView，含 README-iOS.md）
 ├── README.md                # 使用说明（本文件）
 └── CHANGELOG.md             # 版本发布说明（完整更新记录）
 ```
@@ -118,9 +121,15 @@ javac -encoding UTF-8 -cp "lib\org.eclipse.paho.client.mqttv3-1.2.5.jar" -d out 
 jar cfe CampusCall.jar com.campus.call.Main -C out .
 ```
 
+**iOS 版**（需 macOS + Xcode）
+```text
+打开 CampusPager-iOS/CampusPager-iOS.xcodeproj → 选择签名团队 → 连 iPhone 真机 Cmd+R
+详细步骤与平台限制见 CampusPager-iOS/README-iOS.md
+```
+
 ## 技术说明
 
-- 单一 HTML 源码三端同源：Android APK（WebView 包装）+ Windows 独立版（C# WebView2 包装）+ 网页版源码。
+- 单一 HTML 源码四端同源：Android APK（WebView 包装）+ Windows 独立版（C# WebView2 包装）+ iOS 版（Swift WKWebView 包装）+ 网页版源码。
 - 消息主题：`campus/call/房间号`（呼叫）、`campus/presence/房间号`（在线状态，retain）。
 - 名单、参数、外观等设置保存在本地（localStorage）。
 - MQTT 库：Eclipse Paho（JS 版 mqtt.js v5.10.1，MIT License）。
