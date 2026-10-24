@@ -214,7 +214,8 @@ namespace CampusCallWin
             }
             if (_exiting) return;
             Show();
-            WindowState = FormWindowState.Normal;
+            // 2.8.0：强制弹出大屏显示播报时，默认窗口最大化
+            WindowState = FormWindowState.Maximized;
             // 先置顶一次再取消，绕过 Windows 对后台程序抢焦点的限制
             TopMost = true;
             Activate();

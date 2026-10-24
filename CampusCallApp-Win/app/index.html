@@ -101,6 +101,11 @@ input::placeholder,textarea::placeholder{ color:var(--dim); }
 .rec-item .rt{ font-size:11px; color:var(--sub); margin-bottom:3px; }
 .rec-empty{ color:var(--dim); text-align:center; padding:40px 0; }
 
+/* ===== 自定义播报内容 ===== */
+.custom-list{ display:flex; flex-direction:column; gap:8px; }
+.custom-item{ background:var(--card); border:1px solid var(--line); border-radius:10px; padding:10px 12px; font-size:13px; color:#dbe6f5; line-height:1.6; }
+.custom-item .del{ float:right; color:var(--dim); cursor:pointer; margin-left:10px; font-size:12px; padding:2px; }
+
 /* ===== 设置页 ===== */
 .param{ margin-bottom:14px; }
 .param .pl{ display:flex; justify-content:space-between; font-size:13px; color:var(--sub); margin-bottom:6px; }
@@ -213,6 +218,8 @@ input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:18px; he
     <button class="btn ghost" id="dest-more" style="width:100%;margin-top:8px;">更多目的地 ▾</button>
     <div class="more-dests hidden" id="dest-more-list"></div>
     <input type="text" class="dest-input" id="dest-custom" placeholder="或输入其他目的地..." autocomplete="off">
+    <div class="sect">播报内容</div>
+    <div class="chips" id="tpl-custom-chips" style="flex-wrap:wrap;"></div>
     <div class="sect">附加备注（可选）</div>
     <input type="text" id="remark" placeholder="例如：带上作业本 / 家长已到校门口" autocomplete="off">
     <div class="sect">播报内容预览</div>
@@ -227,9 +234,12 @@ input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:18px; he
   <div class="body hidden" id="tab-custom">
     <div class="sect"><span>自定义目的地</span><span class="right" id="btn-add-dest">＋ 添加</span></div>
     <div class="dest-grid" id="custom-dests"></div>
+    <div class="sect"><span>自定义播报内容</span><span class="right" id="btn-add-custom">＋ 添加</span></div>
+    <div class="custom-list" id="custom-txts"></div>
     <div class="sect">说明</div>
     <div class="card" style="font-size:12px;color:var(--sub);line-height:1.8;">
-      目的地将出现在「呼叫页」的呼叫目的地中，可自定义增删，用于日常呼叫场景。
+      目的地将出现在「呼叫页」的呼叫目的地中，可自定义增删，用于日常呼叫场景。<br>
+      自定义播报内容将出现在「呼叫页」的播报内容选择中，发送时优先使用；支持变量 {class}班级 · {name}姓名 · {destination}目的地。
     </div>
   </div>
 
@@ -308,7 +318,7 @@ input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:18px; he
   <div class="about-card">
     <div class="a-logo">📢</div>
     <div class="a-name">校园传呼</div>
-    <div class="a-ver">版本 2.7.0</div>
+    <div class="a-ver">版本 2.8.0</div>
     <div class="a-edition">普通版</div>
     <div class="a-team">开发团队：symonolith</div>
     <div class="a-desc">
@@ -350,9 +360,9 @@ var PRESET_TPLS = [
   "请{class}的{name}同学，听到广播后到办公室。",
   "请{name}同学，请家长到校门口来接。"
 ];
-var APP_VERSION = "2.7.0";
+var APP_VERSION = "2.8.0";
 var DEFAULT_DESTS = ["教务处","班主任办公室","年级组办公室","医务室","图书馆","心理咨询室","传达室","家长等候区","操场","报告厅"];
-var LS = { room:"cc_room", broker:"cc_broker", roster:"cc_roster", records:"cc_records", params:"cc_params", tpl:"cc_tpl", dests:"cc_dests" };
+var LS = { room:"cc_room", broker:"cc_broker", roster:"cc_roster", records:"cc_records", params:"cc_params", tpl:"cc_tpl", dests:"cc_dests", customs:"cc_customs" };
 function lsGet(k, d){ try{ var v = localStorage.getItem(k); return v === null ? d : v; }catch(e){ return d; } }
 function lsSet(k, v){ try{ localStorage.setItem(k, v); }catch(e){} }
 function lsJson(k, d){ try{ var s = lsGet(k, null); if(s === null) return d; return JSON.parse(s); }catch(e){ return d; } }
@@ -370,6 +380,7 @@ var state = {
   roster:[], search:"", curClass:"", curStudent:"", dest:"", remark:"",
   params:{ repeat:2, interval:0, rate:1.0, pitch:1.0, volume:100 },
   tpl:DEFAULT_TPL, dests:JSON.parse(JSON.stringify(DEFAULT_DESTS)),
+  customs:[], customPick:"",
   queue:[], playing:false, dgVolume:100, dgVoice:"", lastSentId:""
 };
 
@@ -512,11 +523,14 @@ function sendCall(){
     }
   });
 }
+function fillTpl(t){
+  return t.replace(/\{class\}/g, state.curClass || "")
+          .replace(/\{name\}/g, state.curStudent || "")
+          .replace(/\{destination\}/g, state.dest || "");
+}
 function renderTemplate(){
-  var tpl = state.tpl;
-  return tpl.replace(/\{class\}/g, state.curClass || "")
-            .replace(/\{name\}/g, state.curStudent || "")
-            .replace(/\{destination\}/g, state.dest || "");
+  var tpl = state.customPick ? state.customPick : state.tpl;
+  return fillTpl(tpl);
 }
 function updatePreview(){
   var t = renderTemplate();
@@ -525,6 +539,7 @@ function updatePreview(){
   if(state.curStudent && state.dest && state.remark.trim()){ t += "（" + state.remark.trim() + "）"; }
   var pv = $("preview");
   pv.innerHTML = state.curStudent && state.dest ? esc(t) : '<span class="pv-empty">' + esc(t) + '</span>';
+  renderCustomPick();
 }
 
 /* ================= 语音播报 ================= */
@@ -787,6 +802,53 @@ function renderTplPresets(){
   });
 }
 
+/* ================= 自定义播报内容 ================= */
+function renderCustoms(){
+  var box = $("custom-txts");
+  if(!box){ return; }
+  box.innerHTML = "";
+  if(!state.customs.length){ box.innerHTML = '<div class="rec-empty">暂无自定义播报内容</div>'; return; }
+  state.customs.forEach(function(t, i){
+    var el = document.createElement("div");
+    el.className = "custom-item";
+    var del = document.createElement("span");
+    del.className = "del"; del.textContent = "✕";
+    del.onclick = function(){
+      if(confirm("删除这条自定义播报内容？")){
+        state.customs.splice(i, 1);
+        if(state.customPick === t){ state.customPick = ""; }
+        lsJsonSet(LS.customs, state.customs);
+        renderCustoms(); renderCustomPick(); updatePreview();
+      }
+    };
+    el.appendChild(del);
+    var txt = fillTpl(t) || "（空内容）";
+    el.appendChild(document.createTextNode(txt));
+    el.title = t;
+    box.appendChild(el);
+  });
+}
+function renderCustomPick(){
+  var box = $("tpl-custom-chips");
+  if(!box){ return; }
+  box.innerHTML = "";
+  var el0 = document.createElement("div");
+  el0.className = "chip" + (state.customPick ? "" : " sel");
+  el0.textContent = "按模板生成";
+  el0.onclick = function(){ state.customPick = ""; renderCustomPick(); updatePreview(); };
+  box.appendChild(el0);
+  state.customs.forEach(function(t){
+    var el = document.createElement("div");
+    el.className = "chip" + (state.customPick === t ? " sel" : "");
+    var label = fillTpl(t) || "（空内容）";
+    if(label.length > 14){ label = label.slice(0,14) + "…"; }
+    el.textContent = label;
+    el.title = t;
+    el.onclick = function(){ state.customPick = t; renderCustomPick(); updatePreview(); };
+    box.appendChild(el);
+  });
+}
+
 /* ================= 呼叫小屏（屏幕正上方，可拖动） ================= */
 var toasts = {};
 function genId(){ return "c" + Date.now().toString(36) + Math.floor(Math.random()*10000).toString(36); }
@@ -957,6 +1019,8 @@ function init(){
   if(p){ state.params = Object.assign(state.params, p); }
   var d = lsJson(LS.dests, null);
   if(d && d.length){ state.dests = d; }
+  var cs = lsJson(LS.customs, null);
+  if(cs && cs.length){ state.customs = cs; }
   state.dgVolume = 100;
   $("gate-room").value = lsGet(LS.room, "");
 
@@ -968,10 +1032,15 @@ function init(){
   }, 1000);
 
   /* 启动页 */
+  var aboutFrom = "gate";
   $("btn-caller").onclick = function(){ enter("caller"); };
   $("btn-display").onclick = function(){ enter("display"); };
-  $("gate-about").onclick = function(){ showPage("about"); };
-  $("btn-about-back").onclick = function(){ showPage("gate"); };
+  $("gate-about").onclick = function(){ aboutFrom = "gate"; showPage("about"); };
+  $("btn-about-back").onclick = function(){
+    // 2.8.0：从设置打开的关于页，返回时回到原界面（不再跳回房间号页）
+    if(aboutFrom === "gate"){ showPage("gate"); }
+    else{ showPage(state.role === "display" ? "display" : "caller"); }
+  };
   $("gate-room").addEventListener("input", function(){
     $("gate-room").value = $("gate-room").value.replace(/\D/g,"");
   });
@@ -984,7 +1053,7 @@ function init(){
   document.querySelectorAll(".tab").forEach(function(el){
     el.onclick = function(){
       switchTab(el.getAttribute("data-tab"));
-      if(el.getAttribute("data-tab") === "custom"){ renderDests(); }
+      if(el.getAttribute("data-tab") === "custom"){ renderDests(); renderCustoms(); }
       if(el.getAttribute("data-tab") === "records"){ renderRecords(); }
       if(el.getAttribute("data-tab") === "settings"){ renderParams(); }
       if(el.getAttribute("data-tab") === "call"){ renderClasses(); }
@@ -1028,6 +1097,14 @@ function init(){
       renderDests();
     }
   };
+  $("btn-add-custom").onclick = function(){
+    var v = prompt("添加自定义播报内容（支持变量 {class}班级 · {name}姓名 · {destination}目的地）", "");
+    if(v !== null && v.trim()){
+      state.customs.push(v.trim());
+      lsJsonSet(LS.customs, state.customs);
+      renderCustoms(); renderCustomPick();
+    }
+  };
 
   /* 记录 */
   $("btn-clear-records").onclick = function(){
@@ -1059,7 +1136,7 @@ function init(){
     lsSet(LS.tpl, state.tpl);
     renderParams();
   });
-  $("nav-about").onclick = function(){ showPage("about"); };
+  $("nav-about").onclick = function(){ aboutFrom = "settings"; showPage("about"); };
 
   /* 大屏端 */
   $("dg-vol").addEventListener("input", function(){
