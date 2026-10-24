@@ -9,7 +9,8 @@
     <RootNamespace>CampusCallWin</RootNamespace>
     <AssemblyName>CampusCallApp</AssemblyName>
     <ApplicationIcon>app.ico</ApplicationIcon>
-    <Version>2.6.0</Version>
+    <Version>2.7.0</Version>
+    <FileVersion>2.7.0.0</FileVersion>
     <PublishSingleFile>true</PublishSingleFile>
     <SelfContained>true</SelfContained>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>

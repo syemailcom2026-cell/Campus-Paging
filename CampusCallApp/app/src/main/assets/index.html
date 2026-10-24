@@ -147,14 +147,14 @@ input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:18px; he
 .about-card .a-desc{ font-size:13px; color:var(--sub); line-height:1.9; margin-top:16px; text-align:left; }
 .about-card .btn{ margin-top:18px; width:100%; }
 
-/* ===== 呼叫小屏（右下角） ===== */
-.toast-panel{ position:fixed; right:12px; bottom:12px; z-index:999; display:flex; flex-direction:column; gap:8px; max-width:min(340px,88vw); }
-.toast-item{ position:relative; background:var(--panel); border:1px solid var(--blue); border-radius:12px; padding:10px 26px 10px 12px; box-shadow:0 8px 24px rgba(0,0,0,.45); animation:toast-in .25s ease; }
+/* ===== 呼叫小屏（屏幕正上方，可拖动） ===== */
+.toast-panel{ position:fixed; top:12px; left:50%; transform:translateX(-50%); z-index:999; display:flex; flex-direction:column; align-items:center; gap:8px; max-width:min(340px,88vw); }
+.toast-item{ position:relative; background:var(--panel); border:1px solid var(--blue); border-radius:12px; padding:10px 26px 10px 12px; box-shadow:0 8px 24px rgba(0,0,0,.45); animation:toast-in .25s ease; cursor:grab; user-select:none; }
 .toast-item .tt{ font-size:12px; color:var(--blue); font-weight:700; margin-bottom:4px; }
 .toast-item .tx{ font-size:13px; color:var(--text); line-height:1.5; }
 .toast-item .tc{ font-size:11px; color:var(--sub); margin-top:4px; }
 .toast-item .txc{ position:absolute; top:6px; right:9px; color:var(--dim); cursor:pointer; font-size:13px; }
-@keyframes toast-in{ from{ transform:translateY(12px); opacity:0; } to{ transform:none; opacity:1; } }
+@keyframes toast-in{ from{ transform:translateY(-12px); opacity:0; } to{ transform:none; opacity:1; } }
 </style>
 </head>
 <body>
@@ -308,7 +308,7 @@ input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:18px; he
   <div class="about-card">
     <div class="a-logo">📢</div>
     <div class="a-name">校园传呼</div>
-    <div class="a-ver">版本 2.6.0</div>
+    <div class="a-ver">版本 2.7.0</div>
     <div class="a-edition">普通版</div>
     <div class="a-team">开发团队：symonolith</div>
     <div class="a-desc">
@@ -338,7 +338,7 @@ var PRESET_TPLS = [
   "请{class}的{name}同学，听到广播后到办公室。",
   "请{name}同学，请家长到校门口来接。"
 ];
-var APP_VERSION = "2.6.0";
+var APP_VERSION = "2.7.0";
 var DEFAULT_DESTS = ["教务处","班主任办公室","年级组办公室","医务室","图书馆","心理咨询室","传达室","家长等候区","操场","报告厅"];
 var LS = { room:"cc_room", broker:"cc_broker", roster:"cc_roster", records:"cc_records", params:"cc_params", tpl:"cc_tpl", dests:"cc_dests" };
 function lsGet(k, d){ try{ var v = localStorage.getItem(k); return v === null ? d : v; }catch(e){ return d; } }
@@ -468,11 +468,10 @@ function handleCall(msg){
     state.queue.push(item);
     renderQueue();
     pumpQueue();
-    // 大屏端收到广播：右下角小屏（桌面版走原生小窗，网页/手机走页面小屏）
-    var shown = hostPopup("call", item.id, text || line);
-    if(!shown){ showToast(item.id, "收到呼叫", text || line); }
+    // 2.7.0：大屏端不再弹小屏；桌面版由宿主收到 call 后强制弹出大屏并播提示声
+    hostMsg({ type:"call", id:item.id, text:text || line });
   }else{
-    // 呼叫端：自己发出的呼叫回环（或收到呼叫）→ 右下角小屏，一直挂到呼叫结束
+    // 呼叫端：自己发出的呼叫回环（或收到呼叫）→ 小屏（屏幕正上方，可拖动），一直挂到呼叫结束
     var isMine = msg.id && state.lastSentId === msg.id;
     var title = isMine ? "呼叫已发出" : "收到呼叫";
     var shown2 = hostPopup(isMine ? "sent" : "call", msg.id || genId(), text || line);
@@ -776,7 +775,7 @@ function renderTplPresets(){
   });
 }
 
-/* ================= 呼叫小屏（右下角） ================= */
+/* ================= 呼叫小屏（屏幕正上方，可拖动） ================= */
 var toasts = {};
 function genId(){ return "c" + Date.now().toString(36) + Math.floor(Math.random()*10000).toString(36); }
 var beepCtx = null;
@@ -812,6 +811,43 @@ function toastBox(){
   }
   return p;
 }
+/* 小屏可拖动（鼠标 + 触摸） */
+function makeDraggable(el){
+  var sx = 0, sy = 0, ox = 0, oy = 0, drag = false;
+  el.addEventListener("mousedown", function(e){
+    if(e.target && e.target.className === "txc"){ return; }
+    drag = true; sx = e.clientX; sy = e.clientY;
+    var r = el.getBoundingClientRect(); ox = r.left; oy = r.top;
+    e.preventDefault();
+  });
+  document.addEventListener("mousemove", function(e){
+    if(!drag){ return; }
+    el.style.position = "fixed";
+    el.style.left = (ox + e.clientX - sx) + "px";
+    el.style.top = (oy + e.clientY - sy) + "px";
+    el.style.margin = "0";
+    el.style.animation = "none";
+  });
+  document.addEventListener("mouseup", function(){ drag = false; });
+  el.addEventListener("touchstart", function(e){
+    if(e.target && e.target.className === "txc"){ return; }
+    var t = e.touches[0];
+    drag = true; sx = t.clientX; sy = t.clientY;
+    var r = el.getBoundingClientRect(); ox = r.left; oy = r.top;
+    e.preventDefault();
+  }, { passive:false });
+  el.addEventListener("touchmove", function(e){
+    if(!drag){ return; }
+    var t = e.touches[0];
+    el.style.position = "fixed";
+    el.style.left = (ox + t.clientX - sx) + "px";
+    el.style.top = (oy + t.clientY - sy) + "px";
+    el.style.margin = "0";
+    el.style.animation = "none";
+    e.preventDefault();
+  }, { passive:false });
+  el.addEventListener("touchend", function(){ drag = false; });
+}
 function showToast(id, title, text){
   if(!id){ id = genId(); }
   var p = toastBox();
@@ -827,6 +863,7 @@ function showToast(id, title, text){
     var x = document.createElement("div"); x.className = "tx"; el.appendChild(x);
     var tm = document.createElement("div"); tm.className = "tc"; el.appendChild(tm);
     el._t = t; el._x = x; el._tm = tm;
+    makeDraggable(el);
     toasts[id] = el;
     p.appendChild(el);
   }
@@ -839,16 +876,17 @@ function closeToast(id){
   var el = toasts[id];
   if(el){ el.remove(); delete toasts[id]; }
 }
-/* 桌面宿主小屏（Windows 原生小窗）：postMessage 由 C# 侧接管 */
-function hostPopup(type, id, text){
+/* 桌面宿主通信（Windows 原生小窗/大屏接管）：postMessage 由 C# 侧解析 */
+function hostMsg(obj){
   if(window.chrome && window.chrome.webview && window.chrome.webview.postMessage){
     try{
-      window.chrome.webview.postMessage(JSON.stringify({ type:type, id:id, text:text }));
+      window.chrome.webview.postMessage(JSON.stringify(obj));
       return true;
     }catch(e){ return false; }
   }
   return false;
 }
+function hostPopup(type, id, text){ return hostMsg({ type:type, id:id, text:text }); }
 
 /* ================= 进入/退出 ================= */
 function enter(role){
@@ -861,6 +899,8 @@ function enter(role){
   state.role = role;
   state.room = room;
   lsSet(LS.room, room);
+  // 通知桌面宿主当前角色（大屏端：强制弹出大屏/播完退后台；呼叫端：顶部小屏可拖动）
+  hostMsg({ type:"role", role:role, room:room });
   $("gate-loading-room").textContent = room;
   $("gate-loading").classList.remove("hidden");
   if(role === "caller"){

@@ -40,6 +40,10 @@ namespace CampusCallWin
 
         public event EventHandler CloseRequested;
 
+        // 拖动状态（无边框窗体手动拖动）
+        private bool _dragging;
+        private Point _dragPoint;
+
         public PopupForm(string title, string text)
         {
             FormBorderStyle = FormBorderStyle.None;
@@ -88,6 +92,40 @@ namespace CampusCallWin
             Controls.Add(closeBtn);
             Controls.Add(_titleLbl);
             Controls.Add(_textLbl);
+
+            // 整窗可拖动（点击空白/标题/正文拖动小屏，✕ 按钮除外）
+            MouseDown += OnDragStart;
+            MouseMove += OnDragMove;
+            MouseUp += OnDragEnd;
+            _titleLbl.MouseDown += OnDragStart;
+            _titleLbl.MouseMove += OnDragMove;
+            _titleLbl.MouseUp += OnDragEnd;
+            _textLbl.MouseDown += OnDragStart;
+            _textLbl.MouseMove += OnDragMove;
+            _textLbl.MouseUp += OnDragEnd;
+        }
+
+        private void OnDragStart(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                _dragging = true;
+                _dragPoint = e.Location;
+            }
+        }
+
+        private void OnDragMove(object sender, MouseEventArgs e)
+        {
+            if (_dragging)
+            {
+                Point screen = PointToScreen(e.Location);
+                Location = new Point(screen.X - _dragPoint.X, screen.Y - _dragPoint.Y);
+            }
+        }
+
+        private void OnDragEnd(object sender, MouseEventArgs e)
+        {
+            _dragging = false;
         }
 
         public void UpdateText(string title, string text)
@@ -106,6 +144,7 @@ namespace CampusCallWin
         private readonly Dictionary<string, PopupForm> _popups = new Dictionary<string, PopupForm>();
         private NotifyIcon _tray;
         private bool _exiting;
+        private string _role = "";
 
         public MainForm(string autoRoom, string autoRole)
         {
@@ -180,6 +219,18 @@ namespace CampusCallWin
             TopMost = true;
             Activate();
             TopMost = false;
+        }
+
+        /// <summary>播报结束：大屏主窗口退回后台（最小化到托盘继续运行）</summary>
+        private void HideToTray()
+        {
+            if (InvokeRequired)
+            {
+                BeginInvoke(new Action(HideToTray));
+                return;
+            }
+            if (_exiting) return;
+            Hide();
         }
 
         private void QuitApp()
@@ -291,19 +342,39 @@ namespace CampusCallWin
                     string id = GetStr(root, "id");
                     string text = GetStr(root, "text");
 
-                    if (type == "call" || type == "sent")
+                    if (type == "role")
                     {
-                        string title = type == "call" ? "校园传呼 · 收到广播" : "校园传呼 · 呼叫已发出";
-                        ShowPopup(id, title, string.IsNullOrEmpty(text) ? "收到一条呼叫" : text);
-                        // 收到广播时：后台运行也强制弹出主窗口到大屏幕前台
-                        if (type == "call")
+                        // 页面进入房间后上报角色，决定大屏端/呼叫端的弹窗行为
+                        _role = GetStr(root, "role");
+                    }
+                    else if (type == "call")
+                    {
+                        if (_role == "display")
                         {
+                            // 教室大屏端：不弹小屏，强制弹出大屏 + 提示声；播报结束由 done 退回后台
+                            try { SystemSounds.Exclamation.Play(); } catch { }
                             ForceToFront();
                         }
+                        else
+                        {
+                            ShowPopup(id, "校园传呼 · 收到广播",
+                                string.IsNullOrEmpty(text) ? "收到一条呼叫" : text);
+                        }
+                    }
+                    else if (type == "sent")
+                    {
+                        // 呼叫端：呼叫已发出 → 顶部小屏（可拖动），挂到呼叫结束
+                        ShowPopup(id, "校园传呼 · 呼叫已发出",
+                            string.IsNullOrEmpty(text) ? "呼叫已发出" : text);
                     }
                     else if (type == "done")
                     {
                         ClosePopup(id);
+                        // 大屏端：播报结束，主窗口退回后台（最小化到托盘）
+                        if (_role == "display")
+                        {
+                            HideToTray();
+                        }
                     }
                 }
             }
@@ -331,9 +402,10 @@ namespace CampusCallWin
 
             var wa = Screen.PrimaryScreen.WorkingArea;
             int idx = _popups.Count;
-            int x = wa.Right - f.Width - 12;
-            int y = wa.Bottom - f.Height - 12 - idx * (f.Height + 8);
-            if (y < 0) y = 0;
+            // 呼叫端小屏：显示在屏幕正上方（顶部居中），多条依次向下排列
+            int x = wa.Left + (wa.Width - f.Width) / 2;
+            int y = wa.Top + 12 + idx * (f.Height + 8);
+            if (y + f.Height > wa.Bottom) y = wa.Top + 12;
             f.Location = new Point(x, y);
 
             _popups[id] = f;
