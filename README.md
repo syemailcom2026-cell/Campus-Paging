@@ -2,7 +2,7 @@
 
 **校园呼叫播报工具** —— 手机发送端一键呼叫，教室大屏（电脑）接收端实时大字显示 + 语音播报。
 
-- 版本：**1.4.1**
+- 版本：**1.4.2**
 - 开发团队：**symonolith**
 - 消息经 MQTT 公共服务器（`wss://broker-cn.emqx.io:8084/mqtt`）转发，主题 `campus/call/房间号`，无需注册、无需自建服务器。
 
@@ -10,8 +10,9 @@
 
 | 平台 | 文件 | 说明 |
 |---|---|---|
-| Android 手机 | `CampusPager-v1.4.1.apk` | 直接安装（需允许安装未知来源应用） |
-| Windows 电脑 | `CampusPager-v1.4.1-win64.exe` | 绿色免安装，双击即用（约 155MB） |
+| Android 手机 | `CampusPager-v1.4.2.apk` | 直接安装（需允许安装未知来源应用） |
+| Windows 电脑 | `CampusPager-v1.4.2-win64.exe` | 绿色免安装，双击即用（约 155MB） |
+| 网页版（免安装） | https://syemailcom2026-cell.github.io/Campus-Paging/ | 浏览器直接打开即用，手机 / 电脑均可 |
 | iPhone / iPad（iOS） | 源码工程 `CampusPager-iOS/` | 同款同功能；需在 Mac + Xcode 编译安装（详见 `CampusPager-iOS/README-iOS.md`） |
 
 GitHub Release：https://github.com/syemailcom2026-cell/Campus-Paging/releases （历史版本均保留）
@@ -30,6 +31,7 @@ GitHub Release：https://github.com/syemailcom2026-cell/Campus-Paging/releases �
 - **个性化外观**：深色 / 浅色模式、8 套 UI 配色方案（深空蓝 / 青碧 / 云霞紫 / 暖阳金 / 樱花粉 / 薄荷绿 / 朱砂红 / 曜石灰）、自定义背景图片。
 - **刷新**：呼叫页支持**下拉刷新**与顶栏「↻」刷新按键，一键重载名单 / 目的地 / 记录并重连。
 - **弹出方式（1.4.1）**：接收端终端设置可选「**小窗** / **大屏**」两种弹出方式——小窗为右下角通知（不遮挡屏幕，挂到呼叫结束）；大屏为**强制全屏**显示播报，播报结束后约 5 秒自动最小化退回后台，也可点「收起窗口」立即退回。
+- **网页版入口**：「关于」页点击「网页版入口」即可用系统浏览器打开网页版（免安装、手机 / 电脑通用），应用内三端均可跳转。
 - **后台运行**：点「×」不退出，最小化到系统托盘继续运行；完全退出用托盘右键菜单。
 
 ## 使用说明
