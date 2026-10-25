@@ -455,11 +455,7 @@ namespace CampusCallWin
                     else if (type == "done")
                     {
                         ClosePopup(id);
-                        // 大屏端：播报结束，主窗口退回后台（最小化到托盘）
-                        if (_role == "display")
-                        {
-                            ScheduleHide();
-                        }
+                        // 1.4.3：大屏退回后台由 HTML 按「大屏延迟关闭」配置（默认 1 秒）延迟后发 closeDisplay 控制，不再固定 5 秒
                     }
                     else if (type == "reply")
                     {
@@ -467,6 +463,13 @@ namespace CampusCallWin
                         string rtext = GetStr(root, "text");
                         if (string.IsNullOrEmpty(rtext)) rtext = "（无内容）";
                         ShowPopup(GetStr(root, "id"), "校园传呼 · 收到回复", rtext);
+                    }
+                    else if (type == "msg")
+                    {
+                        // 1.4.4：接收端呼叫结束后发送的消息 → 呼叫端顶部小屏显示
+                        string mtext = GetStr(root, "text");
+                        if (string.IsNullOrEmpty(mtext)) mtext = "（无内容）";
+                        ShowPopup(GetStr(root, "id"), "校园传呼 · 收到大屏消息", mtext);
                     }
                 }
             }

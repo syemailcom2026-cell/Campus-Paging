@@ -144,20 +144,26 @@ input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:18px; he
 .d-title{ font-size:0.9375rem; font-weight:700; }
 .d-sub{ font-size:0.6875rem; color:var(--sub); margin-top:1px; }
 .d-main{ flex:1; display:flex; flex-direction:column; gap:12px; padding:16px; min-height:0; overflow-y:auto; }
-.d-stage{ background:var(--panel); border:1px solid var(--line); border-radius:16px; flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; text-align:center; padding:20px; min-height:240px; }
-.d-stage .st-badge{ font-size:0.8125rem; color:var(--cyan); letter-spacing:3px; }
+.d-stage{ background:var(--panel); border:1px solid var(--line); border-radius:16px; flex:4 1 0; min-height:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; text-align:center; padding:20px; }
+.d-stage .st-center{ flex:1 1 0; min-height:0; width:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; text-align:center; }
+.d-stage .st-badge{ font-size:0.8125rem; color:var(--cyan); letter-spacing:3px; text-align:center; width:100%; }
 .d-stage .st-msg{ font-size:2.125rem; font-weight:800; line-height:1.4; max-width:900px; }
 .d-stage .st-room{ font-size:0.75rem; color:var(--dim); margin-top:4px; }
 .d-stage .st-reply{ display:flex; justify-content:center; gap:12px; margin-top:20px; }
 .d-stage .st-reply .btn{ min-width:96px; }
+.d-stage .st-send{ display:flex; gap:10px; width:100%; align-self:stretch; margin-top:auto; }
+.d-stage .st-send input{ flex:1; min-width:0; background:var(--card); border:1px solid var(--line); border-radius:10px; color:var(--text); font-size:1rem; padding:12px 14px; }
+.d-stage .st-send .btn{ min-width:84px; }
+.d-stage .st-send .btn.mini{ min-width:64px; font-size:0.8125rem; padding:9px 12px; }
 .d-stage .st-empty{ color:var(--dim); font-size:0.9375rem; }
-.d-bottom{ display:flex; gap:12px; flex:0 0 auto; }
+.d-bottom{ display:flex; gap:12px; flex:1 1 0; min-height:0; }
 .qr-box{ display:flex; flex-direction:column; align-items:center; gap:8px; padding:12px; margin-bottom:10px; background:var(--card); border:1px solid var(--line); border-radius:12px; }
 .qr-box canvas{ background:#fff; border-radius:8px; padding:8px; max-width:196px; height:auto; }
 .qr-hint{ font-size:0.75rem; color:var(--sub); text-align:center; line-height:1.5; }
 .d-col{ flex:1; background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:12px; min-width:0; }
 .d-col .ct{ font-size:0.8125rem; color:var(--sub); display:flex; align-items:center; gap:6px; margin-bottom:8px; }
 .d-col .ct .right{ margin-left:auto; font-size:0.75rem; color:var(--blue); cursor:pointer; }
+.d-col .ct.term-toggle{ cursor:pointer; user-select:none; }
 .q-item{ background:var(--card); border:1px solid var(--line); border-radius:8px; padding:8px 10px; margin-bottom:6px; font-size:0.8125rem; }
 .q-item .qt{ color:#dbe6f5; line-height:1.5; }
 .q-item .qm{ font-size:0.6875rem; color:var(--sub); margin-top:3px; }
@@ -183,12 +189,14 @@ input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:18px; he
 
 /* ===== 呼叫小屏（屏幕正上方，可拖动） ===== */
 .toast-panel{ position:fixed; top:12px; left:50%; transform:translateX(-50%); z-index:999; display:flex; flex-direction:column; align-items:center; gap:8px; max-width:min(340px,88vw); }
-.toast-item{ position:relative; background:var(--panel); border:1px solid var(--blue); border-radius:12px; padding:10px 26px 10px 12px; box-shadow:0 8px 24px rgba(0,0,0,.45); animation:toast-in .25s ease; cursor:grab; user-select:none; }
-.toast-item .tt{ font-size:0.75rem; color:var(--blue); font-weight:700; margin-bottom:4px; }
-.toast-item .tx{ font-size:0.8125rem; color:var(--text); line-height:1.5; }
-.toast-item .tc{ font-size:0.6875rem; color:var(--sub); margin-top:4px; }
-.toast-item .txc{ position:absolute; top:6px; right:9px; color:var(--dim); cursor:pointer; font-size:0.8125rem; }
+.toast-item{ position:relative; background:var(--panel); border:1px solid var(--blue); border-radius:14px; padding:16px 38px 16px 18px; box-shadow:0 8px 24px rgba(0,0,0,.45); animation:toast-in .25s ease; cursor:grab; user-select:none; }
+.toast-item .tt{ font-size:1rem; color:var(--blue); font-weight:700; margin-bottom:6px; }
+.toast-item .tx{ font-size:1.0625rem; color:var(--text); line-height:1.5; }
+.toast-item .tc{ font-size:0.875rem; color:var(--sub); margin-top:6px; }
+.toast-item .txc{ position:absolute; top:10px; right:14px; color:var(--dim); cursor:pointer; font-size:1.125rem; }
 @keyframes toast-in{ from{ transform:translateY(-12px); opacity:0; } to{ transform:none; opacity:1; } }
+@keyframes toast-out{ from{ opacity:1; transform:translateY(0); } to{ opacity:0; transform:translateY(-30px); } }
+.toast-item.auto-fade{ animation:toast-in .25s ease, toast-out 1.4s ease 3s forwards; }
 /* 1.3.1 名单面板 / 分组 / 随机房间号 */
 .gate-room-row{ display:flex; gap:8px; }
 .gate-room-row .gate-room{ flex:1; min-width:0; }
@@ -364,6 +372,7 @@ input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:18px; he
   <div class="body hidden" id="tab-settings">
     <div class="grp">呼叫设置</div>
     <div class="card">
+      <div class="param"><div class="pl"><span>大屏延迟关闭</span><span style="font-size:0.6875rem;color:var(--dim);font-weight:400;">（接收端播报结束后字幕保持显示的秒数，大屏与消息同时关闭）</span></div><div class="chips" id="delay-row" style="flex-wrap:wrap;"></div></div>
       <div class="param"><div class="pl"><span>重复遍数</span><b id="pv-repeat">2遍</b></div><input type="range" id="rg-repeat" min="1" max="5" value="2"></div>
       <div class="param"><div class="pl"><span>重复间隔</span><b id="pv-interval">0.0秒</b></div><input type="range" id="rg-interval" min="0" max="30" value="0"></div>
       <div class="param"><div class="pl"><span>语速</span><b id="pv-rate">1.0</b></div><input type="range" id="rg-rate" min="0.5" max="2" step="0.1" value="1"></div>
@@ -406,14 +415,19 @@ input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:18px; he
   </div>
   <div class="d-main">
     <div class="d-stage">
-      <div class="st-badge" id="st-badge">正在播报</div>
-      <div class="st-msg" id="st-msg">请高二5班的杨楚珩同学，听到广播后到班主任办公室。</div>
-      <div class="st-room" id="st-room">房间号 <span id="d-room2"></span></div>
-      <div class="st-reply hidden" id="st-reply">
-        <button class="btn green" id="btn-reply-ok">知道了</button>
-        <button class="btn" id="btn-reply-text">文字回复</button>
+      <div class="st-center" id="st-center">
+        <div class="st-badge" id="st-badge">正在播报</div>
+        <div class="st-msg" id="st-msg">请高二5班的杨楚珩同学，听到广播后到班主任办公室。</div>
+        <div class="st-room" id="st-room">房间号 <span id="d-room2"></span></div>
+        <div class="st-reply hidden" id="st-reply">
+          <button class="btn green" id="btn-reply-ok">知道了</button>
+        </div>
+        <div class="st-empty hidden" id="st-empty">等待呼叫…</div>
       </div>
-      <div class="st-empty hidden" id="st-empty">等待呼叫…</div>
+      <div class="st-send" id="st-send">
+        <input type="text" id="d-send-input" placeholder="呼叫结束后也可发送消息给手机端..." autocomplete="off">
+        <button class="btn blue" id="d-send-btn">发送</button>
+      </div>
     </div>
     <div class="d-bottom">
       <div class="d-col">
@@ -421,7 +435,8 @@ input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:18px; he
         <div id="q-list"></div>
       </div>
       <div class="d-col">
-        <div class="ct"><span>终端设置</span></div>
+        <div class="ct term-toggle" id="term-toggle"><span>终端设置</span><span class="right" id="term-arrow">▸</span></div>
+        <div id="term-body" class="hidden">
         <div class="d-set-row"><span class="lb">扫码呼叫</span><span class="val" id="qr-hint-txt" style="width:auto;text-align:left;color:var(--dim);flex:1;">二维码生成中…</span></div>
         <div class="qr-box">
           <canvas id="qr-canvas" width="0" height="0"></canvas>
@@ -433,6 +448,7 @@ input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:18px; he
           <button class="btn green" id="btn-test">测试播报</button>
           <button class="btn red" id="btn-stop">停止</button>
           <button class="btn ghost" id="btn-d-collapse">收起窗口</button>
+        </div>
         </div>
       </div>
     </div>
@@ -496,7 +512,7 @@ var PRESET_TPLS = [
   "请{name}同学，请家长到校门口来接。"
 ];
 var PAGES_URL = "https://syemailcom2026-cell.github.io/Campus-Paging/";
-var APP_VERSION = "1.4.2";
+var APP_VERSION = "1.4.8";
 var DEFAULT_DESTS = ["教务处","班主任办公室","年级组办公室","医务室","图书馆","心理咨询室","传达室","家长等候区","操场","报告厅"];
 /* QR Code 生成器（ISO/IEC 18004，v1-v6，纠错 L/M），纯函数，无 DOM 依赖 */
 "use strict";
@@ -766,7 +782,7 @@ function penalty(m, size) {
   score += Math.floor(Math.abs(pct - 50) / 5) * 10;
   return score;
 }
-var LS = { room:"cc_room", broker:"cc_broker", roster:"cc_roster", records:"cc_records", params:"cc_params", tpl:"cc_tpl", dests:"cc_dests", userTpls:"cc_usertpls", appfs:"cc_appfs", popstyle:"cc_popstyle", theme:"cc_theme", palette:"cc_palette", bgimg:"cc_bgimg" };
+var LS = { room:"cc_room", broker:"cc_broker", roster:"cc_roster", records:"cc_records", params:"cc_params", tpl:"cc_tpl", dests:"cc_dests", userTpls:"cc_usertpls", appfs:"cc_appfs", popstyle:"cc_popstyle", delay:"cc_delay", theme:"cc_theme", palette:"cc_palette", bgimg:"cc_bgimg" };
 function lsGet(k, d){ try{ var v = localStorage.getItem(k); return v === null ? d : v; }catch(e){ return d; } }
 function lsSet(k, v){ try{ localStorage.setItem(k, v); }catch(e){} }
 function lsJson(k, d){ try{ var s = lsGet(k, null); if(s === null) return d; return JSON.parse(s); }catch(e){ return d; } }
@@ -784,7 +800,7 @@ var state = {
   roster:[], search:"", curClass:"", curStudent:"", dest:"", remark:"", multi:false, selected:[],
   params:{ repeat:2, interval:0, rate:1.0, pitch:1.0, volume:100, fontSize:34, fontColor:"#e8eefc" },
   tpl:DEFAULT_TPL, dests:JSON.parse(JSON.stringify(DEFAULT_DESTS)),
-  userTpls:[], fontScale:1, popStyle:"small",
+  userTpls:[], fontScale:1, popStyle:"small", closeDelay:1, closeTimer:null,
   queue:[], playing:false, dgVolume:100, dgVoice:"", lastSentId:""
 };
 
@@ -907,7 +923,15 @@ function handleCall(msg){
     if(state.role === "display"){ return; } // 接收端忽略自己发出的回环
     var rtext = msg.text || "";
     var shownR = hostPopup("reply", msg.id || genId(), rtext);
-    if(!shownR){ showToast(msg.id || genId(), "收到回复", rtext); }
+    if(!shownR){ showToast(msg.id || genId(), "收到回复", rtext, false); }
+    return;
+  }
+  // 1.4.4：接收端呼叫结束后发送的消息 → 呼叫端弹出显示
+  if(msg && msg.type === "msg"){
+    if(state.role === "display"){ return; }
+    var mtext = msg.text || "";
+    var shownM = hostPopup("msg", msg.id || genId(), mtext);
+    if(!shownM){ showToast(msg.id || genId(), "收到大屏消息", mtext, false); }
     return;
   }
   var cls = msg.cls || "", name = msg.name || "", dest = msg.destination || "", remark = msg.remark || "", text = msg.text || "";
@@ -921,6 +945,7 @@ function handleCall(msg){
       lsJsonSet(LS.popstyle, state.popStyle);
       hostMsg({ type:"popstyle", value:state.popStyle });
     }
+    if(typeof msg.delay === "number" && msg.delay >= 0){ state.closeDelay = msg.delay; }
     var params = msg.params || state.params;
     var item = { id: msg.id || genId(), cls:cls, name:name, dest:dest, text:text, ts:nowStr(), params:params };
     state.queue.push(item);
@@ -933,7 +958,7 @@ function handleCall(msg){
     var isMine = msg.id && state.lastSentId === msg.id;
     var title = isMine ? "呼叫已发出" : "收到呼叫";
     var shown2 = hostPopup(isMine ? "sent" : "call", msg.id || genId(), text || line);
-    if(!shown2){ showToast(msg.id || genId(), title, text || line); }
+    if(!shown2){ showToast(msg.id || genId(), title, text || line, false); }
   }
 }
 function sendCall(){
@@ -958,7 +983,7 @@ function sendCall(){
   var msg = {
     type:"call", id:genId(), cls:allClass, name:names,
     destination:state.dest, remark:state.remark.trim(), text:text,
-    params:JSON.parse(JSON.stringify(state.params)), popstyle:state.popStyle, ts:Date.now()
+    params:JSON.parse(JSON.stringify(state.params)), popstyle:state.popStyle, delay:state.closeDelay, ts:Date.now()
   };
   state.lastSentId = msg.id;
   state.client.publish(callTopic(), JSON.stringify(msg), { qos:1 }, function(err){
@@ -967,7 +992,7 @@ function sendCall(){
     // 呼叫已传出：右下角小屏 + 提示声（桌面版走原生小窗），一直挂到呼叫结束
     if(state.role === "caller"){
       var shown = hostPopup("sent", msg.id, text);
-      if(!shown){ showToast(msg.id, "呼叫已发出", text); }
+      if(!shown){ showToast(msg.id, "呼叫已发出", text, false); }
     }
   });
 }
@@ -1096,6 +1121,16 @@ function sendReply(id, text){
     showToast(genId(), "已回复", "已回复呼叫方：" + t.trim());
   });
 }
+function sendDisplayMsg(id, text, isReply){
+  if(!state.client || !state.connected){ alert("当前未连接，无法发送"); return; }
+  var t = (text === undefined || text === null) ? "" : String(text);
+  if(!t.trim()){ return; }
+  var tp = isReply ? "reply" : "msg";
+  state.client.publish(callTopic(), JSON.stringify({ type:tp, id:id, text:t.trim(), by:"display" }), { qos:1 }, function(err){
+    if(err){ alert("发送失败：" + err.message); return; }
+    showToast(genId(), "已发送", "已发送给呼叫端：" + t.trim());
+  });
+}
 
 /* ================= 大屏队列 ================= */
 function renderQueue(){
@@ -1111,6 +1146,7 @@ function renderQueue(){
 }
 function pumpQueue(){
   if(state.playing || !state.queue.length){ return; }
+  clearTimeout(state.closeTimer);
   state.playing = true;
   renderQueue();
   var q = state.queue[0];
@@ -1128,7 +1164,15 @@ function pumpQueue(){
     closeToast(q.id);
     hostPopup("done", q.id, "");
     if(state.queue.length){ pumpQueue(); }
-    else{ hideStage(); }
+    else{
+      // 1.4.3：字幕保持显示 delay 秒后与消息同时关闭；大屏模式再通知宿主收起窗口
+      var dsec = (typeof state.closeDelay === "number" && state.closeDelay >= 0) ? state.closeDelay : 1;
+      clearTimeout(state.closeTimer);
+      state.closeTimer = setTimeout(function(){
+        hideStage();
+        if(state.popStyle === "big"){ hostMsg({ type:"closeDisplay" }); }
+      }, dsec * 1000);
+    }
   });
 }
 function showStage(q){
@@ -1416,6 +1460,23 @@ function renderPopStyle(){
     box.appendChild(el);
   });
 }
+var CLOSE_DELAYS = [ {v:0, label:"立即"}, {v:1, label:"1 秒"}, {v:3, label:"3 秒"}, {v:5, label:"5 秒"}, {v:10, label:"10 秒"} ];
+function renderCloseDelay(){
+  var box = $("delay-row");
+  if(!box){ return; }
+  box.innerHTML = "";
+  CLOSE_DELAYS.forEach(function(o){
+    var el = document.createElement("div");
+    el.className = "chip" + (state.closeDelay === o.v ? " sel" : "");
+    el.textContent = o.label;
+    el.onclick = function(){
+      state.closeDelay = o.v;
+      lsJsonSet(LS.delay, o.v);
+      renderCloseDelay();
+    };
+    box.appendChild(el);
+  });
+}
 var FONT_SCALES = [ {v:0.85, label:"小"}, {v:1, label:"标准"}, {v:1.15, label:"大"}, {v:1.3, label:"特大"} ];
 function applyFontScale(){
   var s = state.fontScale || 1;
@@ -1583,7 +1644,7 @@ function toastBox(){
 }
 /* 小屏可拖动（鼠标 + 触摸） */
 function makeDraggable(el){
-  var sx = 0, sy = 0, ox = 0, oy = 0, dx = 0, dy = 0, dragging = false, moving = false;
+  var sx = 0, sy = 0, ox = 0, oy = 0, dx = 0, dy = 0, dragging = false, moving = false, isTouch = false;
   function clampV(v, min, max){ return Math.max(min, Math.min(max, v)); }
   function applyPos(){
     var w = el.offsetWidth, h = el.offsetHeight;
@@ -1605,6 +1666,19 @@ function makeDraggable(el){
   }
   function move(x, y, ev){
     if(!dragging){ return; }
+    if(isTouch){
+      // 手机端：弹窗浮在手指上方，避免遮挡手中心
+      var tw = el.offsetWidth, th = el.offsetHeight;
+      var tmaxL = Math.max(0, (window.innerWidth || document.documentElement.clientWidth) - tw - 6);
+      var tmaxT = Math.max(0, (window.innerHeight || document.documentElement.clientHeight) - th - 6);
+      el.style.position = "fixed";
+      el.style.left = clampV(x - tw / 2, 6, tmaxL) + "px";
+      el.style.top = clampV(y - th / 2, 6, tmaxT) + "px";
+      el.style.margin = "0";
+      el.style.animation = "none";
+      if(ev && ev.cancelable){ ev.preventDefault(); }
+      return;
+    }
     dx = x - sx; dy = y - sy;
     if(!moving && Math.abs(dx) < 6 && Math.abs(dy) < 6){ return; }
     moving = true;
@@ -1616,10 +1690,11 @@ function makeDraggable(el){
     dragging = false; moving = false;
     el.classList.remove("drag");
   }
-  el.addEventListener("mousedown", function(e){ start(e.clientX, e.clientY, e); });
+  el.addEventListener("mousedown", function(e){ isTouch = false; start(e.clientX, e.clientY, e); });
   document.addEventListener("mousemove", function(e){ move(e.clientX, e.clientY, e); });
   document.addEventListener("mouseup", function(){ end(); });
   el.addEventListener("touchstart", function(e){
+    isTouch = true;
     var t = e.touches[0];
     start(t.clientX, t.clientY, e);
   }, { passive:false });
@@ -1629,13 +1704,14 @@ function makeDraggable(el){
   }, { passive:false });
   document.addEventListener("touchend", function(){ end(); }, { passive:false });
 }
-function showToast(id, title, text){
+function showToast(id, title, text, auto){
   if(!id){ id = genId(); }
+  if(auto === undefined){ auto = true; }
   var p = toastBox();
   var el = toasts[id];
   if(!el){
     el = document.createElement("div");
-    el.className = "toast-item";
+    el.className = "toast-item" + (auto ? " auto-fade" : "");
     var c = document.createElement("span");
     c.className = "txc"; c.textContent = "✕";
     c.onclick = function(){ closeToast(id); };
@@ -1647,6 +1723,9 @@ function showToast(id, title, text){
     makeDraggable(el);
     toasts[id] = el;
     p.appendChild(el);
+    if(auto){
+      el._to = setTimeout(function(){ closeToast(id); }, 4600);
+    }
   }
   el._t.textContent = title;
   el._x.textContent = text;
@@ -1655,7 +1734,10 @@ function showToast(id, title, text){
 }
 function closeToast(id){
   var el = toasts[id];
-  if(el){ el.remove(); delete toasts[id]; }
+  if(el){
+    if(el._to){ clearTimeout(el._to); }
+    el.remove(); delete toasts[id];
+  }
 }
 /* 桌面宿主通信（Windows 原生小窗/大屏接管）：postMessage 由 C# 侧解析 */
 function hostMsg(obj){
@@ -1734,6 +1816,14 @@ function exitApp(){
 }
 
 /* ================= 初始化 ================= */
+function toggleTermBody(){
+  var body = $("term-body");
+  var ar = $("term-arrow");
+  if(!body){ return; }
+  var show = body.classList.contains("hidden");
+  body.classList.toggle("hidden", !show);
+  if(ar){ ar.textContent = show ? "▾" : "▸"; }
+}
 function init(){
   try{
   state.broker = lsGet(LS.broker, DEFAULT_BROKER);
@@ -1762,15 +1852,24 @@ function init(){
   $("btn-display").onclick = function(){ enter("display"); };
   $("gate-about").onclick = function(){ aboutFrom = "gate"; showPage("about"); };
   var bRepOk = $("btn-reply-ok");
-  if(bRepOk){ bRepOk.onclick = function(){ if(replyCurrentId){ sendReply(replyCurrentId, "知道了"); } }; }
-  var bRepTx = $("btn-reply-text");
-  if(bRepTx){ bRepTx.onclick = function(){
+  if(bRepOk){ bRepOk.onclick = function(){
     if(!replyCurrentId){ return; }
-    var v = prompt("输入回复内容：", "");
-    if(v === null){ return; }
-    v = v.trim();
+    sendDisplayMsg(replyCurrentId, "知道了", true);
+    // 1.4.7：点击「知道了」后大屏立即消失（停止播报、清空队列、退回后台）
+    stopAll();
+    state.queue = [];
+    state.playing = false;
+    renderQueue();
+    hideStage();
+    hostMsg({ type:"closeDisplay" });
+  }; }
+  var dSendBtn = $("d-send-btn");
+  if(dSendBtn){ dSendBtn.onclick = function(){
+    var inp = $("d-send-input");
+    var v = inp ? inp.value.trim() : "";
     if(!v){ return; }
-    sendReply(replyCurrentId, v);
+    if(inp){ inp.value = ""; }
+    sendDisplayMsg(genId(), v, false);
   }; }
   var bWebEntry = $("btn-web-entry");
   if(bWebEntry){
@@ -1864,6 +1963,9 @@ function init(){
   renderFontScale(); applyFontScale();
   renderPaletteRow();
   $("sw-dark").onchange = function(){ lsSet(LS.theme, this.checked ? "dark" : "light"); applyTheme(); };
+  var termToggle = $("term-toggle");
+  if(termToggle){ termToggle.onclick = function(){ toggleTermBody(); }; }
+  renderCloseDelay();
   $("bg-file").onchange = function(){
     var f = this.files && this.files[0];
     if(!f){ return; }

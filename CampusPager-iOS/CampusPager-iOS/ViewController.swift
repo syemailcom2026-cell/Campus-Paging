@@ -54,8 +54,8 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
             showBanner(id: id, text: text)
         case "done":
             dismissBanner(id: id)
-        case "reply":
-            // 接收端回复（知道了 / 文字回复）→ 呼叫端横幅显示
+        case "reply", "msg":
+            // 接收端回复（知道了 / 文字回复）或呼叫结束后发送的消息 → 呼叫端横幅显示
             showBanner(id: id, text: text)
         case "openUrl":
             // 1.4.2：网页版入口——用系统浏览器打开网页版
