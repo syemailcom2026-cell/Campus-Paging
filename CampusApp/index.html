@@ -407,9 +407,11 @@ input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:18px; he
         <div class="ct"><span>终端设置</span></div>
         <div class="d-set-row"><span class="lb">主音量</span><input type="range" id="dg-vol" min="0" max="100" value="100"><span class="val" id="dg-vol-v">100%</span></div>
         <div class="d-set-row"><span class="lb">播报音色</span><select class="voice-select" id="dg-voice"></select></div>
+        <div class="d-set-row"><span class="lb">弹出方式</span><div class="chips" id="pop-style-row" style="flex-wrap:wrap;flex:1;"></div></div>
         <div class="d-btns">
           <button class="btn green" id="btn-test">测试播报</button>
           <button class="btn red" id="btn-stop">停止</button>
+          <button class="btn ghost" id="btn-d-collapse">收起窗口</button>
         </div>
       </div>
     </div>
@@ -471,9 +473,9 @@ var PRESET_TPLS = [
   "请{class}的{name}同学，听到广播后到办公室。",
   "请{name}同学，请家长到校门口来接。"
 ];
-var APP_VERSION = "1.4.0";
+var APP_VERSION = "1.4.1";
 var DEFAULT_DESTS = ["教务处","班主任办公室","年级组办公室","医务室","图书馆","心理咨询室","传达室","家长等候区","操场","报告厅"];
-var LS = { room:"cc_room", broker:"cc_broker", roster:"cc_roster", records:"cc_records", params:"cc_params", tpl:"cc_tpl", dests:"cc_dests", userTpls:"cc_usertpls", appfs:"cc_appfs", theme:"cc_theme", palette:"cc_palette", bgimg:"cc_bgimg" };
+var LS = { room:"cc_room", broker:"cc_broker", roster:"cc_roster", records:"cc_records", params:"cc_params", tpl:"cc_tpl", dests:"cc_dests", userTpls:"cc_usertpls", appfs:"cc_appfs", popstyle:"cc_popstyle", theme:"cc_theme", palette:"cc_palette", bgimg:"cc_bgimg" };
 function lsGet(k, d){ try{ var v = localStorage.getItem(k); return v === null ? d : v; }catch(e){ return d; } }
 function lsSet(k, v){ try{ localStorage.setItem(k, v); }catch(e){} }
 function lsJson(k, d){ try{ var s = lsGet(k, null); if(s === null) return d; return JSON.parse(s); }catch(e){ return d; } }
@@ -491,7 +493,7 @@ var state = {
   roster:[], search:"", curClass:"", curStudent:"", dest:"", remark:"", multi:false, selected:[],
   params:{ repeat:2, interval:0, rate:1.0, pitch:1.0, volume:100, fontSize:34, fontColor:"#e8eefc" },
   tpl:DEFAULT_TPL, dests:JSON.parse(JSON.stringify(DEFAULT_DESTS)),
-  userTpls:[], fontScale:1,
+  userTpls:[], fontScale:1, popStyle:"small",
   queue:[], playing:false, dgVolume:100, dgVoice:"", lastSentId:""
 };
 
@@ -1041,6 +1043,25 @@ var PALETTES = [
   { id:"red", label:"朱砂红", css:"linear-gradient(135deg,#ef4444,#f87171)" },
   { id:"slate", label:"曜石灰", css:"linear-gradient(135deg,#64748b,#94a3b8)" }
 ];
+var POP_STYLES = [ {v:"small", label:"小窗"}, {v:"big", label:"大屏"} ];
+function renderPopStyle(){
+  var box = $("pop-style-row");
+  if(!box){ return; }
+  box.innerHTML = "";
+  POP_STYLES.forEach(function(o){
+    var el = document.createElement("div");
+    el.className = "chip" + (state.popStyle === o.v ? " sel" : "");
+    el.textContent = o.label;
+    el.title = o.v === "small" ? "右下角小窗通知，不遮挡屏幕" : "强制全屏显示播报，播报结束自动退回后台";
+    el.onclick = function(){
+      state.popStyle = o.v;
+      lsJsonSet(LS.popstyle, state.popStyle);
+      renderPopStyle();
+      hostMsg({ type:"popstyle", value:state.popStyle });
+    };
+    box.appendChild(el);
+  });
+}
 var FONT_SCALES = [ {v:0.85, label:"小"}, {v:1, label:"标准"}, {v:1.15, label:"大"}, {v:1.3, label:"特大"} ];
 function applyFontScale(){
   var s = state.fontScale || 1;
@@ -1312,7 +1333,10 @@ function enter(role){
   state.room = room;
   lsSet(LS.room, room);
   // 通知桌面宿主当前角色（大屏端：强制弹出大屏/播完退后台；呼叫端：顶部小屏可拖动）
-  hostMsg({ type:"role", role:role, room:room });
+  hostMsg({ type:"role", role:role, room:room, popstyle:state.popStyle });
+  renderPopStyle();
+  var bDCollapse = $("btn-d-collapse");
+  if(bDCollapse){ bDCollapse.onclick = function(){ hostMsg({ type:"closeDisplay" }); }; }
   $("gate-loading-room").textContent = room;
   $("gate-loading").classList.remove("hidden");
   if(role === "caller"){
@@ -1362,6 +1386,7 @@ function init(){
   var ut = lsJson(LS.userTpls, null);
   if(ut && ut.length){ state.userTpls = ut; }
   state.fontScale = lsJson(LS.appfs, 1);
+  state.popStyle = lsJson(LS.popstyle, "small");
   state.dgVolume = 100;
   $("gate-room").value = lsGet(LS.room, "");
 

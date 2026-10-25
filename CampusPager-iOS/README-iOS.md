@@ -3,7 +3,7 @@
 同款同功能的 iOS 应用：与 Android / Windows 版共用同一份 HTML 真源（`CampusApp/index.html`），
 用原生 **WKWebView** 包装，并补齐 iOS 原生桥接（呼叫横幅 + 提示音）。
 
-版本：**1.4.0**（与 Android / Windows 三端同版本同功能）
+版本：**1.4.1**（与 Android / Windows 三端同版本同功能）
 
 ---
 
@@ -17,9 +17,9 @@ CampusPager-iOS/
     ├── SceneDelegate.swift           # 场景入口
     ├── ViewController.swift          # WKWebView + JS 桥接 + alert/confirm/prompt 支持
     ├── BannerView.swift              # 顶部横幅（呼叫弹出 / 可手动关闭）
-    ├── index.html                    # 与 Android / Windows 同源的真源副本（1.4.0）
+    ├── index.html                    # 与 Android / Windows 同源的真源副本（1.4.1）
     ├── mqtt.min.js                   # MQTT 客户端库（本地引用）
-    ├── Info.plist                    # 显示名"校园传呼"、版本 1.4.0、ATS 配置
+    ├── Info.plist                    # 显示名"校园传呼"、版本 1.4.1、ATS 配置
     ├── Assets.xcassets/              # AppIcon 全套尺寸（含 1024 App Store）
     └── Base.lproj/LaunchScreen.storyboard
 ```

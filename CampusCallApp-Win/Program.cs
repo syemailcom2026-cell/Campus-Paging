@@ -145,6 +145,7 @@ namespace CampusCallWin
         private NotifyIcon _tray;
         private bool _exiting;
         private string _role = "";
+        private string _popStyle = "small";
         private System.Threading.CancellationTokenSource _hideCts;
 
         public MainForm(string autoRoom, string autoRole)
@@ -395,16 +396,40 @@ namespace CampusCallWin
                     {
                         // 页面进入房间后上报角色，决定大屏端/呼叫端的弹窗行为
                         _role = GetStr(root, "role");
+                        // 1.4.1：弹出方式（小窗 / 大屏）由大屏端设置随 role 一并上报
+                        string ps = GetStr(root, "popstyle");
+                        if (!string.IsNullOrEmpty(ps)) _popStyle = ps;
+                    }
+                    else if (type == "popstyle")
+                    {
+                        // 大屏端设置中切换弹出方式
+                        string ps = GetStr(root, "value");
+                        if (!string.IsNullOrEmpty(ps)) _popStyle = ps;
+                    }
+                    else if (type == "closeDisplay")
+                    {
+                        // 大屏手动收起窗口：立即退回后台，取消待执行的延迟退回
+                        CancelHide();
+                        HideToTray();
                     }
                     else if (type == "call")
                     {
                         if (_role == "display")
                         {
-                            // 1.3.1：右下角通知弹窗（不强制弹出大屏、不遮挡主屏），提示声，挂到呼叫结束
                             CancelHide(); // 新广播到达：重置可能正在进行的延迟退回
-                            try { SystemSounds.Exclamation.Play(); } catch { }
-                            ShowPopup(id, "校园传呼 · 收到广播",
-                                string.IsNullOrEmpty(text) ? "收到一条呼叫" : text, true);
+                            if (_popStyle == "big")
+                            {
+                                // 1.4.1 大屏模式：强制全屏弹出显示播报（不弹小窗），播报结束由 done 处理退回后台
+                                ForceToFront();
+                                try { SystemSounds.Exclamation.Play(); } catch { }
+                            }
+                            else
+                            {
+                                // 小窗模式（默认）：右下角通知弹窗，提示声，挂到呼叫结束
+                                try { SystemSounds.Exclamation.Play(); } catch { }
+                                ShowPopup(id, "校园传呼 · 收到广播",
+                                    string.IsNullOrEmpty(text) ? "收到一条呼叫" : text, true);
+                            }
                         }
                         else
                         {
