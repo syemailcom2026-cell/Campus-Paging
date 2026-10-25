@@ -437,6 +437,15 @@ namespace CampusCallWin
                                 string.IsNullOrEmpty(text) ? "收到一条呼叫" : text);
                         }
                     }
+                    else if (type == "openUrl")
+                    {
+                        // 1.4.2：网页版入口——用系统默认浏览器打开网页版
+                        string u = GetStr(root, "url");
+                        if (!string.IsNullOrEmpty(u))
+                        {
+                            try { System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(u) { UseShellExecute = true }); } catch { }
+                        }
+                    }
                     else if (type == "sent")
                     {
                         // 呼叫端：呼叫已发出 → 顶部小屏（可拖动），挂到呼叫结束

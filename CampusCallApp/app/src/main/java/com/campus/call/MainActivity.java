@@ -43,6 +43,18 @@ public class MainActivity extends Activity {
         s.setCacheMode(WebSettings.LOAD_DEFAULT);
 
         webView.setWebViewClient(new WebViewClient());
+        // 1.4.2：网页版入口——点击后经此桥打开系统浏览器访问网页版
+        webView.addJavascriptInterface(new Object() {
+            @android.webkit.JavascriptInterface
+            public void openUrl(String url) {
+                runOnUiThread(() -> {
+                    try {
+                        startActivity(new android.content.Intent(android.content.Intent.ACTION_VIEW,
+                                android.net.Uri.parse(url)));
+                    } catch (Exception ignored) { }
+                });
+            }
+        }, "CampusNative");
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public boolean onJsConfirm(WebView view, String url, String message, JsResult result) {

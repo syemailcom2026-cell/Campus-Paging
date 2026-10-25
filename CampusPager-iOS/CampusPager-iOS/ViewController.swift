@@ -54,6 +54,13 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
             showBanner(id: id, text: text)
         case "done":
             dismissBanner(id: id)
+        case "openUrl":
+            // 1.4.2：网页版入口——用系统浏览器打开网页版
+            if let urlString = body["url"] as? String,
+               let url = URL(string: urlString),
+               UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            }
         default:
             break
         }

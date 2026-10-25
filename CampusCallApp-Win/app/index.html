@@ -434,6 +434,7 @@ input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:18px; he
       · 两端填写相同 6 位房间号即可互联。<br><br>
       消息通过 MQTT 公共服务器转发（主题 campus/call/房间号），无需注册、免自建服务器。由 <b style="color:var(--text);">symonolith</b> 开发维护。
     </div>
+    <button class="btn blue" id="btn-web-entry" style="margin-bottom:10px;">网页版入口</button>
     <button class="btn" id="btn-about-back">返回</button>
   </div>
 </div>
@@ -473,7 +474,8 @@ var PRESET_TPLS = [
   "请{class}的{name}同学，听到广播后到办公室。",
   "请{name}同学，请家长到校门口来接。"
 ];
-var APP_VERSION = "1.4.1";
+var PAGES_URL = "https://syemailcom2026-cell.github.io/Campus-Paging/";
+var APP_VERSION = "1.4.2";
 var DEFAULT_DESTS = ["教务处","班主任办公室","年级组办公室","医务室","图书馆","心理咨询室","传达室","家长等候区","操场","报告厅"];
 var LS = { room:"cc_room", broker:"cc_broker", roster:"cc_roster", records:"cc_records", params:"cc_params", tpl:"cc_tpl", dests:"cc_dests", userTpls:"cc_usertpls", appfs:"cc_appfs", popstyle:"cc_popstyle", theme:"cc_theme", palette:"cc_palette", bgimg:"cc_bgimg" };
 function lsGet(k, d){ try{ var v = localStorage.getItem(k); return v === null ? d : v; }catch(e){ return d; } }
@@ -1317,6 +1319,10 @@ function hostMsg(obj){
       return true;
     }catch(e){ return false; }
   }
+  /* Android：原生桥仅提供 openUrl（打开系统浏览器） */
+  if(obj && obj.type === "openUrl" && window.CampusNative && window.CampusNative.openUrl){
+    try{ window.CampusNative.openUrl(String(obj.url || "")); return true; }catch(e){ return false; }
+  }
   return false;
 }
 function hostPopup(type, id, text){ return hostMsg({ type:type, id:id, text:text }); }
@@ -1402,6 +1408,14 @@ function init(){
   $("btn-caller").onclick = function(){ enter("caller"); };
   $("btn-display").onclick = function(){ enter("display"); };
   $("gate-about").onclick = function(){ aboutFrom = "gate"; showPage("about"); };
+  var bWebEntry = $("btn-web-entry");
+  if(bWebEntry){
+    bWebEntry.onclick = function(){
+      // 打开系统浏览器访问网页版（Windows / Android / iOS 均经原生桥；纯浏览器环境直接新开标签）
+      hostMsg({ type:"openUrl", url:PAGES_URL });
+      window.open(PAGES_URL, "_blank");
+    };
+  }
   $("btn-about-back").onclick = function(){
     // 1.2.8：从设置打开的关于页，返回时回到原界面（不再跳回房间号页）
     if(aboutFrom === "gate"){ showPage("gate"); }
