@@ -21,44 +21,44 @@ body.palette-green{ --blue:#10b981; --cyan:#6ee7b7; }
 body.palette-red{ --blue:#ef4444; --cyan:#f87171; }
 body.palette-slate{ --blue:#64748b; --cyan:#94a3b8; }
 html,body{ height:100%; }
-body{ background:var(--bg); color:var(--text); font-family:-apple-system,"PingFang SC","Microsoft YaHei",system-ui,sans-serif; font-size:15px; overflow:hidden; }
+body{ background:var(--bg); color:var(--text); font-family:-apple-system,"PingFang SC","Microsoft YaHei",system-ui,sans-serif; font-size:0.9375rem; overflow:hidden; }
 .hidden{ display:none !important; }
 .page{ position:absolute; inset:0; display:flex; flex-direction:column; background:var(--bg); }
 
 /* ===== 顶栏 ===== */
 .topbar{ display:flex; align-items:center; gap:10px; padding:10px 14px; background:var(--panel); border-bottom:1px solid var(--line); flex:0 0 auto; }
 .tb-l{ flex:1; min-width:0; }
-.tb-l .t1{ font-size:15px; font-weight:700; }
-.tb-l .t2{ font-size:11px; color:var(--sub); margin-top:1px; }
-.tb-r{ display:flex; align-items:center; gap:10px; font-size:12px; color:var(--sub); white-space:nowrap; }
+.tb-l .t1{ font-size:0.9375rem; font-weight:700; }
+.tb-l .t2{ font-size:0.6875rem; color:var(--sub); margin-top:1px; }
+.tb-r{ display:flex; align-items:center; gap:10px; font-size:0.75rem; color:var(--sub); white-space:nowrap; }
 .presence{ display:flex; align-items:center; gap:4px; }
 .presence .dot{ width:8px; height:8px; border-radius:50%; background:var(--dim); }
 .presence .dot.on{ background:var(--green); box-shadow:0 0 8px var(--green); }
 .tb-r .clock{ font-variant-numeric:tabular-nums; }
-.exit-btn{ background:none; border:none; color:var(--red); font-size:13px; cursor:pointer; font-family:inherit; }
+.exit-btn{ background:none; border:none; color:var(--red); font-size:0.8125rem; cursor:pointer; font-family:inherit; }
 
 /* ===== Tab 栏 ===== */
 .tabs{ display:flex; background:var(--panel); border-bottom:1px solid var(--line); flex:0 0 auto; }
-.tab{ flex:1; padding:11px 0 10px; text-align:center; font-size:15px; color:var(--sub); cursor:pointer; border-bottom:2px solid transparent; }
+.tab{ flex:1; padding:11px 0 10px; text-align:center; font-size:0.9375rem; color:var(--sub); cursor:pointer; border-bottom:2px solid transparent; }
 .tab.on{ color:var(--cyan); border-bottom-color:var(--cyan); font-weight:600; }
 
 /* ===== 通用 ===== */
 .body{ flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; padding:12px 12px 20px; }
-.sect{ font-size:12px; color:var(--sub); letter-spacing:1px; margin:14px 4px 8px; display:flex; align-items:center; gap:8px; }
-.sect .right{ margin-left:auto; font-size:12px; color:var(--blue); cursor:pointer; }
-#multi-toggle{ font-size:12px; color:var(--blue); cursor:pointer; padding:3px 10px; border:1px solid var(--blue); border-radius:12px; user-select:none; }
+.sect{ font-size:0.75rem; color:var(--sub); letter-spacing:1px; margin:14px 4px 8px; display:flex; align-items:center; gap:8px; }
+.sect .right{ margin-left:auto; font-size:0.75rem; color:var(--blue); cursor:pointer; }
+#multi-toggle{ font-size:0.75rem; color:var(--blue); cursor:pointer; padding:3px 10px; border:1px solid var(--blue); border-radius:12px; user-select:none; }
 #multi-toggle.on{ background:var(--blue); color:#fff; font-weight:600; }
 #btn-roster-link{ margin-left:10px; }
 .card{ background:var(--card); border:1px solid var(--line); border-radius:12px; padding:12px; }
 .rowline{ display:flex; align-items:center; gap:10px; }
-.btn{ background:var(--card2); color:var(--text); border:1px solid var(--line); border-radius:10px; padding:10px 16px; font-size:14px; cursor:pointer; font-family:inherit; }
+.btn{ background:var(--card2); color:var(--text); border:1px solid var(--line); border-radius:10px; padding:10px 16px; font-size:0.875rem; cursor:pointer; font-family:inherit; }
 .btn.blue{ background:linear-gradient(135deg,var(--blue),var(--cyan)); border:none; color:#fff; font-weight:600; }
 .btn.green{ background:rgba(34,197,94,.15); border:1px solid rgba(34,197,94,.4); color:var(--green); }
 .btn.red{ background:rgba(239,68,68,.12); border:1px solid rgba(239,68,68,.4); color:var(--red); }
-.btn.ghost{ background:none; border:none; color:var(--sub); font-size:13px; }
+.btn.ghost{ background:none; border:none; color:var(--sub); font-size:0.8125rem; }
 input[type=text],input[type=search],textarea{
   width:100%; background:var(--panel); border:1px solid var(--line); border-radius:10px;
-  color:var(--text); font-size:14px; padding:11px 12px; outline:none; font-family:inherit;
+  color:var(--text); font-size:0.875rem; padding:11px 12px; outline:none; font-family:inherit;
 }
 input:focus,textarea:focus{ border-color:var(--blue); }
 input::placeholder,textarea::placeholder{ color:var(--dim); }
@@ -67,121 +67,121 @@ input::placeholder,textarea::placeholder{ color:var(--dim); }
 #gate{ align-items:center; justify-content:center; background:var(--bg); }
 .gate-card{ width:min(430px,92vw); background:var(--panel); border:1px solid var(--line); border-radius:18px; padding:34px 28px; text-align:center; box-shadow:0 18px 50px rgba(0,0,0,.35); }
 .gate-logo{ width:64px; height:64px; margin:0 auto 14px; border-radius:16px; background:linear-gradient(135deg,var(--blue),var(--cyan)); display:flex; align-items:center; justify-content:center; }
-.gate-title{ font-size:24px; font-weight:800; letter-spacing:1px; }
-.gate-sub{ font-size:13px; color:var(--sub); margin-top:6px; }
-.gate-label{ font-size:12px; color:var(--sub); text-align:left; margin:22px 0 6px; }
-.gate-room{ text-align:center; font-size:20px; letter-spacing:6px; }
-.gate-err{ color:var(--red); font-size:12px; min-height:16px; margin-top:6px; text-align:left; }
+.gate-title{ font-size:1.5rem; font-weight:800; letter-spacing:1px; }
+.gate-sub{ font-size:0.8125rem; color:var(--sub); margin-top:6px; }
+.gate-label{ font-size:0.75rem; color:var(--sub); text-align:left; margin:22px 0 6px; }
+.gate-room{ text-align:center; font-size:1.25rem; letter-spacing:6px; }
+.gate-err{ color:var(--red); font-size:0.75rem; min-height:16px; margin-top:6px; text-align:left; }
 .gate-btns{ display:flex; gap:12px; margin-top:18px; }
 .gate-btns .btn{ flex:1; padding:13px 0; text-align:center; }
-.gate-btns .btn .bn{ font-size:15px; font-weight:700; display:block; }
-.gate-btns .btn .bd{ font-size:11px; color:var(--sub); margin-top:3px; display:block; }
-.gate-loading{ font-size:13px; color:var(--blue); margin-top:18px; }
+.gate-btns .btn .bn{ font-size:0.9375rem; font-weight:700; display:block; }
+.gate-btns .btn .bd{ font-size:0.6875rem; color:var(--sub); margin-top:3px; display:block; }
+.gate-loading{ font-size:0.8125rem; color:var(--blue); margin-top:18px; }
 
 /* ===== 呼叫页 ===== */
 .searchbox{ position:relative; }
 .searchbox input{ padding-left:34px; }
-.searchbox::before{ content:"🔍"; position:absolute; left:11px; top:50%; transform:translateY(-50%); font-size:12px; color:var(--dim); }
+.searchbox::before{ content:"🔍"; position:absolute; left:11px; top:50%; transform:translateY(-50%); font-size:0.75rem; color:var(--dim); }
 .chips{ display:flex; gap:8px; overflow-x:auto; padding:2px; -webkit-overflow-scrolling:touch; }
-.chip{ flex:0 0 auto; padding:7px 14px; border-radius:16px; background:var(--card); border:1px solid var(--line); font-size:13px; color:var(--sub); cursor:pointer; }
+.chip{ flex:0 0 auto; padding:7px 14px; border-radius:16px; background:var(--card); border:1px solid var(--line); font-size:0.8125rem; color:var(--sub); cursor:pointer; }
 .chip.sel{ background:var(--blue); border-color:var(--blue); color:#fff; font-weight:600; }
 .stu-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
 .stu{ background:var(--card); border:1px solid var(--line); border-radius:10px; padding:9px 6px; text-align:center; cursor:pointer; }
-.stu .n{ font-size:14px; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.stu .c{ font-size:11px; color:var(--sub); margin-top:2px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.stu .n{ font-size:0.875rem; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.stu .c{ font-size:0.6875rem; color:var(--sub); margin-top:2px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .stu.sel{ background:rgba(56,189,248,.16); border-color:var(--blue); }
 .stu.sel .n{ color:var(--blue); }
 .detail-card{ display:flex; align-items:center; gap:12px; }
-.detail-card .avatar{ width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg,#0ea5e9,#22d3ee); display:flex; align-items:center; justify-content:center; font-size:18px; font-weight:800; color:#fff; flex:0 0 auto; }
-.detail-card .dn{ font-size:17px; font-weight:700; }
-.detail-card .dc{ font-size:12px; color:var(--sub); margin-top:2px; }
-.detail-card .dempty{ font-size:13px; color:var(--dim); }
+.detail-card .avatar{ width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg,#0ea5e9,#22d3ee); display:flex; align-items:center; justify-content:center; font-size:1.125rem; font-weight:800; color:#fff; flex:0 0 auto; }
+.detail-card .dn{ font-size:1.0625rem; font-weight:700; }
+.detail-card .dc{ font-size:0.75rem; color:var(--sub); margin-top:2px; }
+.detail-card .dempty{ font-size:0.8125rem; color:var(--dim); }
 .dest-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:8px; }
-.dest{ background:var(--card); border:1px solid var(--line); border-radius:10px; padding:10px 6px; text-align:center; font-size:13px; cursor:pointer; }
+.dest{ background:var(--card); border:1px solid var(--line); border-radius:10px; padding:10px 6px; text-align:center; font-size:0.8125rem; cursor:pointer; }
 .dest.sel{ background:rgba(56,189,248,.16); border-color:var(--blue); color:var(--blue); font-weight:600; }
 .dest-input{ margin-top:8px; }
-.preview{ background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:12px; font-size:15px; line-height:1.7; color:#dbe6f5; }
+.preview{ background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:12px; font-size:0.9375rem; line-height:1.7; color:#dbe6f5; }
 .preview .pv-empty{ color:var(--dim); }
+.preview-input{ width:100%; background:var(--card2); color:var(--text); border:1px solid var(--line); border-radius:10px; padding:10px; font-size:0.9375rem; line-height:1.7; min-height:64px; resize:vertical; font-family:inherit; }
+/* 功能分区（自定义页等，明显区隔） */
+.fgroup{ background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:12px; margin-bottom:14px; }
+.fgroup .fhead{ display:flex; align-items:center; gap:8px; padding-bottom:8px; border-bottom:1px solid var(--line); margin-bottom:10px; font-size:0.875rem; font-weight:700; color:var(--text); }
+.fgroup .fhead .fic{ width:8px; height:8px; border-radius:50%; background:var(--cyan); flex:0 0 auto; box-shadow:0 0 6px var(--cyan); }
+.fgroup .fhead .fright{ margin-left:auto; font-size:0.75rem; color:var(--blue); cursor:pointer; user-select:none; }
+.fgroup .fbody{ display:flex; flex-direction:column; gap:8px; }
+.chip.x{ padding:6px 9px; background:transparent; color:var(--red); border-color:var(--red); font-size:0.75rem; }
+.toast-item.drag{ cursor:grabbing; box-shadow:0 10px 30px rgba(0,0,0,.6); border-color:var(--cyan); }
 .action-row{ display:flex; gap:10px; margin-top:14px; }
-.action-row .btn{ flex:1; padding:13px 0; font-size:15px; }
+.action-row .btn{ flex:1; padding:13px 0; font-size:0.9375rem; }
 .more-dests{ margin-top:8px; display:flex; flex-wrap:wrap; gap:8px; }
 .more-dests .dest{ flex:0 0 calc(50% - 4px); }
 
 /* ===== 记录页 ===== */
 .rec-list{ display:flex; flex-direction:column; gap:8px; }
-.rec-item{ background:var(--card); border:1px solid var(--line); border-radius:10px; padding:10px 12px; font-size:13px; color:#dbe6f5; }
-.rec-item .rt{ font-size:11px; color:var(--sub); margin-bottom:3px; }
+.rec-item{ background:var(--card); border:1px solid var(--line); border-radius:10px; padding:10px 12px; font-size:0.8125rem; color:#dbe6f5; }
+.rec-item .rt{ font-size:0.6875rem; color:var(--sub); margin-bottom:3px; }
 .rec-empty{ color:var(--dim); text-align:center; padding:40px 0; }
 
-/* ===== 自定义播报内容 ===== */
-.custom-list{ display:flex; flex-direction:column; gap:8px; }
-.custom-item{ background:var(--card); border:1px solid var(--line); border-radius:10px; padding:10px 12px; font-size:13px; color:#dbe6f5; line-height:1.6; }
-.custom-item .ops{ float:right; color:var(--dim); cursor:pointer; margin-left:10px; font-size:12px; padding:2px; }
-.custom-item .ops .op{ padding:2px 6px; margin-left:6px; border:1px solid var(--line); border-radius:6px; }
-.custom-item .ops .op:hover{ color:var(--blue); border-color:var(--blue); }
-#custom-editor{ padding:12px; }
 .vchip{ cursor:grab; user-select:none; border-style:dashed; }
 .vchip:active{ cursor:grabbing; }
-#custom-txt-input{ width:100%; box-sizing:border-box; background:var(--bg); border:1px solid var(--line); border-radius:10px; color:var(--fg); font-size:14px; padding:10px; margin-top:10px; resize:vertical; min-height:64px; }
-#custom-txt-input:focus{ outline:none; border-color:var(--blue); }
 
 /* ===== 设置页 ===== */
-.grp{ margin:14px 2px 6px; font-size:11px; font-weight:700; letter-spacing:1px; color:var(--sub); text-transform:uppercase; }
-#pull-hint{ position:fixed; top:0; left:50%; transform:translateX(-50%) translateY(-46px); background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:4px 14px; font-size:12px; color:var(--sub); z-index:999; transition:transform .2s, color .2s; pointer-events:none; box-shadow:0 4px 14px rgba(0,0,0,.25); }
+.grp{ margin:14px 2px 6px; font-size:0.6875rem; font-weight:700; letter-spacing:1px; color:var(--sub); text-transform:uppercase; }
+#pull-hint{ position:fixed; top:0; left:50%; transform:translateX(-50%) translateY(-46px); background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:4px 14px; font-size:0.75rem; color:var(--sub); z-index:999; transition:transform .2s, color .2s; pointer-events:none; box-shadow:0 4px 14px rgba(0,0,0,.25); }
 #pull-hint.pull{ transform:translateX(-50%) translateY(10px); }
 #pull-hint.ok{ transform:translateX(-50%) translateY(10px); color:var(--cyan); }
 .param{ margin-bottom:14px; }
-.param .pl{ display:flex; justify-content:space-between; font-size:13px; color:var(--sub); margin-bottom:6px; }
-.param .pl b{ color:var(--text); font-size:14px; }
+.param .pl{ display:flex; justify-content:space-between; font-size:0.8125rem; color:var(--sub); margin-bottom:6px; }
+.param .pl b{ color:var(--text); font-size:0.875rem; }
 input[type=range]{ width:100%; appearance:none; -webkit-appearance:none; height:6px; border-radius:3px; background:var(--card2); outline:none; }
 input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:18px; height:18px; border-radius:50%; background:var(--cyan); cursor:pointer; box-shadow:0 0 8px rgba(34,211,238,.4); }
-.var-hint{ font-size:12px; color:var(--sub); line-height:1.8; background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:8px 10px; margin-bottom:8px; }
-.tpl-example{ font-size:12px; color:var(--dim); margin-top:6px; }
+.var-hint{ font-size:0.75rem; color:var(--sub); line-height:1.8; background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:8px 10px; margin-bottom:8px; }
+.tpl-example{ font-size:0.75rem; color:var(--dim); margin-top:6px; }
 
 /* ===== 大屏端 ===== */
 #display{ background:var(--bg); }
-.d-title{ font-size:15px; font-weight:700; }
-.d-sub{ font-size:11px; color:var(--sub); margin-top:1px; }
+.d-title{ font-size:0.9375rem; font-weight:700; }
+.d-sub{ font-size:0.6875rem; color:var(--sub); margin-top:1px; }
 .d-main{ flex:1; display:flex; flex-direction:column; gap:12px; padding:16px; min-height:0; overflow-y:auto; }
 .d-stage{ background:var(--panel); border:1px solid var(--line); border-radius:16px; flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; text-align:center; padding:20px; min-height:240px; }
-.d-stage .st-badge{ font-size:13px; color:var(--cyan); letter-spacing:3px; }
-.d-stage .st-msg{ font-size:34px; font-weight:800; line-height:1.4; max-width:900px; }
-.d-stage .st-room{ font-size:12px; color:var(--dim); margin-top:4px; }
-.d-stage .st-empty{ color:var(--dim); font-size:15px; }
+.d-stage .st-badge{ font-size:0.8125rem; color:var(--cyan); letter-spacing:3px; }
+.d-stage .st-msg{ font-size:2.125rem; font-weight:800; line-height:1.4; max-width:900px; }
+.d-stage .st-room{ font-size:0.75rem; color:var(--dim); margin-top:4px; }
+.d-stage .st-empty{ color:var(--dim); font-size:0.9375rem; }
 .d-bottom{ display:flex; gap:12px; flex:0 0 auto; }
 .d-col{ flex:1; background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:12px; min-width:0; }
-.d-col .ct{ font-size:13px; color:var(--sub); display:flex; align-items:center; gap:6px; margin-bottom:8px; }
-.d-col .ct .right{ margin-left:auto; font-size:12px; color:var(--blue); cursor:pointer; }
-.q-item{ background:var(--card); border:1px solid var(--line); border-radius:8px; padding:8px 10px; margin-bottom:6px; font-size:13px; }
+.d-col .ct{ font-size:0.8125rem; color:var(--sub); display:flex; align-items:center; gap:6px; margin-bottom:8px; }
+.d-col .ct .right{ margin-left:auto; font-size:0.75rem; color:var(--blue); cursor:pointer; }
+.q-item{ background:var(--card); border:1px solid var(--line); border-radius:8px; padding:8px 10px; margin-bottom:6px; font-size:0.8125rem; }
 .q-item .qt{ color:#dbe6f5; line-height:1.5; }
-.q-item .qm{ font-size:11px; color:var(--sub); margin-top:3px; }
+.q-item .qm{ font-size:0.6875rem; color:var(--sub); margin-top:3px; }
 .q-item.playing{ border-color:var(--cyan); box-shadow:0 0 10px rgba(34,211,238,.15); }
-.q-empty{ color:var(--dim); font-size:12px; text-align:center; padding:14px 0; }
-.voice-select{ width:100%; background:var(--panel); border:1px solid var(--line); border-radius:10px; color:var(--text); font-size:13px; padding:10px; }
+.q-empty{ color:var(--dim); font-size:0.75rem; text-align:center; padding:14px 0; }
+.voice-select{ width:100%; background:var(--panel); border:1px solid var(--line); border-radius:10px; color:var(--text); font-size:0.8125rem; padding:10px; }
 .d-set-row{ display:flex; align-items:center; gap:10px; margin-bottom:10px; }
-.d-set-row .lb{ font-size:12px; color:var(--sub); width:56px; flex:0 0 auto; }
-.d-set-row .val{ font-size:12px; color:var(--text); width:44px; text-align:right; flex:0 0 auto; }
+.d-set-row .lb{ font-size:0.75rem; color:var(--sub); width:56px; flex:0 0 auto; }
+.d-set-row .val{ font-size:0.75rem; color:var(--text); width:44px; text-align:right; flex:0 0 auto; }
 .d-btns{ display:flex; gap:10px; margin-top:6px; }
-.d-btns .btn{ flex:1; padding:10px 0; font-size:14px; }
+.d-btns .btn{ flex:1; padding:10px 0; font-size:0.875rem; }
 
 /* ===== 关于页 ===== */
 #about{ background:var(--bg); align-items:center; justify-content:center; }
 .about-card{ width:min(400px,92vw); background:var(--panel); border:1px solid var(--line); border-radius:18px; padding:32px 26px; text-align:center; }
 .about-card .a-logo{ width:72px; height:72px; margin:0 auto 12px; border-radius:18px; background:linear-gradient(135deg,var(--blue),var(--cyan)); display:flex; align-items:center; justify-content:center; }
-.about-card .a-name{ font-size:22px; font-weight:800; }
-.about-card .a-ver{ font-size:13px; color:var(--sub); margin-top:4px; }
-.about-card .a-edition{ font-size:12px; color:var(--amber); margin-top:2px; font-weight:700; letter-spacing:1px; }
-.about-card .a-team{ font-size:13px; color:var(--blue); margin-top:2px; font-weight:600; }
-.about-card .a-desc{ font-size:13px; color:var(--sub); line-height:1.9; margin-top:16px; text-align:left; }
+.about-card .a-name{ font-size:1.375rem; font-weight:800; }
+.about-card .a-ver{ font-size:0.8125rem; color:var(--sub); margin-top:4px; }
+.about-card .a-edition{ font-size:0.75rem; color:var(--amber); margin-top:2px; font-weight:700; letter-spacing:1px; }
+.about-card .a-team{ font-size:0.8125rem; color:var(--blue); margin-top:2px; font-weight:600; }
+.about-card .a-desc{ font-size:0.8125rem; color:var(--sub); line-height:1.9; margin-top:16px; text-align:left; }
 .about-card .btn{ margin-top:18px; width:100%; }
 
 /* ===== 呼叫小屏（屏幕正上方，可拖动） ===== */
 .toast-panel{ position:fixed; top:12px; left:50%; transform:translateX(-50%); z-index:999; display:flex; flex-direction:column; align-items:center; gap:8px; max-width:min(340px,88vw); }
 .toast-item{ position:relative; background:var(--panel); border:1px solid var(--blue); border-radius:12px; padding:10px 26px 10px 12px; box-shadow:0 8px 24px rgba(0,0,0,.45); animation:toast-in .25s ease; cursor:grab; user-select:none; }
-.toast-item .tt{ font-size:12px; color:var(--blue); font-weight:700; margin-bottom:4px; }
-.toast-item .tx{ font-size:13px; color:var(--text); line-height:1.5; }
-.toast-item .tc{ font-size:11px; color:var(--sub); margin-top:4px; }
-.toast-item .txc{ position:absolute; top:6px; right:9px; color:var(--dim); cursor:pointer; font-size:13px; }
+.toast-item .tt{ font-size:0.75rem; color:var(--blue); font-weight:700; margin-bottom:4px; }
+.toast-item .tx{ font-size:0.8125rem; color:var(--text); line-height:1.5; }
+.toast-item .tc{ font-size:0.6875rem; color:var(--sub); margin-top:4px; }
+.toast-item .txc{ position:absolute; top:6px; right:9px; color:var(--dim); cursor:pointer; font-size:0.8125rem; }
 @keyframes toast-in{ from{ transform:translateY(-12px); opacity:0; } to{ transform:none; opacity:1; } }
 /* 1.3.1 名单面板 / 分组 / 随机房间号 */
 .gate-room-row{ display:flex; gap:8px; }
@@ -189,15 +189,15 @@ input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:18px; he
 .roster-panel{ position:fixed; inset:0; background:rgba(0,0,0,.55); z-index:99; display:flex; align-items:center; justify-content:center; padding:20px; }
 .roster-panel.hidden{ display:none; }
 .roster-box{ width:min(540px,94vw); max-height:86vh; overflow:auto; background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:20px; box-sizing:border-box; }
-.rp-title{ font-size:16px; font-weight:700; margin-bottom:8px; }
-.rp-hint{ font-size:12px; color:var(--sub); line-height:1.7; margin-bottom:10px; }
-.roster-box textarea{ width:100%; box-sizing:border-box; background:var(--card); color:var(--text); border:1px solid var(--line); border-radius:8px; padding:10px; font-size:13px; line-height:1.7; resize:vertical; min-height:170px; }
+.rp-title{ font-size:1.0rem; font-weight:700; margin-bottom:8px; }
+.rp-hint{ font-size:0.75rem; color:var(--sub); line-height:1.7; margin-bottom:10px; }
+.roster-box textarea{ width:100%; box-sizing:border-box; background:var(--card); color:var(--text); border:1px solid var(--line); border-radius:8px; padding:10px; font-size:0.8125rem; line-height:1.7; resize:vertical; min-height:170px; }
 .chip.add{ border-style:dashed; color:var(--cyan); cursor:pointer; }
 .stu-add-bar{ grid-column:1/-1; display:flex; align-items:center; gap:10px; padding:4px 2px 10px; }
-.add-stu-btn{ color:var(--cyan); font-weight:700; font-size:13px; cursor:pointer; padding:6px 14px; border:1px dashed var(--cyan); border-radius:8px; background:rgba(56,189,248,.06); }
-.stu-add-bar .hint{ font-size:11px; color:var(--dim); }
+.add-stu-btn{ color:var(--cyan); font-weight:700; font-size:0.8125rem; cursor:pointer; padding:6px 14px; border:1px dashed var(--cyan); border-radius:8px; background:rgba(56,189,248,.06); }
+.stu-add-bar .hint{ font-size:0.6875rem; color:var(--dim); }
 /* 1.3.0 外观设置控件 */
-.set-row{ display:flex; align-items:center; justify-content:space-between; font-size:14px; color:var(--text); }
+.set-row{ display:flex; align-items:center; justify-content:space-between; font-size:0.875rem; color:var(--text); }
 .switch{ position:relative; width:46px; height:24px; flex:0 0 auto; }
 .switch input{ opacity:0; width:0; height:0; }
 .switch .sl{ position:absolute; inset:0; background:var(--card2); border:1px solid var(--line); border-radius:12px; transition:.2s; cursor:pointer; }
@@ -205,7 +205,7 @@ input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:18px; he
 .switch input:checked + .sl{ background:var(--blue); border-color:var(--blue); }
 .switch input:checked + .sl::before{ transform:translateX(22px); }
 .palette-row{ display:flex; gap:10px; flex-wrap:wrap; margin-top:6px; }
-.pal{ flex:1; min-width:70px; text-align:center; padding:8px 0; border-radius:10px; color:#fff; font-size:12px; cursor:pointer; border:2px solid transparent; user-select:none; }
+.pal{ flex:1; min-width:70px; text-align:center; padding:8px 0; border-radius:10px; color:#fff; font-size:0.75rem; cursor:pointer; border:2px solid transparent; user-select:none; }
 .pal.on{ border-color:var(--text); box-shadow:0 0 0 2px var(--bg), 0 0 10px rgba(0,0,0,.25); }
 .font-color-row{ display:flex; gap:12px; flex-wrap:wrap; margin-top:8px; }
 .fc{ width:26px; height:26px; border-radius:8px; cursor:pointer; border:2px solid transparent; }
@@ -255,75 +255,89 @@ input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:18px; he
 
   <!-- 呼叫 tab -->
   <div class="body" id="tab-call">
-    <div class="sect"><span>选择学生</span><span id="stu-count"></span><span class="right"><span id="multi-toggle">多选</span><span id="btn-roster-link">名单 ✎</span></span></div>
-    <div class="searchbox"><input type="search" id="stu-search" placeholder="搜索姓名或班级..."></div>
-    <div class="sect" style="margin-top:10px;"></div>
-    <div class="chips" id="class-chips"></div>
-    <div class="sect" style="margin-top:10px;"></div>
-    <div class="stu-grid" id="stu-grid"></div>
-    <div class="sect">呼叫详情</div>
-    <div class="card detail-card" id="detail-box">
-      <div class="avatar" id="det-av">?</div>
-      <div class="dempty" id="det-empty">尚未选择学生</div>
-      <div style="display:none;" id="det-info"><div class="dn" id="det-name"></div><div class="dc" id="det-class"></div></div>
+    <div class="fgroup">
+      <div class="fhead"><span class="fic"></span>选择学生<span id="stu-count" style="font-size:0.75rem;color:var(--sub);font-weight:400;"></span><span class="fright"><span id="multi-toggle">多选</span><span id="btn-roster-link" style="margin-left:10px;">名单 ✎</span></span></div>
+      <div class="fbody">
+        <div class="searchbox"><input type="search" id="stu-search" placeholder="搜索姓名或班级..."></div>
+        <div class="chips" id="class-chips"></div>
+        <div class="stu-grid" id="stu-grid"></div>
+      </div>
     </div>
-    <div id="dest-section">
-      <div class="sect">呼叫目的地</div>
-    <div class="dest-grid" id="dest-quick"></div>
-    <button class="btn ghost" id="dest-more" style="width:100%;margin-top:8px;">更多目的地 ▾</button>
-    <div class="more-dests hidden" id="dest-more-list"></div>
-    <input type="text" class="dest-input" id="dest-custom" placeholder="或输入其他目的地..." autocomplete="off">
+    <div class="fgroup">
+      <div class="fhead"><span class="fic"></span>呼叫详情</div>
+      <div class="fbody">
+        <div class="card detail-card" id="detail-box">
+          <div class="avatar" id="det-av">?</div>
+          <div class="dempty" id="det-empty">尚未选择学生</div>
+          <div style="display:none;" id="det-info"><div class="dn" id="det-name"></div><div class="dc" id="det-class"></div></div>
+        </div>
+      </div>
     </div>
-    <div class="sect">播报内容</div>
-    <div class="chips" id="tpl-custom-chips" style="flex-wrap:wrap;"></div>
-    <div class="sect">附加备注（可选）</div>
-    <input type="text" id="remark" placeholder="例如：带上作业本 / 家长已到校门口" autocomplete="off">
-    <div class="sect">播报内容预览</div>
-    <div class="preview" id="preview">选择学生与目的地后自动生成...</div>
-    <div class="action-row">
-      <button class="btn blue" id="btn-send">📢 发送呼叫</button>
-      <button class="btn green" id="btn-try">🔊 本机试听</button>
+    <div class="fgroup" id="dest-section">
+      <div class="fhead"><span class="fic"></span>呼叫目的地</div>
+      <div class="fbody">
+        <div class="dest-grid" id="dest-quick"></div>
+        <button class="btn ghost" id="dest-more" style="width:100%;margin-top:4px;">更多目的地 ▾</button>
+        <div class="more-dests hidden" id="dest-more-list"></div>
+        <input type="text" class="dest-input" id="dest-custom" placeholder="或输入其他目的地..." autocomplete="off">
+      </div>
+    </div>
+    <div class="fgroup">
+      <div class="fhead"><span class="fic"></span>播报内容 · 常用模板<span class="fright" id="btn-add-tpl-call">＋ 添加常用模板</span></div>
+      <div class="fbody">
+        <div class="chips" id="tpl-custom-chips" style="flex-wrap:wrap;"></div>
+      </div>
+    </div>
+    <div class="fgroup">
+      <div class="fhead"><span class="fic"></span>附加备注与预览</div>
+      <div class="fbody">
+        <input type="text" id="remark" placeholder="例如：带上作业本 / 家长已到校门口" autocomplete="off">
+        <div class="var-hint">播报内容预览（可直接编辑，编辑后按此发送；切换模板将重置为模板预览）</div>
+        <textarea class="preview-input" id="preview" rows="3" placeholder="选择学生与目的地后自动生成..."></textarea>
+        <div class="action-row" style="margin-top:6px;">
+          <button class="btn blue" id="btn-send">📢 发送呼叫</button>
+          <button class="btn green" id="btn-try">🔊 本机试听</button>
+        </div>
+      </div>
     </div>
   </div>
 
   <!-- 自定义 tab -->
   <div class="body hidden" id="tab-custom">
-    <div class="sect"><span>播报模板</span><span class="right" id="btn-tpl-reset">恢复默认</span></div>
-    <div class="card">
-      <div class="var-hint">变量模块（点击或拖动插入模板）：</div>
-      <div class="chips" id="tpl-var-chips" style="flex-wrap:wrap;margin-bottom:8px;">
-        <span class="chip vchip" draggable="true" data-var="{class}">班级</span>
-        <span class="chip vchip" draggable="true" data-var="{name}">姓名</span>
-        <span class="chip vchip" draggable="true" data-var="{destination}">目的地</span>
-      </div>
-      <textarea id="tpl-input" rows="2" placeholder="播报模板文本"></textarea>
-      <div class="tpl-example" id="tpl-example">示例 → 请三年级一班的张伟同学，听到广播后到教务处。</div>
-    </div>
-    <div class="sect" style="margin-top:10px;">常用模板</div>
-    <div class="chips" id="tpl-presets" style="flex-wrap:wrap;"></div>
-    <div class="sect" style="margin-top:12px;"><span>自定义目的地</span><span class="right" id="btn-add-dest">＋ 添加</span></div>
-    <div class="dest-grid" id="custom-dests"></div>
-    <div class="sect"><span>自定义播报内容</span><span class="right" id="btn-add-custom">＋ 添加</span></div>
-    <div class="card" id="custom-editor">
-      <div class="var-hint">点击或拖动变量，插入到编辑框：</div>
-      <div class="chips" id="custom-var-chips" style="flex-wrap:wrap;">
-        <span class="chip vchip" draggable="true" data-var="{class}">班级</span>
-        <span class="chip vchip" draggable="true" data-var="{name}">姓名</span>
-        <span class="chip vchip" draggable="true" data-var="{destination}">目的地</span>
-      </div>
-      <textarea id="custom-txt-input" rows="2" placeholder="在这里编辑播报内容，插入变量即可拼出完整文案…"></textarea>
-      <div class="var-hint" style="margin-top:8px;">播报预览（可直接编辑，保存时自动转回变量模板）</div>
-      <textarea id="custom-preview-input" rows="2" placeholder="预览内容…"></textarea>
-      <div class="action-row" style="margin-top:10px;">
-        <button class="btn blue" id="btn-custom-save" style="flex:1;">保存为自定义播报内容</button>
-        <button class="btn ghost" id="btn-custom-clear" style="flex:0;">清空</button>
+    <div class="fgroup">
+      <div class="fhead"><span class="fic"></span>播报模板<span class="fright" id="btn-tpl-reset">恢复默认</span></div>
+      <div class="fbody">
+        <div class="var-hint">变量模块（点击或拖动插入模板）：</div>
+        <div class="chips" id="tpl-var-chips" style="flex-wrap:wrap;margin-bottom:8px;">
+          <span class="chip vchip" draggable="true" data-var="{class}">班级</span>
+          <span class="chip vchip" draggable="true" data-var="{name}">姓名</span>
+          <span class="chip vchip" draggable="true" data-var="{destination}">目的地</span>
+        </div>
+        <textarea id="tpl-input" rows="2" placeholder="播报模板文本"></textarea>
+        <div class="tpl-example" id="tpl-example">示例 → 请三年级一班的张伟同学，听到广播后到教务处。</div>
       </div>
     </div>
-    <div class="custom-list" id="custom-txts"></div>
-    <div class="sect">说明</div>
-    <div class="card" style="font-size:12px;color:var(--sub);line-height:1.8;">
-      目的地将出现在「呼叫页」的呼叫目的地中，可自定义增删，用于日常呼叫场景。<br>
-      自定义播报内容将出现在「呼叫页」的播报内容选择中，发送时优先使用；点击条目 ✎ 可载入编辑框修改，点 ✕ 删除。
+    <div class="fgroup">
+      <div class="fhead"><span class="fic"></span>常用模板<span class="fright" id="btn-add-tpl">＋ 添加常用模板</span></div>
+      <div class="fbody">
+        <div class="var-hint">点击选用；你添加的常用模板带 ✕ 可删除。</div>
+        <div class="chips" id="tpl-presets" style="flex-wrap:wrap;"></div>
+      </div>
+    </div>
+    <div class="fgroup">
+      <div class="fhead"><span class="fic"></span>自定义目的地<span class="fright" id="btn-add-dest">＋ 添加</span></div>
+      <div class="fbody">
+        <div class="dest-grid" id="custom-dests"></div>
+      </div>
+    </div>
+    <div class="fgroup">
+      <div class="fhead"><span class="fic"></span>说明</div>
+      <div class="fbody">
+        <div style="font-size:0.75rem;color:var(--sub);line-height:1.8;">
+          目的地将出现在「呼叫页」的呼叫目的地中，可自定义增删，用于日常呼叫场景。<br>
+          常用模板显示在「呼叫页 · 播报内容」，可随时「＋ 添加常用模板」把当前播报模板加入收藏。
+        </div>
+      </div>
     </div>
   </div>
 
@@ -348,18 +362,19 @@ input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:18px; he
       <div class="param"><div class="pl"><span>播报文字颜色</span></div><div class="font-color-row" id="font-color-row"></div></div>
     </div>
     <div class="grp">个性化设置</div>
+    <div class="card">
+      <div class="set-row" style="margin-bottom:14px;"><span>深色模式</span><label class="switch"><input type="checkbox" id="sw-dark"><span class="sl"></span></label></div>
+      <div class="param"><div class="pl"><span>UI 配色方案</span></div><div class="palette-row" id="palette-row"></div></div>
+      <div class="param"><div class="pl"><span>应用内字体大小</span><span style="font-size:0.6875rem;color:var(--dim);font-weight:400;">（全部界面文字同步缩放）</span></div><div class="chips" id="font-scale-row" style="flex-wrap:wrap;"></div></div>
+      <div class="param"><div class="pl"><span>自定义背景图片</span><span class="right" id="btn-rm-bg" style="cursor:pointer;">移除</span></div>
+        <button class="btn" id="btn-pick-bg" style="width:100%;">选择背景图片</button>
+        <input type="file" id="bg-file" accept="image/*" style="display:none;"></div>
+    </div>
     <div class="grp">连接设置</div>
     <div class="card">
       <div class="var-hint">MQTT Broker（WebSocket 地址）</div>
       <input type="text" id="broker-input">
       <button class="btn blue" id="btn-reconnect" style="width:100%;margin-top:10px;">重新连接</button>
-    </div>
-    <div class="card">
-      <div class="set-row" style="margin-bottom:14px;"><span>深色模式</span><label class="switch"><input type="checkbox" id="sw-dark"><span class="sl"></span></label></div>
-      <div class="param"><div class="pl"><span>UI 配色方案</span></div><div class="palette-row" id="palette-row"></div></div>
-      <div class="param"><div class="pl"><span>自定义背景图片</span><span class="right" id="btn-rm-bg" style="cursor:pointer;">移除</span></div>
-        <button class="btn" id="btn-pick-bg" style="width:100%;">选择背景图片</button>
-        <input type="file" id="bg-file" accept="image/*" style="display:none;"></div>
     </div>
     <div class="grp">关于</div>
     <div class="card"><button class="btn" id="nav-about" style="width:100%;">版本信息与开发团队</button></div>
@@ -458,7 +473,7 @@ var PRESET_TPLS = [
 ];
 var APP_VERSION = "1.4.0";
 var DEFAULT_DESTS = ["教务处","班主任办公室","年级组办公室","医务室","图书馆","心理咨询室","传达室","家长等候区","操场","报告厅"];
-var LS = { room:"cc_room", broker:"cc_broker", roster:"cc_roster", records:"cc_records", params:"cc_params", tpl:"cc_tpl", dests:"cc_dests", customs:"cc_customs", theme:"cc_theme", palette:"cc_palette", bgimg:"cc_bgimg" };
+var LS = { room:"cc_room", broker:"cc_broker", roster:"cc_roster", records:"cc_records", params:"cc_params", tpl:"cc_tpl", dests:"cc_dests", userTpls:"cc_usertpls", appfs:"cc_appfs", theme:"cc_theme", palette:"cc_palette", bgimg:"cc_bgimg" };
 function lsGet(k, d){ try{ var v = localStorage.getItem(k); return v === null ? d : v; }catch(e){ return d; } }
 function lsSet(k, v){ try{ localStorage.setItem(k, v); }catch(e){} }
 function lsJson(k, d){ try{ var s = lsGet(k, null); if(s === null) return d; return JSON.parse(s); }catch(e){ return d; } }
@@ -476,7 +491,7 @@ var state = {
   roster:[], search:"", curClass:"", curStudent:"", dest:"", remark:"", multi:false, selected:[],
   params:{ repeat:2, interval:0, rate:1.0, pitch:1.0, volume:100, fontSize:34, fontColor:"#e8eefc" },
   tpl:DEFAULT_TPL, dests:JSON.parse(JSON.stringify(DEFAULT_DESTS)),
-  customs:[], customPick:"",
+  userTpls:[], fontScale:1,
   queue:[], playing:false, dgVolume:100, dgVoice:"", lastSentId:""
 };
 
@@ -625,8 +640,9 @@ function sendCall(){
   }
   if(needsDest() && !state.dest){ alert("请选择呼叫目的地"); return; }
   if(!state.client || !state.connected){ alert("当前未连接，请稍候重试"); return; }
-  var text = renderTemplate();
-  if(state.remark.trim()){ text += "（" + state.remark.trim() + "）"; }
+  var pv = $("preview");
+  var text = pv && pv.value && pv.value.trim() ? pv.value.trim() : renderTemplate();
+  if(state.remark.trim() && text.indexOf("（" + state.remark.trim() + "）") < 0){ text += "（" + state.remark.trim() + "）"; }
   // 多人：全部同班则带班级，否则班级留空；姓名用顿号连接
   var allClass = "";
   var same = students.every(function(s){ return s.c === students[0].c; });
@@ -654,14 +670,14 @@ function fillTpl(t, c, n){
           .replace(/\{destination\}/g, state.dest || "");
 }
 function renderTemplate(){
-  var tpl = state.customPick ? state.customPick : state.tpl;
+  var tpl = state.tpl;
   if(state.multi && state.selected.length){
     // 多选：为每个学生各生成一句，拼接成完整播报文案
     return state.selected.map(function(s){ return fillTpl(tpl, s.c || "", s.n); }).join("");
   }
   return fillTpl(tpl, state.curClass || "", state.curStudent || "");
 }
-function currentTpl(){ return state.customPick ? state.customPick : state.tpl; }
+function currentTpl(){ return state.tpl; }
 function needsDest(){ return currentTpl().indexOf("{destination}") >= 0; }
 function updateDestVisibility(){
   var sec = $("dest-section");
@@ -680,7 +696,7 @@ function updatePreview(){
   if(needsDest() && !state.dest){ t = "请选择呼叫目的地"; }
   if(hasStu && (!needsDest() || state.dest) && state.remark.trim()){ t += "（" + state.remark.trim() + "）"; }
   var pv = $("preview");
-  pv.innerHTML = hasStu && (!needsDest() || state.dest) ? esc(t) : '<span class="pv-empty">' + esc(t) + '</span>';
+  pv.value = t;
   updateDestVisibility();
   renderCustomPick();
 }
@@ -1025,6 +1041,27 @@ var PALETTES = [
   { id:"red", label:"朱砂红", css:"linear-gradient(135deg,#ef4444,#f87171)" },
   { id:"slate", label:"曜石灰", css:"linear-gradient(135deg,#64748b,#94a3b8)" }
 ];
+var FONT_SCALES = [ {v:0.85, label:"小"}, {v:1, label:"标准"}, {v:1.15, label:"大"}, {v:1.3, label:"特大"} ];
+function applyFontScale(){
+  var s = state.fontScale || 1;
+  document.documentElement.style.fontSize = (16 * s) + "px";
+}
+function renderFontScale(){
+  var box = $("font-scale-row");
+  if(!box){ return; }
+  box.innerHTML = "";
+  FONT_SCALES.forEach(function(o){
+    var el = document.createElement("div");
+    el.className = "chip" + (state.fontScale === o.v ? " sel" : "");
+    el.textContent = o.label;
+    el.onclick = function(){
+      state.fontScale = o.v;
+      lsJsonSet(LS.appfs, state.fontScale);
+      renderFontScale(); applyFontScale();
+    };
+    box.appendChild(el);
+  });
+}
 function applyTheme(){
   var light = lsGet(LS.theme, "dark") === "light";
   document.body.classList.toggle("theme-light", light);
@@ -1057,137 +1094,80 @@ function renderPaletteRow(){
     box.appendChild(el);
   });
 }
+function tplLabel(t){ return String(t||"").replace(/\{class\}/g,"{班级}").replace(/\{name\}/g,"{姓名}").replace(/\{destination\}/g,"{目的地}"); }
+function pickTpl(t){
+  state.tpl = t;
+  lsSet(LS.tpl, t);
+  renderParams(); renderCustomPick(); updatePreview();
+}
+function addUserTpl(){
+  var v = state.tpl;
+  var ti = $("tpl-input");
+  if(ti && ti.value.trim()){ v = ti.value.trim(); }
+  if(!v){ alert("当前没有可添加的模板"); return; }
+  if(state.userTpls.indexOf(v) >= 0){ alert("该模板已在常用模板中"); return; }
+  state.userTpls.push(v);
+  lsJsonSet(LS.userTpls, state.userTpls);
+  renderTplPresets(); renderCustomPick();
+}
+function delUserTpl(v){
+  if(!confirm("删除这条常用模板？")){ return; }
+  state.userTpls = state.userTpls.filter(function(t){ return t !== v; });
+  lsJsonSet(LS.userTpls, state.userTpls);
+  renderTplPresets(); renderCustomPick();
+}
 function renderTplPresets(){
   var box = $("tpl-presets");
+  if(!box){ return; }
   box.innerHTML = "";
   PRESET_TPLS.forEach(function(t){
     var el = document.createElement("div");
     el.className = "chip" + (state.tpl === t ? " sel" : "");
-    var label = t.replace(/\{class\}/g,"{班级}").replace(/\{name\}/g,"{姓名}").replace(/\{destination\}/g,"{目的地}");
-    el.textContent = label;
-    el.onclick = function(){
-      state.tpl = t;
-      lsSet(LS.tpl, t);
-      renderParams();
-    };
+    el.textContent = tplLabel(t);
+    el.title = t;
+    el.onclick = function(){ pickTpl(t); };
     box.appendChild(el);
+  });
+  state.userTpls.forEach(function(t){
+    var el = document.createElement("div");
+    el.className = "chip" + (state.tpl === t ? " sel" : "");
+    el.textContent = tplLabel(t);
+    el.title = t;
+    el.onclick = function(){ pickTpl(t); };
+    box.appendChild(el);
+    var x = document.createElement("span");
+    x.className = "chip x"; x.textContent = "✕";
+    x.title = "删除常用模板";
+    x.onclick = function(){ delUserTpl(t); };
+    box.appendChild(x);
   });
 }
 
-/* ================= 自定义播报内容 ================= */
-function renderCustoms(){
-  var box = $("custom-txts");
-  if(!box){ return; }
-  box.innerHTML = "";
-  if(!state.customs.length){ box.innerHTML = '<div class="rec-empty">暂无自定义播报内容</div>'; return; }
-  state.customs.forEach(function(t, i){
-    var el = document.createElement("div");
-    el.className = "custom-item";
-    var ops = document.createElement("span");
-    ops.className = "ops";
-    var ed = document.createElement("span");
-    ed.className = "op"; ed.textContent = "✎";
-    ed.title = "编辑";
-    ed.onclick = function(){
-      // 载入编辑框并移除该条，保存后重新加入（即替换）
-      state.customs.splice(i, 1);
-      if(state.customPick === t){ state.customPick = ""; }
-      lsJsonSet(LS.customs, state.customs);
-      $("custom-txt-input").value = t;
-      $("custom-txt-input").dispatchEvent(new Event("input"));
-      $("custom-txt-input").focus();
-      renderCustoms(); renderCustomPick(); updatePreview();
-    };
-    var del = document.createElement("span");
-    del.className = "op"; del.textContent = "✕";
-    del.title = "删除";
-    del.onclick = function(){
-      if(confirm("删除这条自定义播报内容？")){
-        state.customs.splice(i, 1);
-        if(state.customPick === t){ state.customPick = ""; }
-        lsJsonSet(LS.customs, state.customs);
-        renderCustoms(); renderCustomPick(); updatePreview();
-      }
-    };
-    ops.appendChild(ed);
-    ops.appendChild(del);
-    el.appendChild(ops);
-    var txt = fillTpl(t, state.curClass, state.curStudent) || "（空内容）";
-    el.appendChild(document.createTextNode(txt));
-    el.title = t;
-    box.appendChild(el);
-  });
-}
 function renderCustomPick(){
   var box = $("tpl-custom-chips");
   if(!box){ return; }
   box.innerHTML = "";
-  var el0 = document.createElement("div");
-  el0.className = "chip" + (state.customPick ? "" : " sel");
-  el0.textContent = "按模板生成";
-  el0.onclick = function(){ state.customPick = ""; renderCustomPick(); updatePreview(); };
-  box.appendChild(el0);
-  state.customs.forEach(function(t){
+  PRESET_TPLS.forEach(function(t){
     var el = document.createElement("div");
-    el.className = "chip" + (state.customPick === t ? " sel" : "");
-    var label = fillTpl(t, state.curClass, state.curStudent) || "（空内容）";
-    if(label.length > 14){ label = label.slice(0,14) + "…"; }
-    el.textContent = label;
+    el.className = "chip" + (state.tpl === t ? " sel" : "");
+    el.textContent = tplLabel(t);
     el.title = t;
-    el.onclick = function(){ state.customPick = t; renderCustomPick(); updatePreview(); };
+    el.onclick = function(){ pickTpl(t); };
     box.appendChild(el);
   });
-}
-/* 变量插入（点击 / 拖拽到编辑框光标处） */
-function insertVar(v){
-  var ta = $("custom-txt-input");
-  var s = ta.selectionStart == null ? ta.value.length : ta.selectionStart;
-  var e = ta.selectionEnd == null ? s : ta.selectionEnd;
-  ta.value = ta.value.slice(0, s) + v + ta.value.slice(e);
-  ta.focus();
-  ta.selectionStart = ta.selectionEnd = s + v.length;
-  ta.dispatchEvent(new Event("input"));
-}
-function bindCustomEditor(){
-  var chips = document.querySelectorAll("#custom-var-chips .vchip");
-  chips.forEach(function(el){
-    el.onclick = function(){ insertVar(el.getAttribute("data-var")); };
-    el.addEventListener("dragstart", function(ev){
-      ev.dataTransfer.setData("text/plain", el.getAttribute("data-var"));
-    });
+  state.userTpls.forEach(function(t){
+    var el = document.createElement("div");
+    el.className = "chip" + (state.tpl === t ? " sel" : "");
+    el.textContent = tplLabel(t);
+    el.title = t;
+    el.onclick = function(){ pickTpl(t); };
+    box.appendChild(el);
+    var x = document.createElement("span");
+    x.className = "chip x"; x.textContent = "✕";
+    x.title = "删除常用模板";
+    x.onclick = function(){ delUserTpl(t); };
+    box.appendChild(x);
   });
-  var ta = $("custom-txt-input");
-  var pv = $("custom-preview-input");
-  ta.addEventListener("dragover", function(ev){ ev.preventDefault(); });
-  ta.addEventListener("drop", function(ev){
-    ev.preventDefault();
-    var v = ev.dataTransfer.getData("text/plain");
-    if(v){ insertVar(v); }
-  });
-  var CLS = "三年级一班", NM = "张伟", DST = "教务处";
-  function autoPreview(v){ return v.split("{class}").join(CLS).split("{name}").join(NM).split("{destination}").join(DST); }
-  function backToVars(v){ return v.split(CLS).join("{class}").split(NM).join("{name}").split(DST).join("{destination}"); }
-  ta.addEventListener("input", function(){ pv.value = autoPreview(ta.value); });
-  $("btn-custom-save").onclick = function(){
-    var tplText = ta.value.trim();
-    var pvText = pv.value.trim();
-    if(!tplText && !pvText){ alert("请输入播报内容"); return; }
-    var v;
-    if(!tplText){
-      v = pvText;
-    }else if(pvText !== autoPreview(tplText)){
-      v = backToVars(pvText);
-    }else{
-      v = tplText;
-    }
-    if(!v){ alert("请输入播报内容"); return; }
-    if(state.customs.indexOf(v) >= 0){ ta.value = ""; pv.value = ""; return; }
-    state.customs.push(v);
-    lsJsonSet(LS.customs, state.customs);
-    ta.value = ""; pv.value = "";
-    renderCustoms(); renderCustomPick(); updatePreview();
-  };
-  $("btn-custom-clear").onclick = function(){ ta.value = ""; pv.value = ""; ta.focus(); };
 }
 
 /* ================= 呼叫小屏（屏幕正上方，可拖动） ================= */
@@ -1228,40 +1208,51 @@ function toastBox(){
 }
 /* 小屏可拖动（鼠标 + 触摸） */
 function makeDraggable(el){
-  var sx = 0, sy = 0, ox = 0, oy = 0, drag = false;
-  el.addEventListener("mousedown", function(e){
-    if(e.target && e.target.className === "txc"){ return; }
-    drag = true; sx = e.clientX; sy = e.clientY;
-    var r = el.getBoundingClientRect(); ox = r.left; oy = r.top;
-    e.preventDefault();
-  });
-  document.addEventListener("mousemove", function(e){
-    if(!drag){ return; }
+  var sx = 0, sy = 0, ox = 0, oy = 0, dx = 0, dy = 0, dragging = false, moving = false;
+  function clampV(v, min, max){ return Math.max(min, Math.min(max, v)); }
+  function applyPos(){
+    var w = el.offsetWidth, h = el.offsetHeight;
+    var maxL = Math.max(0, (window.innerWidth || document.documentElement.clientWidth) - w - 6);
+    var maxT = Math.max(0, (window.innerHeight || document.documentElement.clientHeight) - h - 6);
     el.style.position = "fixed";
-    el.style.left = (ox + e.clientX - sx) + "px";
-    el.style.top = (oy + e.clientY - sy) + "px";
+    el.style.left = clampV(ox + dx, 6, maxL) + "px";
+    el.style.top = clampV(oy + dy, 6, maxT) + "px";
     el.style.margin = "0";
     el.style.animation = "none";
-  });
-  document.addEventListener("mouseup", function(){ drag = false; });
+  }
+  function start(x, y, ev){
+    if(ev.target && ev.target.className === "txc"){ return; }
+    sx = x; sy = y;
+    var r = el.getBoundingClientRect(); ox = r.left; oy = r.top;
+    dx = 0; dy = 0; moving = false; dragging = true;
+    el.classList.add("drag");
+    if(ev.cancelable){ ev.preventDefault(); }
+  }
+  function move(x, y, ev){
+    if(!dragging){ return; }
+    dx = x - sx; dy = y - sy;
+    if(!moving && Math.abs(dx) < 6 && Math.abs(dy) < 6){ return; }
+    moving = true;
+    applyPos();
+    if(ev && ev.cancelable){ ev.preventDefault(); }
+  }
+  function end(){
+    if(!dragging){ return; }
+    dragging = false; moving = false;
+    el.classList.remove("drag");
+  }
+  el.addEventListener("mousedown", function(e){ start(e.clientX, e.clientY, e); });
+  document.addEventListener("mousemove", function(e){ move(e.clientX, e.clientY, e); });
+  document.addEventListener("mouseup", function(){ end(); });
   el.addEventListener("touchstart", function(e){
-    if(e.target && e.target.className === "txc"){ return; }
     var t = e.touches[0];
-    drag = true; sx = t.clientX; sy = t.clientY;
-    var r = el.getBoundingClientRect(); ox = r.left; oy = r.top;
-    e.preventDefault();
+    start(t.clientX, t.clientY, e);
   }, { passive:false });
-  el.addEventListener("touchmove", function(e){
-    if(!drag){ return; }
+  document.addEventListener("touchmove", function(e){
     var t = e.touches[0];
-    el.style.position = "fixed";
-    el.style.left = (ox + t.clientX - sx) + "px";
-    el.style.top = (oy + t.clientY - sy) + "px";
-    el.style.margin = "0";
-    el.style.animation = "none";
-    e.preventDefault();
+    move(t.clientX, t.clientY, e);
   }, { passive:false });
-  el.addEventListener("touchend", function(){ drag = false; });
+  document.addEventListener("touchend", function(){ end(); }, { passive:false });
 }
 function showToast(id, title, text){
   if(!id){ id = genId(); }
@@ -1368,8 +1359,9 @@ function init(){
   if(p){ state.params = Object.assign(state.params, p); }
   var d = lsJson(LS.dests, null);
   if(d && d.length){ state.dests = d; }
-  var cs = lsJson(LS.customs, null);
-  if(cs && cs.length){ state.customs = cs; }
+  var ut = lsJson(LS.userTpls, null);
+  if(ut && ut.length){ state.userTpls = ut; }
+  state.fontScale = lsJson(LS.appfs, 1);
   state.dgVolume = 100;
   $("gate-room").value = lsGet(LS.room, "");
 
@@ -1402,7 +1394,7 @@ function init(){
   document.querySelectorAll(".tab").forEach(function(el){
     el.onclick = function(){
       switchTab(el.getAttribute("data-tab"));
-      if(el.getAttribute("data-tab") === "custom"){ renderDests(); renderCustoms(); renderParams(); }
+      if(el.getAttribute("data-tab") === "custom"){ renderDests(); renderParams(); }
       if(el.getAttribute("data-tab") === "records"){ renderRecords(); }
       if(el.getAttribute("data-tab") === "settings"){ renderParams(); }
       if(el.getAttribute("data-tab") === "call"){ renderClasses(); updatePreview(); }
@@ -1459,18 +1451,14 @@ function init(){
       renderDests();
     }
   };
-  $("btn-add-custom").onclick = function(){
-    var v = prompt("添加自定义播报内容（支持变量 {class}班级 · {name}姓名 · {destination}目的地）", "");
-    if(v !== null && v.trim()){
-      state.customs.push(v.trim());
-      lsJsonSet(LS.customs, state.customs);
-      renderCustoms(); renderCustomPick();
-    }
-  };
-  bindCustomEditor();
+  var bAddTplCall = $("btn-add-tpl-call");
+  if(bAddTplCall){ bAddTplCall.onclick = addUserTpl; }
+  var bAddTpl = $("btn-add-tpl");
+  if(bAddTpl){ bAddTpl.onclick = addUserTpl; }
 
   /* 外观（1.3.0） */
   applyTheme();
+  renderFontScale(); applyFontScale();
   renderPaletteRow();
   $("sw-dark").onchange = function(){ lsSet(LS.theme, this.checked ? "light" : "dark"); applyTheme(); };
   $("bg-file").onchange = function(){
@@ -1547,7 +1535,7 @@ function init(){
   /* 刷新：顶端按键 + 下拉 */
   function refreshApp(){
     loadRoster(); renderClasses(); renderDests(); renderRecords();
-    renderCustoms(); renderCustomPick(); renderParams();
+    renderCustomPick(); renderParams();
     updatePreview(); updatePresenceUI(); connectMqtt();
     var rb = $("btn-refresh");
     if(rb){ rb.textContent = "✓"; setTimeout(function(){ rb.textContent = "↻"; }, 900); }
