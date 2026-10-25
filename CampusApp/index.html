@@ -10,16 +10,17 @@
   --bg:#0f1520; --panel:#151d2c; --card:#1c2637; --card2:#222e42; --line:#26344c;
   --text:#e8eefc; --sub:#8a93a6; --dim:#5b6478;
   --blue:#38bdf8; --cyan:#22d3ee; --green:#22c55e; --red:#ef4444; --amber:#f59e0b;
+  --g2:#a5f3fc; --grad:linear-gradient(135deg,#0369a1,#38bdf8,#a5f3fc);
 }
 /* 1.3.0 外观：浅色主题与 UI 配色方案 */
 body.theme-light{ --bg:#eef2f7; --panel:#ffffff; --card:#ffffff; --card2:#e6edf5; --line:#d8e0ec; --text:#1d2431; --sub:#5b6478; --dim:#8a93a6; }
-body.palette-cyan{ --blue:#06b6d4; --cyan:#2dd4bf; }
-body.palette-purple{ --blue:#8b5cf6; --cyan:#c084fc; }
-body.palette-gold{ --blue:#f59e0b; --cyan:#fbbf24; }
-body.palette-pink{ --blue:#ec4899; --cyan:#f9a8d4; }
-body.palette-green{ --blue:#10b981; --cyan:#6ee7b7; }
-body.palette-red{ --blue:#ef4444; --cyan:#f87171; }
-body.palette-slate{ --blue:#64748b; --cyan:#94a3b8; }
+body.palette-cyan{ --blue:#06b6d4; --cyan:#2dd4bf; --g2:#99f6e4; --grad:linear-gradient(135deg,#0e7490,#2dd4bf,#99f6e4); }
+body.palette-purple{ --blue:#8b5cf6; --cyan:#c084fc; --g2:#e9d5ff; --grad:linear-gradient(135deg,#6d28d9,#a78bfa,#e9d5ff); }
+body.palette-gold{ --blue:#f59e0b; --cyan:#fbbf24; --g2:#fde68a; --grad:linear-gradient(135deg,#b45309,#f59e0b,#fde68a); }
+body.palette-pink{ --blue:#ec4899; --cyan:#f9a8d4; --g2:#fbcfe8; --grad:linear-gradient(135deg,#be185d,#f472b6,#fbcfe8); }
+body.palette-green{ --blue:#10b981; --cyan:#6ee7b7; --g2:#a7f3d0; --grad:linear-gradient(135deg,#047857,#34d399,#a7f3d0); }
+body.palette-red{ --blue:#ef4444; --cyan:#f87171; --g2:#fecaca; --grad:linear-gradient(135deg,#b91c1c,#f87171,#fecaca); }
+body.palette-slate{ --blue:#64748b; --cyan:#94a3b8; --g2:#e2e8f0; --grad:linear-gradient(135deg,#334155,#94a3b8,#e2e8f0); }
 html,body{ height:100%; }
 body{ background:var(--bg); color:var(--text); font-family:-apple-system,"PingFang SC","Microsoft YaHei",system-ui,sans-serif; font-size:0.9375rem; overflow:hidden; }
 .hidden{ display:none !important; }
@@ -52,7 +53,7 @@ body{ background:var(--bg); color:var(--text); font-family:-apple-system,"PingFa
 .card{ background:var(--card); border:1px solid var(--line); border-radius:12px; padding:12px; }
 .rowline{ display:flex; align-items:center; gap:10px; }
 .btn{ background:var(--card2); color:var(--text); border:1px solid var(--line); border-radius:10px; padding:10px 16px; font-size:0.875rem; cursor:pointer; font-family:inherit; }
-.btn.blue{ background:linear-gradient(135deg,var(--blue),var(--cyan)); border:none; color:#fff; font-weight:600; }
+.btn.blue{ background:var(--grad); border:none; color:#fff; font-weight:600; box-shadow:0 4px 14px rgba(56,189,248,.25); }
 .btn.green{ background:rgba(34,197,94,.15); border:1px solid rgba(34,197,94,.4); color:var(--green); }
 .btn.red{ background:rgba(239,68,68,.12); border:1px solid rgba(239,68,68,.4); color:var(--red); }
 .btn.ghost{ background:none; border:none; color:var(--sub); font-size:0.8125rem; }
@@ -84,7 +85,7 @@ input::placeholder,textarea::placeholder{ color:var(--dim); }
 .searchbox::before{ content:"🔍"; position:absolute; left:11px; top:50%; transform:translateY(-50%); font-size:0.75rem; color:var(--dim); }
 .chips{ display:flex; gap:8px; overflow-x:auto; padding:2px; -webkit-overflow-scrolling:touch; }
 .chip{ flex:0 0 auto; padding:7px 14px; border-radius:16px; background:var(--card); border:1px solid var(--line); font-size:0.8125rem; color:var(--sub); cursor:pointer; }
-.chip.sel{ background:var(--blue); border-color:var(--blue); color:#fff; font-weight:600; }
+.chip.sel{ background:var(--grad); border-color:transparent; color:#fff; font-weight:600; box-shadow:0 4px 12px rgba(56,189,248,.3); }
 .stu-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
 .stu{ background:var(--card); border:1px solid var(--line); border-radius:10px; padding:9px 6px; text-align:center; cursor:pointer; }
 .stu .n{ font-size:0.875rem; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
@@ -92,7 +93,7 @@ input::placeholder,textarea::placeholder{ color:var(--dim); }
 .stu.sel{ background:rgba(56,189,248,.16); border-color:var(--blue); }
 .stu.sel .n{ color:var(--blue); }
 .detail-card{ display:flex; align-items:center; gap:12px; }
-.detail-card .avatar{ width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg,#0ea5e9,#22d3ee); display:flex; align-items:center; justify-content:center; font-size:1.125rem; font-weight:800; color:#fff; flex:0 0 auto; }
+.detail-card .avatar{ width:44px; height:44px; border-radius:50%; background:var(--grad); display:flex; align-items:center; justify-content:center; font-size:1.125rem; font-weight:800; color:#fff; flex:0 0 auto; }
 .detail-card .dn{ font-size:1.0625rem; font-weight:700; }
 .detail-card .dc{ font-size:0.75rem; color:var(--sub); margin-top:2px; }
 .detail-card .dempty{ font-size:0.8125rem; color:var(--dim); }
@@ -106,7 +107,7 @@ input::placeholder,textarea::placeholder{ color:var(--dim); }
 /* 功能分区（自定义页等，明显区隔） */
 .fgroup{ background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:12px; margin-bottom:14px; }
 .fgroup .fhead{ display:flex; align-items:center; gap:8px; padding-bottom:8px; border-bottom:1px solid var(--line); margin-bottom:10px; font-size:0.875rem; font-weight:700; color:var(--text); }
-.fgroup .fhead .fic{ width:8px; height:8px; border-radius:50%; background:var(--cyan); flex:0 0 auto; box-shadow:0 0 6px var(--cyan); }
+.fgroup .fhead .fic{ width:8px; height:8px; border-radius:50%; background:var(--grad); flex:0 0 auto; box-shadow:0 0 8px var(--cyan); }
 .fgroup .fhead .fright{ margin-left:auto; font-size:0.75rem; color:var(--blue); cursor:pointer; user-select:none; }
 .fgroup .fbody{ display:flex; flex-direction:column; gap:8px; }
 .chip.x{ padding:6px 9px; background:transparent; color:var(--red); border-color:var(--red); font-size:0.75rem; }
@@ -147,8 +148,13 @@ input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:18px; he
 .d-stage .st-badge{ font-size:0.8125rem; color:var(--cyan); letter-spacing:3px; }
 .d-stage .st-msg{ font-size:2.125rem; font-weight:800; line-height:1.4; max-width:900px; }
 .d-stage .st-room{ font-size:0.75rem; color:var(--dim); margin-top:4px; }
+.d-stage .st-reply{ display:flex; justify-content:center; gap:12px; margin-top:20px; }
+.d-stage .st-reply .btn{ min-width:96px; }
 .d-stage .st-empty{ color:var(--dim); font-size:0.9375rem; }
 .d-bottom{ display:flex; gap:12px; flex:0 0 auto; }
+.qr-box{ display:flex; flex-direction:column; align-items:center; gap:8px; padding:12px; margin-bottom:10px; background:var(--card); border:1px solid var(--line); border-radius:12px; }
+.qr-box canvas{ background:#fff; border-radius:8px; padding:8px; max-width:196px; height:auto; }
+.qr-hint{ font-size:0.75rem; color:var(--sub); text-align:center; line-height:1.5; }
 .d-col{ flex:1; background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:12px; min-width:0; }
 .d-col .ct{ font-size:0.8125rem; color:var(--sub); display:flex; align-items:center; gap:6px; margin-bottom:8px; }
 .d-col .ct .right{ margin-left:auto; font-size:0.75rem; color:var(--blue); cursor:pointer; }
@@ -282,6 +288,13 @@ input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:18px; he
         <input type="text" class="dest-input" id="dest-custom" placeholder="或输入其他目的地..." autocomplete="off">
       </div>
     </div>
+    <div class="fgroup" id="popstyle-section">
+      <div class="fhead"><span class="fic"></span>接收端弹出方式</div>
+      <div class="fbody">
+        <div class="var-hint">选择接收端收到呼叫后的显示方式：小窗不遮挡屏幕；大屏强制全屏显示，播报结束自动退回后台。</div>
+        <div class="chips" id="pop-style-row" style="flex-wrap:wrap;"></div>
+      </div>
+    </div>
     <div class="fgroup">
       <div class="fhead"><span class="fic"></span>播报内容 · 常用模板<span class="fright" id="btn-add-tpl-call">＋ 添加常用模板</span></div>
       <div class="fbody">
@@ -396,6 +409,10 @@ input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:18px; he
       <div class="st-badge" id="st-badge">正在播报</div>
       <div class="st-msg" id="st-msg">请高二5班的杨楚珩同学，听到广播后到班主任办公室。</div>
       <div class="st-room" id="st-room">房间号 <span id="d-room2"></span></div>
+      <div class="st-reply hidden" id="st-reply">
+        <button class="btn green" id="btn-reply-ok">知道了</button>
+        <button class="btn" id="btn-reply-text">文字回复</button>
+      </div>
       <div class="st-empty hidden" id="st-empty">等待呼叫…</div>
     </div>
     <div class="d-bottom">
@@ -405,9 +422,13 @@ input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:18px; he
       </div>
       <div class="d-col">
         <div class="ct"><span>终端设置</span></div>
+        <div class="d-set-row"><span class="lb">扫码呼叫</span><span class="val" id="qr-hint-txt" style="width:auto;text-align:left;color:var(--dim);flex:1;">二维码生成中…</span></div>
+        <div class="qr-box">
+          <canvas id="qr-canvas" width="0" height="0"></canvas>
+          <div class="qr-hint">用手机相机扫描二维码，自动打开本房间的发送端（网页版）</div>
+        </div>
         <div class="d-set-row"><span class="lb">主音量</span><input type="range" id="dg-vol" min="0" max="100" value="100"><span class="val" id="dg-vol-v">100%</span></div>
         <div class="d-set-row"><span class="lb">播报音色</span><select class="voice-select" id="dg-voice"></select></div>
-        <div class="d-set-row"><span class="lb">弹出方式</span><div class="chips" id="pop-style-row" style="flex-wrap:wrap;flex:1;"></div></div>
         <div class="d-btns">
           <button class="btn green" id="btn-test">测试播报</button>
           <button class="btn red" id="btn-stop">停止</button>
@@ -477,6 +498,274 @@ var PRESET_TPLS = [
 var PAGES_URL = "https://syemailcom2026-cell.github.io/Campus-Paging/";
 var APP_VERSION = "1.4.2";
 var DEFAULT_DESTS = ["教务处","班主任办公室","年级组办公室","医务室","图书馆","心理咨询室","传达室","家长等候区","操场","报告厅"];
+/* QR Code 生成器（ISO/IEC 18004，v1-v6，纠错 L/M），纯函数，无 DOM 依赖 */
+"use strict";
+
+var EXP = new Array(512), LOG = new Array(256);
+(function () {
+  var x = 1;
+  for (var i = 0; i < 255; i++) { EXP[i] = x; LOG[x] = i; x <<= 1; if (x & 0x100) { x ^= 0x11D; } }
+  for (var i = 255; i < 512; i++) { EXP[i] = EXP[i - 255]; }
+})();
+function gMul(a, b) { if (!a || !b) { return 0; } return EXP[LOG[a] + LOG[b]]; }
+function gexp(i) { return EXP[i]; }
+
+var CAP = { 0: [17, 32, 53, 78, 106, 134], 1: [14, 26, 42, 62, 84, 106] };
+var ECB = {
+  0: [ { blocks: [19], ec: 7 }, { blocks: [34], ec: 10 }, { blocks: [55], ec: 15 }, { blocks: [80], ec: 20 }, { blocks: [108], ec: 26 }, { blocks: [68, 68], ec: 18 } ],
+  1: [ { blocks: [16], ec: 10 }, { blocks: [28], ec: 16 }, { blocks: [44], ec: 26 }, { blocks: [32, 32], ec: 18 }, { blocks: [43, 43], ec: 24 }, { blocks: [27, 27, 27, 27], ec: 16 } ]
+};
+var ALIGN = { 1: [], 2: [6, 18], 3: [6, 22], 4: [6, 26], 5: [6, 30], 6: [6, 34] };
+
+function rsGenPoly(degree) {
+  var g = [1];
+  for (var i = 0; i < degree; i++) {
+    var root = gexp(i);
+    var next = new Array(g.length + 1).fill(0);
+    for (var j = 0; j < g.length; j++) {
+      next[j] ^= g[j];
+      next[j + 1] ^= gMul(g[j], root);
+    }
+    g = next;
+  }
+  return g;
+}
+function rsRemainder(data, gen) {
+  var res = data.slice().concat(new Array(gen.length - 1).fill(0));
+  for (var i = 0; i < data.length; i++) {
+    var f = res[i];
+    if (f !== 0) {
+      for (var j = 1; j < gen.length; j++) {
+        res[i + j] ^= gMul(gen[j], f);
+      }
+    }
+  }
+  return res.slice(data.length);
+}
+
+function qrMatrix(text, ecIdx, forcedMask) {
+  var bytes = [];
+  for (var i = 0; i < text.length; i++) { bytes.push(text.charCodeAt(i)); }
+  var cap = CAP[ecIdx];
+  var ver = 6;
+  for (var v = 0; v < 6; v++) { if (bytes.length <= cap[v]) { ver = v + 1; break; } }
+  if (ver > 6) { throw new Error("text too long"); }
+  var ecb = ECB[ecIdx][ver - 1];
+  var totalData = 0;
+  for (var td = 0; td < ecb.blocks.length; td++) { totalData += ecb.blocks[td]; }
+
+  var bits = [];
+  function putBits(val, n) { for (var k = n - 1; k >= 0; k--) { bits.push((val >> k) & 1); } }
+  putBits(0x4, 4);
+  putBits(bytes.length, 8);
+  for (var b = 0; b < bytes.length; b++) { putBits(bytes[b], 8); }
+  putBits(0, 4);
+  while (bits.length % 8 !== 0) { bits.push(0); }
+  var pad = 0xEC;
+  while (bits.length / 8 < totalData) { putBits(pad, 8); pad = pad === 0xEC ? 0x11 : 0xEC; }
+  if (bits.length / 8 !== totalData) { throw new Error("data overflow"); }
+
+  var dataBytes = [];
+  for (var bi = 0; bi < bits.length; bi += 8) {
+    var v8 = 0; for (var k2 = 0; k2 < 8; k2++) { v8 = (v8 << 1) | bits[bi + k2]; }
+    dataBytes.push(v8);
+  }
+  var gen = rsGenPoly(ecb.ec);
+  var dataBlocks = [], ecBlocks = [];
+  var off = 0;
+  for (var bl = 0; bl < ecb.blocks.length; bl++) {
+    var dlen = ecb.blocks[bl];
+    var db = dataBytes.slice(off, off + dlen);
+    off += dlen;
+    dataBlocks.push(db);
+    ecBlocks.push(rsRemainder(db, gen));
+  }
+  var finalCodewords = [];
+  var maxD = 0;
+  for (var m2 = 0; m2 < ecb.blocks.length; m2++) { if (ecb.blocks[m2] > maxD) { maxD = ecb.blocks[m2]; } }
+  for (var di = 0; di < maxD; di++) {
+    for (var bj = 0; bj < dataBlocks.length; bj++) {
+      if (di < dataBlocks[bj].length) { finalCodewords.push(dataBlocks[bj][di]); }
+    }
+  }
+  for (var ei = 0; ei < ecb.ec; ei++) {
+    for (var ek = 0; ek < ecBlocks.length; ek++) {
+      finalCodewords.push(ecBlocks[ek][ei]);
+    }
+  }
+  var cwBits = [];
+  for (var w = 0; w < finalCodewords.length; w++) {
+    for (var k3 = 7; k3 >= 0; k3--) { cwBits.push((finalCodewords[w] >> k3) & 1); }
+  }
+
+  var size = 17 + 4 * ver;
+  var m = [];
+  var fmt = [];
+  for (var rr = 0; rr < size; rr++) { m.push(new Array(size).fill(0)); fmt.push(new Array(size).fill(0)); }
+
+  // 三个 finder
+  for (var dr = 0; dr < 7; dr++) {
+    for (var dc = 0; dc < 7; dc++) {
+      var v1 = (Math.max(Math.abs(dr - 3), Math.abs(dc - 3)) !== 2) ? 1 : 0;
+      m[dr][dc] = v1; fmt[dr][dc] = 1;
+      m[dr][size - 7 + dc] = v1; fmt[dr][size - 7 + dc] = 1;
+      m[size - 7 + dr][dc] = v1; fmt[size - 7 + dr][dc] = 1;
+    }
+  }
+  // 分隔（每个 finder 的 8×8 区域）
+  for (var s1 = 0; s1 < 7; s1++) {
+    fmt[s1][7] = 1; fmt[7][s1] = 1;                    // 左上：右分隔列 + 下分隔行
+    fmt[s1][size - 8] = 1; fmt[size - 8][s1] = 1;      // 右上：左分隔列；左下：上分隔行
+    fmt[7][size - 7 + s1] = 1;                          // 右上：finder 下方分隔行
+    fmt[size - 7 + s1][7] = 1;                          // 左下：finder 右侧分隔列
+  }
+  fmt[7][7] = 1; fmt[7][size - 8] = 1; fmt[size - 8][7] = 1; // 三处角点
+  // timing
+  for (var t = 8; t <= size - 9; t++) {
+    m[6][t] = (t % 2 === 0) ? 1 : 0; fmt[6][t] = 1;
+    m[t][6] = (t % 2 === 0) ? 1 : 0; fmt[t][6] = 1;
+  }
+  // alignment
+  var al = ALIGN[ver];
+  for (var ai = 0; ai < al.length; ai++) {
+    for (var aj = 0; aj < al.length; aj++) {
+      var cr = al[ai], cc = al[aj];
+      if ((cr <= 8 && cc <= 8) || (cr <= 8 && cc >= size - 9) || (cr >= size - 9 && cc <= 8)) { continue; }
+      for (var dr2 = -2; dr2 <= 2; dr2++) {
+        for (var dc2 = -2; dc2 <= 2; dc2++) {
+          var R = cr + dr2, C = cc + dc2;
+          var d2 = Math.max(Math.abs(dr2), Math.abs(dc2));
+          m[R][C] = (d2 !== 1) ? 1 : 0;
+          fmt[R][C] = 1;
+        }
+      }
+    }
+  }
+  // dark module
+  m[size - 8][8] = 1; fmt[size - 8][8] = 1;
+  // format 区域
+  for (var f1 = 0; f1 <= 8; f1++) {
+    if (f1 !== 6) { fmt[8][f1] = 1; fmt[f1][8] = 1; }
+  }
+  for (var f2 = size - 8; f2 <= size - 1; f2++) { fmt[8][f2] = 1; } // 右上 format 8 位（含 (8,size-8)）
+  for (var f3 = size - 7; f3 <= size - 1; f3++) { fmt[f3][8] = 1; } // 左下 format 7 位
+
+  // 数据放置
+  var bitIdx = 0;
+  var upward = true;
+  var extra = [];
+  for (var col = size - 1; col > 0; col -= 2) {
+    if (col === 6) { col--; }
+    for (var i3 = 0; i3 < size; i3++) {
+      var r3 = upward ? (size - 1 - i3) : i3;
+      for (var k4 = 0; k4 < 2; k4++) {
+        var c3 = col - k4;
+        if (fmt[r3][c3]) { continue; }
+        if (bitIdx >= cwBits.length) { extra.push([r3, c3]); continue; }
+        m[r3][c3] = cwBits[bitIdx++];
+      }
+    }
+    upward = !upward;
+  } // 数据放置（extra 位置保持 0，仅调试用）
+
+  var ecl2 = ecIdx === 0 ? 1 : 0;
+  function formatBits(maskIdx) {
+    var data = (ecl2 << 3) | maskIdx;
+    var rem = data << 10;
+    for (var iB = 14; iB >= 10; iB--) {
+      if ((rem >> iB) & 1) { rem ^= 0x537 << (iB - 10); }
+    }
+    return ((data << 10) | (rem & 0x3FF)) ^ 0x5412;
+  }
+  function placeFormat(bits15, m2) {
+    var pos1 = [[8,0],[8,1],[8,2],[8,3],[8,4],[8,5],[8,7],[8,8],[7,8],[5,8],[4,8],[3,8],[2,8],[1,8],[0,8]];
+    for (var p = 0; p < 15; p++) {
+      m2[pos1[p][0]][pos1[p][1]] = (bits15 >> (14 - p)) & 1;
+    }
+    for (var p2 = 0; p2 < 7; p2++) { m2[size - 1 - p2][8] = (bits15 >> (14 - p2)) & 1; }
+    for (var p3 = 0; p3 < 8; p3++) { m2[8][size - 8 + p3] = (bits15 >> (7 - p3)) & 1; }
+  }
+
+  var best = null;
+  var masks = (forcedMask === undefined || forcedMask === null) ? [0, 1, 2, 3, 4, 5, 6, 7] : [forcedMask];
+  for (var mi = 0; mi < masks.length; mi++) {
+    var mk = masks[mi];
+    var trial = [];
+    for (var r4 = 0; r4 < size; r4++) { trial.push(m[r4].slice()); }
+    for (var r5 = 0; r5 < size; r5++) {
+      for (var c5 = 0; c5 < size; c5++) {
+        if (fmt[r5][c5]) { continue; }
+        var cond = false;
+        switch (mk) {
+          case 0: cond = (r5 + c5) % 2 === 0; break;
+          case 1: cond = r5 % 2 === 0; break;
+          case 2: cond = c5 % 3 === 0; break;
+          case 3: cond = (r5 + c5) % 3 === 0; break;
+          case 4: cond = (Math.floor(r5 / 2) + Math.floor(c5 / 3)) % 2 === 0; break;
+          case 5: cond = (((r5 * c5) % 2) + ((r5 * c5) % 3)) === 0; break;
+          case 6: cond = ((((r5 * c5) % 2) + ((r5 * c5) % 3)) % 2) === 0; break;
+          case 7: cond = ((((r5 + c5) % 2) + ((r5 * c5) % 3)) % 2) === 0; break;
+        }
+        if (cond) { trial[r5][c5] = trial[r5][c5] ? 0 : 1; }
+      }
+    }
+    placeFormat(formatBits(mk), trial);
+    var score = penalty(trial, size);
+    if (!best || score < best.score) { best = { mask: mk, m: trial, score: score }; }
+  }
+
+  return { version: ver, matrix: best.m, mask: best.mask };
+}
+
+function penalty(m, size) {
+  var score = 0;
+  for (var r = 0; r < size; r++) {
+    var run = 1;
+    for (var c = 1; c <= size; c++) {
+      if (c < size && m[r][c] === m[r][c - 1]) { run++; }
+      else { if (run >= 5) { score += 3 + (run - 5); } run = 1; }
+    }
+  }
+  for (var c = 0; c < size; c++) {
+    var run2 = 1;
+    for (var r2 = 1; r2 <= size; r2++) {
+      if (r2 < size && m[r2][c] === m[r2 - 1][c]) { run2++; }
+      else { if (run2 >= 5) { score += 3 + (run2 - 5); } run2 = 1; }
+    }
+  }
+  for (var r3 = 0; r3 < size - 1; r3++) {
+    for (var c3 = 0; c3 < size - 1; c3++) {
+      var v = m[r3][c3];
+      if (v === m[r3 + 1][c3] && v === m[r3][c3 + 1] && v === m[r3 + 1][c3 + 1]) { score += 3; }
+    }
+  }
+  var pat = [1, 0, 1, 1, 1, 0, 1];
+  function finderScore(arr) {
+    var n = arr.length, sc = 0;
+    for (var i = 0; i + 7 <= n; i++) {
+      var ok = true;
+      for (var j = 0; j < 7; j++) { if (arr[i + j] !== pat[j]) { ok = false; break; } }
+      if (!ok) { continue; }
+      var l4 = i - 4 >= 0, r4 = i + 11 <= n;
+      var left0 = l4 && arr[i - 1] === 0 && arr[i - 2] === 0 && arr[i - 3] === 0 && arr[i - 4] === 0;
+      var right0 = r4 && arr[i + 7] === 0 && arr[i + 8] === 0 && arr[i + 9] === 0 && arr[i + 10] === 0;
+      if (left0) { sc += 40; }
+      if (right0) { sc += 40; }
+    }
+    return sc;
+  }
+  for (var r4 = 0; r4 < size; r4++) { score += finderScore(m[r4]); }
+  for (var c4 = 0; c4 < size; c4++) {
+    var col = [];
+    for (var r5 = 0; r5 < size; r5++) { col.push(m[r5][c4]); }
+    score += finderScore(col);
+  }
+  var dark = 0;
+  for (var r6 = 0; r6 < size; r6++) { for (var c6 = 0; c6 < size; c6++) { if (m[r6][c6]) { dark++; } } }
+  var pct = dark * 100 / (size * size);
+  score += Math.floor(Math.abs(pct - 50) / 5) * 10;
+  return score;
+}
 var LS = { room:"cc_room", broker:"cc_broker", roster:"cc_roster", records:"cc_records", params:"cc_params", tpl:"cc_tpl", dests:"cc_dests", userTpls:"cc_usertpls", appfs:"cc_appfs", popstyle:"cc_popstyle", theme:"cc_theme", palette:"cc_palette", bgimg:"cc_bgimg" };
 function lsGet(k, d){ try{ var v = localStorage.getItem(k); return v === null ? d : v; }catch(e){ return d; } }
 function lsSet(k, v){ try{ localStorage.setItem(k, v); }catch(e){} }
@@ -613,11 +902,25 @@ function handleCall(msg){
     hostPopup("done", msg.id, "");
     return;
   }
+  // 1.4.x：接收端回复（知道了 / 文字回复）→ 呼叫端弹出显示
+  if(msg && msg.type === "reply"){
+    if(state.role === "display"){ return; } // 接收端忽略自己发出的回环
+    var rtext = msg.text || "";
+    var shownR = hostPopup("reply", msg.id || genId(), rtext);
+    if(!shownR){ showToast(msg.id || genId(), "收到回复", rtext); }
+    return;
+  }
   var cls = msg.cls || "", name = msg.name || "", dest = msg.destination || "", remark = msg.remark || "", text = msg.text || "";
   var who = (cls ? cls + " " : "") + (name ? name : "");
   var line = "收到：" + who + (dest ? " → " + dest : "") + (text ? "（" + text + "）" : "");
   addRecord(line);
   if(state.role === "display"){
+    // 1.4.x：弹窗方式由呼叫端随呼叫消息下发，接收端据此更新本机弹出行为
+    if(msg.popstyle && msg.popstyle !== state.popStyle){
+      state.popStyle = msg.popstyle;
+      lsJsonSet(LS.popstyle, state.popStyle);
+      hostMsg({ type:"popstyle", value:state.popStyle });
+    }
     var params = msg.params || state.params;
     var item = { id: msg.id || genId(), cls:cls, name:name, dest:dest, text:text, ts:nowStr(), params:params };
     state.queue.push(item);
@@ -655,7 +958,7 @@ function sendCall(){
   var msg = {
     type:"call", id:genId(), cls:allClass, name:names,
     destination:state.dest, remark:state.remark.trim(), text:text,
-    params:JSON.parse(JSON.stringify(state.params)), ts:Date.now()
+    params:JSON.parse(JSON.stringify(state.params)), popstyle:state.popStyle, ts:Date.now()
   };
   state.lastSentId = msg.id;
   state.client.publish(callTopic(), JSON.stringify(msg), { qos:1 }, function(err){
@@ -777,6 +1080,23 @@ function testSpeak(){
   speakText(text, state.params);
 }
 
+/* ================= 大屏回复 ================= */
+var replyCurrentId = "";
+function setReplyCurrent(id){
+  replyCurrentId = id || "";
+  var box = $("st-reply");
+  if(box){ box.classList.toggle("hidden", !replyCurrentId); }
+}
+function sendReply(id, text){
+  if(!state.client || !state.connected){ alert("当前未连接，无法回复"); return; }
+  var t = (text === undefined || text === null) ? "知道了" : String(text);
+  if(!t.trim()){ return; }
+  state.client.publish(callTopic(), JSON.stringify({ type:"reply", id:id, text:t.trim(), by:"display" }), { qos:1 }, function(err){
+    if(err){ alert("回复失败：" + err.message); return; }
+    showToast(genId(), "已回复", "已回复呼叫方：" + t.trim());
+  });
+}
+
 /* ================= 大屏队列 ================= */
 function renderQueue(){
   var box = $("q-list");
@@ -823,12 +1143,14 @@ function showStage(q){
   if(p.fontColor){ $("st-msg").style.color = p.fontColor; }
   else{ $("st-msg").style.color = ""; }
   $("st-msg").textContent = q.text;
+  setReplyCurrent(q.id);
 }
 function hideStage(){
   $("st-msg").classList.add("hidden");
   $("st-badge").classList.add("hidden");
   $("st-room").classList.add("hidden");
   $("st-empty").classList.remove("hidden");
+  setReplyCurrent("");
 }
 function stopAll(){
   if("speechSynthesis" in window){ speechSynthesis.cancel(); }
@@ -1035,15 +1357,45 @@ function renderFontColors(){
   });
 }
 /* 1.3.0 外观 */
+/* ================= 接收端二维码 ================= */
+function renderQR(){
+  var cv = $("qr-canvas");
+  if(!cv){ return; }
+  var room = state.room || "";
+  if(!/^\d{6}$/.test(room)){ room = "000000"; }
+  var url = PAGES_URL + "?role=caller&room=" + room;
+  try{
+    var q = qrMatrix(url, 0);
+    var n = q.matrix.length;
+    var sc = 4, quiet = 4;
+    cv.width = (n + quiet * 2) * sc;
+    cv.height = (n + quiet * 2) * sc;
+    var ctx = cv.getContext("2d");
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, cv.width, cv.height);
+    ctx.fillStyle = "#111827";
+    for(var r = 0; r < n; r++){
+      for(var c2 = 0; c2 < n; c2++){
+        if(q.matrix[r][c2]){ ctx.fillRect((c2 + quiet) * sc, (r + quiet) * sc, sc, sc); }
+      }
+    }
+    var ht = $("qr-hint-txt");
+    if(ht){ ht.textContent = "房间 " + room + " · 扫码直达发送端"; }
+  }catch(e){
+    var ht2 = $("qr-hint-txt");
+    if(ht2){ ht2.textContent = "二维码生成失败：" + e.message; }
+  }
+}
+
 var PALETTES = [
-  { id:"blue", label:"深空蓝", css:"linear-gradient(135deg,#0ea5e9,#22d3ee)" },
-  { id:"cyan", label:"青碧", css:"linear-gradient(135deg,#06b6d4,#2dd4bf)" },
-  { id:"purple", label:"云霞紫", css:"linear-gradient(135deg,#8b5cf6,#c084fc)" },
-  { id:"gold", label:"暖阳金", css:"linear-gradient(135deg,#f59e0b,#fbbf24)" },
-  { id:"pink", label:"樱花粉", css:"linear-gradient(135deg,#ec4899,#f9a8d4)" },
-  { id:"green", label:"薄荷绿", css:"linear-gradient(135deg,#10b981,#6ee7b7)" },
-  { id:"red", label:"朱砂红", css:"linear-gradient(135deg,#ef4444,#f87171)" },
-  { id:"slate", label:"曜石灰", css:"linear-gradient(135deg,#64748b,#94a3b8)" }
+  { id:"blue", label:"深空蓝", css:"linear-gradient(135deg,#0369a1,#38bdf8,#a5f3fc)" },
+  { id:"cyan", label:"青碧", css:"linear-gradient(135deg,#0e7490,#2dd4bf,#99f6e4)" },
+  { id:"purple", label:"云霞紫", css:"linear-gradient(135deg,#6d28d9,#a78bfa,#e9d5ff)" },
+  { id:"gold", label:"暖阳金", css:"linear-gradient(135deg,#b45309,#f59e0b,#fde68a)" },
+  { id:"pink", label:"樱花粉", css:"linear-gradient(135deg,#be185d,#f472b6,#fbcfe8)" },
+  { id:"green", label:"薄荷绿", css:"linear-gradient(135deg,#047857,#34d399,#a7f3d0)" },
+  { id:"red", label:"朱砂红", css:"linear-gradient(135deg,#b91c1c,#f87171,#fecaca)" },
+  { id:"slate", label:"曜石灰", css:"linear-gradient(135deg,#334155,#94a3b8,#e2e8f0)" }
 ];
 var POP_STYLES = [ {v:"small", label:"小窗"}, {v:"big", label:"大屏"} ];
 function renderPopStyle(){
@@ -1098,7 +1450,7 @@ function applyTheme(){
     document.body.style.background = "";
   }
   var sw = $("sw-dark");
-  if(sw){ sw.checked = light; }
+  if(sw){ sw.checked = !light; }
 }
 function renderPaletteRow(){
   var box = $("palette-row");
@@ -1364,6 +1716,7 @@ function enter(role){
       $("gate-loading").classList.add("hidden");
       state.queue = [];
       renderQueue(); hideStage(); renderParams();
+      renderQR();
       connectMqtt();
     }, 900);
   }
@@ -1408,6 +1761,17 @@ function init(){
   $("btn-caller").onclick = function(){ enter("caller"); };
   $("btn-display").onclick = function(){ enter("display"); };
   $("gate-about").onclick = function(){ aboutFrom = "gate"; showPage("about"); };
+  var bRepOk = $("btn-reply-ok");
+  if(bRepOk){ bRepOk.onclick = function(){ if(replyCurrentId){ sendReply(replyCurrentId, "知道了"); } }; }
+  var bRepTx = $("btn-reply-text");
+  if(bRepTx){ bRepTx.onclick = function(){
+    if(!replyCurrentId){ return; }
+    var v = prompt("输入回复内容：", "");
+    if(v === null){ return; }
+    v = v.trim();
+    if(!v){ return; }
+    sendReply(replyCurrentId, v);
+  }; }
   var bWebEntry = $("btn-web-entry");
   if(bWebEntry){
     bWebEntry.onclick = function(){
@@ -1499,7 +1863,7 @@ function init(){
   applyTheme();
   renderFontScale(); applyFontScale();
   renderPaletteRow();
-  $("sw-dark").onchange = function(){ lsSet(LS.theme, this.checked ? "light" : "dark"); applyTheme(); };
+  $("sw-dark").onchange = function(){ lsSet(LS.theme, this.checked ? "dark" : "light"); applyTheme(); };
   $("bg-file").onchange = function(){
     var f = this.files && this.files[0];
     if(!f){ return; }
@@ -1655,6 +2019,22 @@ window.__autoEnter = function(room, role){
 };
 
 document.addEventListener("DOMContentLoaded", init);
+// 网页版：扫码直达发送端（?role=caller&room=XXXXXX）
+(function(){
+  try{
+    var qs = (location.search || "").replace(/^\?/, "").split("&");
+    var args = {};
+    for(var qi = 0; qi < qs.length; qi++){
+      var kv = qs[qi].split("=");
+      if(kv.length > 1){ args[decodeURIComponent(kv[0])] = decodeURIComponent(kv.slice(1).join("=")); }
+    }
+    if(args.role === "caller" && /^\d{6}$/.test(args.room || "")){
+      var gr = $("gate-room");
+      if(gr){ gr.value = args.room; }
+      setTimeout(function(){ enter("caller"); }, 300);
+    }
+  }catch(e){}
+})();
 </script>
 </body>
 </html>

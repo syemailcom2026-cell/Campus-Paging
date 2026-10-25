@@ -461,6 +461,13 @@ namespace CampusCallWin
                             ScheduleHide();
                         }
                     }
+                    else if (type == "reply")
+                    {
+                        // 接收端回复（知道了 / 文字回复）→ 呼叫端顶部小屏显示
+                        string rtext = GetStr(root, "text");
+                        if (string.IsNullOrEmpty(rtext)) rtext = "（无内容）";
+                        ShowPopup(GetStr(root, "id"), "校园传呼 · 收到回复", rtext);
+                    }
                 }
             }
             catch
