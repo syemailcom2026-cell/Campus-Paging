@@ -1,0 +1,11 @@
+# 临时文件
+*.WebView2/
+EBWebView/
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 大文件暂时不上传（Release 里用附件）
+*.apk
+*.exe
