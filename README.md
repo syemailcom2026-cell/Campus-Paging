@@ -1,6 +1,9 @@
-# 校园传呼 Campus Pager
+# 校园传呼 · Campus Paging
 
-轻量级校园语音呼叫系统，基于 MQTT 实时通信，支持发送端（手机/电脑）和接收端（大屏/电脑）双向消息推送与语音播报。
+校园呼叫播报工具 —— 手机发送端一键呼叫，教室大屏（电脑）接收端实时大字显示 + 语音播报。
+
+- **版本：1.6.2**
+- 消息经 MQTT 公共服务器转发，主题 `campus/call/房间号`，无需注册、无需自建服务器。
 
 ## 功能特性
 
@@ -21,7 +24,6 @@
 - 8 种预设 UI 配色方案，支持自定义主色
 - 深色/浅色模式自动跟随系统
 - 支持自定义背景图片，可调背景透明度、卡片透明度
-- 自动从背景图提取主色调适配 UI
 - 底部胶囊形悬浮 Tab 栏，大圆角卡片设计
 - 宽屏自动两列布局，手机端单列手风琴设置
 
@@ -31,8 +33,15 @@
 - 呼叫记录自动保存，支持一键清空
 - 常用播报模板快速选择
 
-## 版本 v1.6.2 更新内容
+## 下载
 
+| 平台 | 文件 | 说明 |
+| --- | --- | --- |
+| Android 手机 | [CampusPager-v1.6.2.apk](https://github.com/syemailcom2026-cell/Campus-Paging/releases/tag/v1.6.2) | 直接安装（需允许安装未知来源应用） |
+| Windows 电脑 | [CampusPager-独立版.exe](https://github.com/syemailcom2026-cell/Campus-Paging/releases/tag/v1.6.2) | 绿色免安装，双击即用 |
+| 网页版（免安装） | https://syemailcom2026-cell.github.io/Campus-Paging/ | 浏览器直接打开即用，手机 / 电脑均可 |
+
+## v1.6.2 更新内容
 - 修复设置页手风琴布局间距不统一问题
 - 修复 Tab 切换时设置页内容叠在其他页面的 bug
 - 修复选择背景图按钮无响应问题
@@ -40,16 +49,3 @@
 - 优化自定义配色按钮样式
 - 记录页空状态居中显示
 - 添加白底绿色喇叭应用图标
-
-## 下载
-
-- **Windows 独立版**：直接下载 `CampusPager-独立版.exe` 运行，无需安装
-- **Android 版**：下载 `CampusPager-v1.6.1.apk` 安装到手机
-- **网页版**：直接打开 HTML 文件即可使用，推荐 Chrome/Edge 浏览器
-
-## 技术栈
-
-- 纯单文件 HTML/CSS/JavaScript，无需后端
-- MQTT.js 实时通信
-- Web Speech API 语音播报
-- localStorage 本地保存用户设置
