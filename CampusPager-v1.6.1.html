@@ -9,7 +9,7 @@
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
 :root{
   --bg:#f8fafc; --panel:#ffffff; --card:#ffffff; --card2:#f1f5f9; --line:#e2e8f0;
-  --bg-opacity:1; --card-opacity:92%;
+  --bg-opacity:1; --card-opacity:92%; --radius-lg:24px; --margin-x:16px; --tab-bottom:20px;
   --text:#0f172a; --sub:#64748b; --dim:#94a3b8;
   --blue:#2563eb; --cyan:#0891b2; --green:#16a34a; --red:#dc2626; --amber:#d97706;
   --g2:#bfdbfe; --grad:linear-gradient(135deg,#1d4ed8,#3b82f6,#60a5fa);
@@ -71,11 +71,11 @@ body{ background:var(--bg); color:var(--text); font-family:-apple-system,"PingFa
 /* ===== Tab 栏（胶囊形，加大圆角，固定底部，安全区适配） ===== */
 .tabs{
   position:fixed;
-  bottom:calc(20px + var(--safe-bottom));
-  left:30px; right:30px;
+  bottom:calc(var(--tab-bottom) + var(--safe-bottom));
+  left:var(--margin-x); right:var(--margin-x);
   display:flex; background:color-mix(in srgb, var(--card) var(--card-opacity), transparent);
   border:1px solid var(--line);
-  border-radius:28px; padding:5px;
+  border-radius:var(--radius-lg); padding:5px;
   box-shadow:0 8px 24px rgba(0,0,0,.12); z-index:100;
   transition:transform .3s cubic-bezier(.34,1.56,.64,1), box-shadow .3s ease;
 }
@@ -218,7 +218,7 @@ input::placeholder,textarea::placeholder{ color:var(--dim); }
 .fgroup{
   background:color-mix(in srgb, var(--panel) var(--card-opacity), transparent);
   border:1px solid var(--line);
-  border-radius:50px; padding:30px; margin-bottom:30px;
+  border-radius:var(--radius-lg); padding:30px; margin-bottom:30px;
   box-shadow:0 2px 12px rgba(0,0,0,.05);
 }
 .fgroup .fhead{ display:flex; align-items:center; gap:8px; padding-bottom:8px; border-bottom:1px solid var(--line); margin-bottom:10px; font-size:0.875rem; font-weight:700; color:var(--text); }
@@ -641,6 +641,9 @@ input[type=range]::-moz-range-thumb{ width:28px; height:28px; border-radius:50%;
             <input type="file" id="bg-file" accept="image/*" style="position:absolute; opacity:0; width:1px; height:1px; overflow:hidden;"></div>
           <div class="param"><div class="pl"><span>背景透明度</span><b id="pv-bg-opacity">100%</b></div><input type="range" id="rg-bg-opacity" min="10" max="100" value="100" step="1"></div>
           <div class="param"><div class="pl"><span>卡片透明度</span><span style="font-size:0.6875rem;color:var(--dim);font-weight:400;">（背景图透过卡片的程度）</span><b id="pv-card-opacity">92%</b></div><input type="range" id="rg-card-opacity" min="30" max="100" value="92" step="1"></div>
+          <div class="param"><div class="pl"><span>大胶囊圆角</span><b id="pv-radius-lg">24px</b></div><input type="range" id="rg-radius-lg" min="0" max="50" value="24" step="1"></div>
+          <div class="param"><div class="pl"><span>左右边距</span><b id="pv-margin-x">16px</b></div><input type="range" id="rg-margin-x" min="0" max="50" value="16" step="1"></div>
+          <div class="param"><div class="pl"><span>底部间距</span><b id="pv-tab-bottom">20px</b></div><input type="range" id="rg-tab-bottom" min="0" max="80" value="20" step="1"></div>
         </div>
       </div>
 
@@ -1165,7 +1168,7 @@ function penalty(m, size) {
   score += Math.floor(Math.abs(pct - 50) / 5) * 10;
   return score;
 }
-var LS = { room:"cc_room", side:"cc_side", broker:"cc_broker", roster:"cc_roster", records:"cc_records", params:"cc_params", tpl:"cc_tpl", dests:"cc_dests", userTpls:"cc_usertpls", appfs:"cc_appfs", popstyle:"cc_popstyle", delay:"cc_delay", theme:"cc_theme", palette:"cc_palette", customColor:"cc_customcolor", bgimg:"cc_bgimg", bgOpacity:"cc_bgOpacity", cardOpacity:"cc_cardOpacity" };
+var LS = { room:"cc_room", side:"cc_side", broker:"cc_broker", roster:"cc_roster", records:"cc_records", params:"cc_params", tpl:"cc_tpl", dests:"cc_dests", userTpls:"cc_usertpls", appfs:"cc_appfs", popstyle:"cc_popstyle", delay:"cc_delay", theme:"cc_theme", palette:"cc_palette", customColor:"cc_customcolor", bgimg:"cc_bgimg", bgOpacity:"cc_bgOpacity", cardOpacity:"cc_cardOpacity", radiusLarge:"cc_radiusLarge", marginX:"cc_marginX", tabBottom:"cc_tabBottom" };
 function lsGet(k, d){ try{ var v = localStorage.getItem(k); return v === null ? d : v; }catch(e){ return d; } }
 function lsSet(k, v){ try{ localStorage.setItem(k, v); }catch(e){} }
 function lsJson(k, d){ try{ var s = lsGet(k, null); if(s === null) return d; return JSON.parse(s); }catch(e){ return d; } }
@@ -2001,6 +2004,12 @@ function applyTheme(){
   var cardOp = lsGet(LS.cardOpacity, "92");
   document.body.style.setProperty("--bg-opacity", bgOp / 100);
   document.body.style.setProperty("--card-opacity", cardOp + "%");
+  var radiusLg = lsGet(LS.radiusLarge, "24");
+  document.body.style.setProperty("--radius-lg", radiusLg + "px");
+  var marginX = lsGet(LS.marginX, "16");
+  document.body.style.setProperty("--margin-x", marginX + "px");
+  var tabBottom = lsGet(LS.tabBottom, "20");
+  document.body.style.setProperty("--tab-bottom", tabBottom + "px");
   
   var pvBgOp = $("pv-bg-opacity");
   if(pvBgOp){ pvBgOp.textContent = bgOp + "%"; }
@@ -2010,6 +2019,18 @@ function applyTheme(){
   if(pvCardOp){ pvCardOp.textContent = cardOp + "%"; }
   var rgCardOp = $("rg-card-opacity");
   if(rgCardOp){ rgCardOp.value = cardOp; }
+  var pvRadiusLg = $("pv-radius-lg");
+  if(pvRadiusLg){ pvRadiusLg.textContent = radiusLg + "px"; }
+  var rgRadiusLg = $("rg-radius-lg");
+  if(rgRadiusLg){ rgRadiusLg.value = radiusLg; }
+  var pvMarginX = $("pv-margin-x");
+  if(pvMarginX){ pvMarginX.textContent = marginX + "px"; }
+  var rgMarginX = $("rg-margin-x");
+  if(rgMarginX){ rgMarginX.value = marginX; }
+  var pvTabBottom = $("pv-tab-bottom");
+  if(pvTabBottom){ pvTabBottom.textContent = tabBottom + "px"; }
+  var rgTabBottom = $("rg-tab-bottom");
+  if(rgTabBottom){ rgTabBottom.value = tabBottom; }
   
   var sw = $("sw-dark");
   if(sw){ sw.checked = dark; }
@@ -2640,6 +2661,33 @@ function init(){
       var v = parseInt(this.value);
       $("pv-card-opacity").textContent = v + "%";
       lsSet(LS.cardOpacity, v);
+      applyTheme();
+    };
+  }
+  var rgRadiusLg = $("rg-radius-lg");
+  if(rgRadiusLg){
+    rgRadiusLg.oninput = function(){
+      var v = parseInt(this.value);
+      $("pv-radius-lg").textContent = v + "px";
+      lsSet(LS.radiusLarge, v);
+      applyTheme();
+    };
+  }
+  var rgMarginX = $("rg-margin-x");
+  if(rgMarginX){
+    rgMarginX.oninput = function(){
+      var v = parseInt(this.value);
+      $("pv-margin-x").textContent = v + "px";
+      lsSet(LS.marginX, v);
+      applyTheme();
+    };
+  }
+  var rgTabBottom = $("rg-tab-bottom");
+  if(rgTabBottom){
+    rgTabBottom.oninput = function(){
+      var v = parseInt(this.value);
+      $("pv-tab-bottom").textContent = v + "px";
+      lsSet(LS.tabBottom, v);
       applyTheme();
     };
   }
