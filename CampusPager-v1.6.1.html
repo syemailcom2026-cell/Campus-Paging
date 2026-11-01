@@ -8,6 +8,7 @@
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
 :root{
   --bg:#f8fafc; --panel:#ffffff; --card:#ffffff; --card2:#f1f5f9; --line:#e2e8f0;
+  --bg-opacity:1; --card-opacity:92%;
   --text:#0f172a; --sub:#64748b; --dim:#94a3b8;
   --blue:#2563eb; --cyan:#0891b2; --green:#16a34a; --red:#dc2626; --amber:#d97706;
   --g2:#bfdbfe; --grad:linear-gradient(135deg,#1d4ed8,#3b82f6,#60a5fa);
@@ -26,8 +27,17 @@ body.palette-red{ --blue:#ef4444; --cyan:#f87171; --g2:#fecaca; --grad:linear-gr
 body.palette-slate{ --blue:#64748b; --cyan:#94a3b8; --g2:#e2e8f0; --grad:linear-gradient(135deg,#334155,#94a3b8,#e2e8f0); }
 html,body{ height:100%; }
 body{ background:var(--bg); color:var(--text); font-family:-apple-system,"PingFang SC","Microsoft YaHei",system-ui,sans-serif; font-size:0.9375rem; overflow:hidden; }
+
+/* 自定义背景图层 */
+#bg-layer{
+  position: fixed; inset: 0;
+  background-size: cover; background-position: center;
+  opacity: var(--bg-opacity);
+  z-index: -1;
+  transition: opacity .3s ease;
+}
 .hidden{ display:none !important; }
-.page{ position:absolute; inset:0; display:flex; flex-direction:column; background:var(--bg); }
+.page{ position:absolute; inset:0; display:flex; flex-direction:column; background:transparent; }
 
 /* 动效偏好：用户减少动效时禁用动画 */
 @media (prefers-reduced-motion: reduce) {
@@ -62,7 +72,9 @@ body{ background:var(--bg); color:var(--text); font-family:-apple-system,"PingFa
   position:fixed;
   bottom:calc(20px + var(--safe-bottom));
   left:30px; right:30px;
-  display:flex; background:var(--card); border-radius:28px; padding:5px;
+  display:flex; background:color-mix(in srgb, var(--card) var(--card-opacity), transparent);
+  border:1px solid var(--line);
+  border-radius:28px; padding:5px;
   box-shadow:0 8px 24px rgba(0,0,0,.12); z-index:100;
   transition:transform .3s cubic-bezier(.34,1.56,.64,1), box-shadow .3s ease;
 }
@@ -121,7 +133,8 @@ body{ background:var(--bg); color:var(--text); font-family:-apple-system,"PingFa
 #multi-toggle.on{ background:var(--blue); color:#fff; font-weight:600; }
 #btn-roster-link{ margin-left:10px; }
 .card{
-  background:var(--card); border:1px solid var(--line);
+  background:color-mix(in srgb, var(--card) var(--card-opacity), transparent);
+  border:1px solid var(--line);
   border-radius:50px; padding:30px;
   box-shadow:0 4px 20px rgba(0,0,0,.08), 0 2px 6px rgba(0,0,0,.04);
   transition:box-shadow .2s ease, transform .2s ease;
@@ -169,7 +182,7 @@ input::placeholder,textarea::placeholder{ color:var(--dim); }
 .chips{ display:flex; gap:8px; overflow-x:auto; padding:2px; -webkit-overflow-scrolling:touch; }
 .chip{
   flex:0 0 auto; padding:10px 18px; border-radius:20px;
-  background:var(--card); border:1px solid var(--line);
+  background:color-mix(in srgb, var(--card) var(--card-opacity), transparent); border:1px solid var(--line);
   font-size:0.8125rem; color:var(--sub); cursor:pointer;
   min-height:40px; display:inline-flex; align-items:center;
   transition:all .15s ease;
@@ -178,7 +191,7 @@ input::placeholder,textarea::placeholder{ color:var(--dim); }
 .chip.sel{ background:var(--grad); border-color:transparent; color:#fff; font-weight:600; box-shadow:0 4px 12px rgba(56,189,248,.3); }
 .stu-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
 .stu{
-  background:var(--card); border:1px solid var(--line); border-radius:14px;
+  background:color-mix(in srgb, var(--card) var(--card-opacity), transparent); border:1px solid var(--line); border-radius:14px;
   padding:12px 8px; text-align:center; cursor:pointer;
   min-height:56px; display:flex; flex-direction:column; align-items:center; justify-content:center;
   transition:all .15s ease;
@@ -194,7 +207,7 @@ input::placeholder,textarea::placeholder{ color:var(--dim); }
 .detail-card .dc{ font-size:0.75rem; color:var(--sub); margin-top:2px; }
 .detail-card .dempty{ font-size:0.8125rem; color:var(--dim); }
 .dest-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:8px; }
-.dest{ background:var(--card); border:1px solid var(--line); border-radius:10px; padding:10px 6px; text-align:center; font-size:0.8125rem; cursor:pointer; }
+.dest{ background:color-mix(in srgb, var(--card) var(--card-opacity), transparent); border:1px solid var(--line); border-radius:10px; padding:10px 6px; text-align:center; font-size:0.8125rem; cursor:pointer; }
 .dest.sel{ background:rgba(56,189,248,.16); border-color:var(--blue); color:var(--blue); font-weight:600; }
 .dest-input{ margin-top:8px; }
 .preview{ background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:12px; font-size:0.9375rem; line-height:1.7; color:#dbe6f5; }
@@ -202,7 +215,8 @@ input::placeholder,textarea::placeholder{ color:var(--dim); }
 .preview-input{ width:100%; background:var(--card2); color:var(--text); border:1px solid var(--line); border-radius:10px; padding:10px; font-size:0.9375rem; line-height:1.7; min-height:64px; resize:vertical; font-family:inherit; }
 /* 功能分区（自定义页等，明显区隔） */
 .fgroup{
-  background:var(--panel); border:1px solid var(--line);
+  background:color-mix(in srgb, var(--panel) var(--card-opacity), transparent);
+  border:1px solid var(--line);
   border-radius:50px; padding:30px; margin-bottom:30px;
   box-shadow:0 2px 12px rgba(0,0,0,.05);
 }
@@ -219,9 +233,17 @@ input::placeholder,textarea::placeholder{ color:var(--dim); }
 
 /* ===== 记录页 ===== */
 .rec-list{ display:flex; flex-direction:column; gap:8px; }
-.rec-item{ background:var(--card); border:1px solid var(--line); border-radius:10px; padding:10px 12px; font-size:0.8125rem; color:#dbe6f5; }
+.rec-item{ background:color-mix(in srgb, var(--card) var(--card-opacity), transparent); border:1px solid var(--line); border-radius:10px; padding:10px 12px; font-size:0.8125rem; color:#dbe6f5; }
 .rec-item .rt{ font-size:0.6875rem; color:var(--sub); margin-bottom:3px; }
-.rec-empty{ color:var(--dim); text-align:center; padding:40px 0; }
+.rec-empty{
+  color:var(--dim);
+  text-align:center;
+  padding:40px 0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height: 60vh;
+}
 
 .vchip{ cursor:grab; user-select:none; border-style:dashed; }
 .vchip:active{ cursor:grabbing; }
@@ -231,15 +253,17 @@ input::placeholder,textarea::placeholder{ color:var(--dim); }
 
 /* 竖排栏目式设置导航 */
 .settings-nav{
-  display:flex; flex-direction:column; gap:10px;
+  display:block;
   margin-bottom:20px;
 }
 .settings-nav-item{
   display:flex; align-items:center; gap:12px;
-  background:var(--card); border:1px solid var(--line);
+  background:color-mix(in srgb, var(--card) var(--card-opacity), transparent);
+  border:1px solid var(--line);
   border-radius:20px; padding:16px 20px;
   cursor:pointer; user-select:none;
   transition:all .2s ease;
+  margin-bottom:16px;
 }
 .settings-nav-item:active{ transform:scale(.98); }
 .settings-nav-item.active{
@@ -254,6 +278,35 @@ input::placeholder,textarea::placeholder{ color:var(--dim); }
 @keyframes fadeSlideIn{
   from{ opacity:0; transform:translateY(8px); }
   to{ opacity:1; transform:translateY(0); }
+}
+
+/* 宽屏：手风琴排列，整体居中，间距统一 */
+@media (min-width: 768px) {
+  /* 设置页强制单列，不要两列 grid，保留 hidden 隐藏功能 */
+  #tab-settings:not(.hidden){
+    display: block;
+  }
+  /* 所有栏目按钮和面板统一宽度，居中排列 */
+  #tab-settings .settings-nav-item,
+  #tab-settings .settings-panel{
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+  }
+  #tab-settings .settings-nav{
+    display: block;
+  }
+  .settings-nav-item{
+    border-radius: 16px;
+    padding: 14px 18px;
+    height: auto;
+    flex: 0 0 auto;
+  }
+  .settings-panel{
+    flex: 0 0 auto;
+    margin-bottom: 16px;
+  }
 }
 #pull-hint{ position:fixed; top:0; left:50%; transform:translateX(-50%) translateY(-46px); background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:4px 14px; font-size:0.75rem; color:var(--sub); z-index:999; transition:transform .2s, color .2s; pointer-events:none; box-shadow:0 4px 14px rgba(0,0,0,.25); }
 #pull-hint.pull{ transform:translateX(-50%) translateY(10px); }
@@ -394,6 +447,7 @@ input[type=range]::-moz-range-thumb{ width:28px; height:28px; border-radius:50%;
 </style>
 </head>
 <body>
+<div id="bg-layer"></div>
 
 <!-- ============ 启动页 ============ -->
 <div id="gate" class="page">
@@ -577,11 +631,15 @@ input[type=range]::-moz-range-thumb{ width:28px; height:28px; border-radius:50%;
       <div class="settings-panel hidden" id="setpanel-personal">
         <div class="card">
           <div class="set-row" style="margin-bottom:14px;"><span>深色模式</span><label class="switch"><input type="checkbox" id="sw-dark"><span class="sl"></span></label></div>
-          <div class="param"><div class="pl"><span>UI 配色方案</span></div><div class="palette-row" id="palette-row"></div></div>
+          <div class="param"><div class="pl"><span>UI 配色方案</span></div><div class="palette-row" id="palette-row"></div>
+            <button class="btn" id="btn-extract-color" style="width:100%;margin-top:8px;font-size:0.8125rem;">从背景图提取配色</button>
+          </div>
           <div class="param"><div class="pl"><span>应用内字体大小</span><span style="font-size:0.6875rem;color:var(--dim);font-weight:400;">（全部界面文字同步缩放）</span></div><div class="chips" id="font-scale-row" style="flex-wrap:wrap;"></div></div>
           <div class="param"><div class="pl"><span>自定义背景图片</span><span class="right" id="btn-rm-bg" style="cursor:pointer;">移除</span></div>
             <button class="btn" id="btn-pick-bg" style="width:100%;">选择背景图片</button>
-            <input type="file" id="bg-file" accept="image/*" style="display:none;"></div>
+            <input type="file" id="bg-file" accept="image/*" style="position:absolute; opacity:0; width:1px; height:1px; overflow:hidden;"></div>
+          <div class="param"><div class="pl"><span>背景透明度</span><b id="pv-bg-opacity">100%</b></div><input type="range" id="rg-bg-opacity" min="10" max="100" value="100" step="1"></div>
+          <div class="param"><div class="pl"><span>卡片透明度</span><span style="font-size:0.6875rem;color:var(--dim);font-weight:400;">（背景图透过卡片的程度）</span><b id="pv-card-opacity">92%</b></div><input type="range" id="rg-card-opacity" min="30" max="100" value="92" step="1"></div>
         </div>
       </div>
 
@@ -1106,7 +1164,7 @@ function penalty(m, size) {
   score += Math.floor(Math.abs(pct - 50) / 5) * 10;
   return score;
 }
-var LS = { room:"cc_room", side:"cc_side", broker:"cc_broker", roster:"cc_roster", records:"cc_records", params:"cc_params", tpl:"cc_tpl", dests:"cc_dests", userTpls:"cc_usertpls", appfs:"cc_appfs", popstyle:"cc_popstyle", delay:"cc_delay", theme:"cc_theme", palette:"cc_palette", customColor:"cc_customcolor", bgimg:"cc_bgimg" };
+var LS = { room:"cc_room", side:"cc_side", broker:"cc_broker", roster:"cc_roster", records:"cc_records", params:"cc_params", tpl:"cc_tpl", dests:"cc_dests", userTpls:"cc_usertpls", appfs:"cc_appfs", popstyle:"cc_popstyle", delay:"cc_delay", theme:"cc_theme", palette:"cc_palette", customColor:"cc_customcolor", bgimg:"cc_bgimg", bgOpacity:"cc_bgOpacity", cardOpacity:"cc_cardOpacity" };
 function lsGet(k, d){ try{ var v = localStorage.getItem(k); return v === null ? d : v; }catch(e){ return d; } }
 function lsSet(k, v){ try{ localStorage.setItem(k, v); }catch(e){} }
 function lsJson(k, d){ try{ var s = lsGet(k, null); if(s === null) return d; return JSON.parse(s); }catch(e){ return d; } }
@@ -1928,12 +1986,30 @@ function applyTheme(){
   }
 
   var img = lsGet(LS.bgimg, "");
-  if(img){
-    var ov = dark ? "rgba(10,10,10,.78)" : "rgba(248,250,252,.82)";
-    document.body.style.background = "linear-gradient(" + ov + "," + ov + "), url(\"" + img + "\") center/cover no-repeat fixed";
-  }else{
-    document.body.style.background = "";
+  var bgLayer = $("bg-layer");
+  if(bgLayer){
+    if(img){
+      bgLayer.style.backgroundImage = "url(\"" + img + "\")";
+    }else{
+      bgLayer.style.backgroundImage = "";
+    }
   }
+  
+  // 应用透明度
+  var bgOp = lsGet(LS.bgOpacity, "100");
+  var cardOp = lsGet(LS.cardOpacity, "92");
+  document.body.style.setProperty("--bg-opacity", bgOp / 100);
+  document.body.style.setProperty("--card-opacity", cardOp + "%");
+  
+  var pvBgOp = $("pv-bg-opacity");
+  if(pvBgOp){ pvBgOp.textContent = bgOp + "%"; }
+  var rgBgOp = $("rg-bg-opacity");
+  if(rgBgOp){ rgBgOp.value = bgOp; }
+  var pvCardOp = $("pv-card-opacity");
+  if(pvCardOp){ pvCardOp.textContent = cardOp + "%"; }
+  var rgCardOp = $("rg-card-opacity");
+  if(rgCardOp){ rgCardOp.value = cardOp; }
+  
   var sw = $("sw-dark");
   if(sw){ sw.checked = dark; }
 }
@@ -1963,6 +2039,11 @@ function renderPaletteRow(){
     el.className = "pal" + (currentPal === p.id ? " on" : "");
     el.style.background = p.css;
     el.textContent = p.label;
+    // 自定义按钮不要占满整行
+    if(p.id === "custom"){
+      el.style.flex = "0 0 auto";
+      el.style.minWidth = "70px";
+    }
     el.onclick = function(){
       lsSet(LS.palette, p.id);
       applyTheme();
@@ -2511,15 +2592,134 @@ function init(){
   var termToggle = $("term-toggle");
   if(termToggle){ termToggle.onclick = function(){ toggleTermBody(); }; }
   renderCloseDelay();
-  $("bg-file").onchange = function(){
-    var f = this.files && this.files[0];
-    if(!f){ return; }
-    var r = new FileReader();
-    r.onload = function(){ lsSet(LS.bgimg, r.result); applyTheme(); };
-    r.readAsDataURL(f);
-  };
-  $("btn-pick-bg").onclick = function(){ $("bg-file").click(); };
-  $("btn-rm-bg").onclick = function(){ lsSet(LS.bgimg, ""); applyTheme(); };
+  var bgFile = $("bg-file");
+  if(bgFile){
+    bgFile.onchange = function(){
+      var f = this.files && this.files[0];
+      if(!f){ return; }
+      if(f.size > 4 * 1024 * 1024){
+        alert("图片太大（超过 4MB），请选择更小的图片");
+        this.value = "";
+        return;
+      }
+      var r = new FileReader();
+      r.onload = function(){
+        try {
+          lsSet(LS.bgimg, r.result);
+          applyTheme();
+        } catch(e){
+          alert("设置背景图片失败：" + e.message);
+        }
+      };
+      r.readAsDataURL(f);
+    };
+  }
+  var btnPickBg = $("btn-pick-bg");
+  if(btnPickBg){
+    btnPickBg.onclick = function(){ if(bgFile) bgFile.click(); };
+  }
+  var btnRmBg = $("btn-rm-bg");
+  if(btnRmBg){
+    btnRmBg.onclick = function(){ lsSet(LS.bgimg, ""); applyTheme(); };
+  }
+  
+  // 透明度滑块
+  var rgBgOp = $("rg-bg-opacity");
+  if(rgBgOp){
+    rgBgOp.oninput = function(){
+      var v = parseInt(this.value);
+      $("pv-bg-opacity").textContent = v + "%";
+      lsSet(LS.bgOpacity, v);
+      applyTheme();
+    };
+  }
+  var rgCardOp = $("rg-card-opacity");
+  if(rgCardOp){
+    rgCardOp.oninput = function(){
+      var v = parseInt(this.value);
+      $("pv-card-opacity").textContent = v + "%";
+      lsSet(LS.cardOpacity, v);
+      applyTheme();
+    };
+  }
+  
+  /* 从背景图提取配色（临时注释）
+  var btnExtract = $("btn-extract-color");
+  if(btnExtract){
+    btnExtract.onclick = function(){
+    var img = lsGet(LS.bgimg, "");
+    if(!img){
+      alert("请先选择一张背景图片");
+      return;
+    }
+    
+    var image = new Image();
+    image.onload = function(){
+      var canvas = document.createElement("canvas");
+      var ctx = canvas.getContext("2d");
+      
+      // 缩小图片加快处理
+      var size = 100;
+      canvas.width = size;
+      canvas.height = size;
+      ctx.drawImage(image, 0, 0, size, size);
+      
+      try {
+        var data = ctx.getImageData(0, 0, size, size).data;
+        var colorMap = {};
+        
+        // 采样像素，统计颜色
+        for(var i = 0; i < data.length; i += 16){ // 每4个像素取一个
+          var r = data[i];
+          var g = data[i+1];
+          var b = data[i+2];
+          
+          // 量化颜色，减少色阶
+          r = Math.round(r / 32) * 32;
+          g = Math.round(g / 32) * 32;
+          b = Math.round(b / 32) * 32;
+          
+          // 跳过太暗和太灰的颜色
+          var brightness = (r + g + b) / 3;
+          var saturation = Math.max(r,g,b) - Math.min(r,g,b);
+          if(brightness < 30 || saturation < 20) continue;
+          
+          var key = r + "," + g + "," + b;
+          if(colorMap[key]){
+            colorMap[key].count++;
+          }else{
+            colorMap[key] = { r:r, g:g, b:b, count:1 };
+          }
+        }
+        
+        // 找出现次数最多的颜色
+        var best = null;
+        var bestCount = 0;
+        for(var key in colorMap){
+          if(colorMap[key].count > bestCount){
+            bestCount = colorMap[key].count;
+            best = colorMap[key];
+          }
+        }
+        
+        if(best){
+          var hex = rgbToHex(best.r, best.g, best.b);
+          lsSet(LS.palette, "custom");
+          lsSet(LS.customColor, hex);
+          applyTheme();
+          renderPaletteRow();
+          alert("已提取主色调：" + hex);
+        }else{
+          alert("未能从图片中提取到合适的颜色，请换一张图片试试");
+        }
+      } catch(e) {
+        alert("提取失败：" + e.message);
+      }
+    };
+    image.src = img;
+    };
+  }
+  */
 
   /* 记录 */
   $("btn-clear-records").onclick = function(){
