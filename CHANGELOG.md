@@ -30,7 +30,7 @@
 - 底部固定悬浮胶囊 Tab 栏，大圆角按钮与卡片，滑块全轨道可拖拽，支持自定义主色。
 - 新增白底绿色喇叭应用图标，网页 favicon 同步。
 
-下载：`CampusPager-v1.6.2.apk`（手机版）· `CampusPager-独立版.exe`（电脑版）· 网页版 https://syemailcom2026-cell.github.io/Campus-Paging/
+下载：`CampusPager-v1.6.2.apk`（手机版）· `CampusPager-Standalone.exe`（电脑版，独立版）· 网页版 https://syemailcom2026-cell.github.io/Campus-Paging/
 
 ---
 
