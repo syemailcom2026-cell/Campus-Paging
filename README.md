@@ -51,14 +51,6 @@
 - 记录页空状态居中显示
 - 添加白底绿色喇叭应用图标
 - 新增大胶囊圆角、左右边距、底部间距自定义调节滑块
-## 下载
-
-| 平台 | 文件 | 说明 |
-|---|---|---|
-| Android 手机 | `CampusPager-v1.4.8.apk` | 直接安装（需允许安装未知来源应用） |
-| Windows 电脑 | `CampusPager-v1.4.8-win64.exe` | 绿色免安装，双击即用（约 155MB） |
-| 网页版（免安装） | https://syemailcom2026-cell.github.io/Campus-Paging/ | 浏览器直接打开即用，手机 / 电脑均可 |
-| iPhone / iPad（iOS） | 源码工程 `CampusPager-iOS/` | 同款同功能；需在 Mac + Xcode 编译安装（详见 `CampusPager-iOS/README-iOS.md`） |
 
 GitHub Release：https://github.com/syemailcom2026-cell/Campus-Paging/releases （历史版本均保留）
 
