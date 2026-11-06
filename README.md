@@ -38,8 +38,8 @@
 
 | 平台 | 文件 | 说明 |
 | --- | --- | --- |
-| Android 手机 | [CampusPager-v1.6.2.apk](https://github.com/syemailcom2026-cell/Campus-Paging/releases/tag/v1.6.2) | 直接安装（需允许安装未知来源应用） |
-| Windows 电脑 | [CampusPager-独立版.exe](https://github.com/syemailcom2026-cell/Campus-Paging/releases/tag/v1.6.2) | 绿色免安装，双击即用 |
+| Android 手机 | [CampusPager-v1.6.2.apk](https://github.com/syemailcom2026-cell/Campus-Paging/releases/download/v1.6.2/CampusPager-v1.6.2.apk) | 直接安装（需允许安装未知来源应用） |
+| Windows 电脑 | [CampusPager-Standalone.exe](https://github.com/syemailcom2026-cell/Campus-Paging/releases/download/v1.6.2/CampusPager-Standalone.exe) | 绿色免安装，双击即用（即「独立版」，GitHub 不支持文件名中的中文，故用英文命名） |
 | 网页版（免安装） | https://syemailcom2026-cell.github.io/Campus-Paging/ | 浏览器直接打开即用，手机 / 电脑均可 |
 
 ## v1.6.2 更新内容
