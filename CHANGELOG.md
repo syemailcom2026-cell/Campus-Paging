@@ -1,8 +1,13 @@
 # 更新记录 · Changelog
 
-校园传呼（Campus Paging）版本发布说明汇总。版本号遵循语义化版本（主版本.次版本.修订号）。
+CampusPager 版本发布说明汇总。版本号遵循语义化版本（主版本.次版本.修订号）。
 
 ## v1.6.2（当前版本）
+
+**名称与图标统一**
+- 应用名称统一为 CampusPager：Android 桌面显示名、Windows EXE 文件名、网页标题与界面品牌文案全部改名。
+- 全新简约彩色应用图标（紫粉渐变喇叭），替换原白底绿色喇叭；Android 5 档 mipmap、Windows EXE 图标（app.ico）、网页 favicon 三端同步。
+- Android `versionName 1.6.2` / `versionCode 162`，Windows 产物同步 1.6.2。
 
 **设置页布局重构**
 - 设置页改为竖排手风琴六大栏目（播报设置 / 个性化 / 连接设置 / 使用教程 / 更新日志 / 关于）。
@@ -28,9 +33,8 @@
 - 暗色模式自动降低字重，打字高斯模糊渐显，等宽数字，Q 弹点击反馈。
 - 提示消息 2.5 秒自动消失。
 - 底部固定悬浮胶囊 Tab 栏，大圆角按钮与卡片，滑块全轨道可拖拽，支持自定义主色。
-- 新增白底绿色喇叭应用图标，网页 favicon 同步。
 
-下载：`CampusPager-v1.6.2.apk`（手机版）· `CampusPager-Standalone.exe`（电脑版，独立版）· 网页版 https://syemailcom2026-cell.github.io/Campus-Paging/
+下载：`CampusPager-v1.6.2.apk`（手机版）· `CampusPager-v1.6.2.exe`（电脑版）· 网页版 https://syemailcom2026-cell.github.io/Campus-Paging/
 
 ---
 
