@@ -37,15 +37,17 @@
 
 | 平台 | 文件 | 说明 |
 | --- | --- | --- |
-| Android 手机 | [CampusPager-v1.6.2.apk](https://github.com/syemailcom2026-cell/Campus-Paging/releases/tag/v1.6.2) | 直接安装（需允许安装未知来源应用） |
-| Windows 电脑 | [CampusPager-独立版.exe](https://github.com/syemailcom2026-cell/Campus-Paging/releases/tag/v1.6.2) | 绿色免安装，双击即用 |
+| Android 手机 | [CampusPager-v1.6.2.apk](https://github.com/syemailcom2026-cell/Campus-Paging/releases/download/v1.6.2/CampusPager-v1.6.2.apk) | 直接安装（需允许安装未知来源应用） |
+| Windows 电脑 | [CampusPager-v1.6.2.exe](https://github.com/syemailcom2026-cell/Campus-Paging/releases/download/v1.6.2/CampusPager-v1.6.2.exe) | 绿色免安装，双击即用 |
 | 网页版（免安装） | https://syemailcom2026-cell.github.io/Campus-Paging/ | 浏览器直接打开即用，手机 / 电脑均可 |
 
 ## v1.6.2 更新内容
+- 应用名称统一为 CampusPager，Android / Windows / 网页三端一致
+- 全新简约彩色应用图标（紫粉渐变喇叭），替换原白底绿色喇叭
+- Android 桌面图标、Windows EXE 图标、网页 favicon 三端同步更新
 - 修复设置页手风琴布局间距不统一问题
 - 修复 Tab 切换时设置页内容叠在其他页面的 bug
 - 修复选择背景图按钮无响应问题
 - 修复背景透明度、卡片透明度滑块无效问题
 - 优化自定义配色按钮样式
 - 记录页空状态居中显示
-- 添加白底绿色喇叭应用图标
